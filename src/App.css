@@ -1,38 +1,35 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  font: Open-Sans;
+  font-weight: 300;
+  color: #6493a1;
 }
 
-.App-link {
-  color: #61dafb;
+.Step-header {
+  font: Open-Sans;
+  font-weight: 300;
+  color: #6493a1;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.Step-content {
+  font: Open-Sans;
+  font-weight: 300;
+  color: '#154854';
+}
+
+.Logo {
+  background-image: url(./assets/mountain_image.jpeg);
+  background-size: cover;
+  background-position: bottom;
+}
+
+@font-face {
+  font-family: 'Open-Sans';
+  font-weight: 300;
+  src: local('Open-Sans-Light'), url(./fonts/OpenSans-Light.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Open-Sans';
+  font-weight: 600;
+  src: local('Open-Sans-Semi-Bold'), url(./fonts/OpenSans-SemiBold.ttf) format('truetype');
 }
