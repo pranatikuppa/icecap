@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
         color: '#6493a1',
         width: '70%',
         height: '100%',
-        margin: 50,
+        margin: 30,
     },
     button: {
         backgroundColor: '#6493a1',
@@ -275,7 +275,7 @@ export default function StepperPage() {
   
     return(
       <div className={classes.root}>
-        <Paper elevation={0} style={{ backgroundColor: '#e3ecef', height: 2*window.screen.height/3, width: window.screen.width}}>
+        <Paper elevation={0} style={{ backgroundColor: '#e3ecef', height: 3*window.screen.height/4, width: window.screen.width}}>
             <VerticalLinearStepper>
             </VerticalLinearStepper>
         </Paper>

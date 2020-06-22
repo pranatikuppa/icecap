@@ -108,7 +108,7 @@ function MainInfoPage() {
   const classes = mainStyles();
 
   const scrollToTop = () => {
-    scroll.scrollToBottom();
+    scroll.scrollTo(6*window.screen.height/7);
   };
 
   return (
