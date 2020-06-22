@@ -27,16 +27,12 @@
 }
 
 .Dropzone {
-  height: 130px;
-  width: 790px;
-  border-width: 230;
-  background-color: #fff;
-  border: 2px dashed rgb(187, 186, 186);
+  width: 780px;
+  height: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  font-size: 16px;
 }
 
 @font-face {

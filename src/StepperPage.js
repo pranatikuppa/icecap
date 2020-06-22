@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
     },
     button: {
         backgroundColor: '#6493a1',
+        '&:hover': {
+          backgroundColor: '#537b86',
+        },
         color: 'white',
         marginTop: theme.spacing(1),
         marginRight: theme.spacing(1),
@@ -61,18 +64,30 @@ const useStyles = makeStyles((theme) => ({
 
   const StyledToggle = withStyles({
       root: {
-        color: '#6493a1',
-        borderColor: '#6493a1',
+        color: '#white',
+        borderColor: '#white',
         whiteSpace: 'break-spaces',
+        '&:hover': {
+          borderColor: '#6493a1',
+        },
       },
       selected: {
-        backgroundColor: '#6493a1',
-        color: '#6493a1',
-        borderColor: '#6493a1',
+        '&:active': {
+          backgroundColor: '#5c8794',
+        },
+        backgroundColor: '#bcf5bc',
+        color: '#154854',
+        borderColor: '#154854',
+        label: '#154854'
       },
       label: {
+        '&:active': {
+          color: '#154854',
+        },
+        '&:hover': {
           color: '#6493a1',
-      },
+        },
+      }
   })(ToggleButton);
   
   function getSteps() {
@@ -87,6 +102,9 @@ const useStyles = makeStyles((theme) => ({
                 },
                 active: {
                     color: '#6493a1',
+                },
+                disabled: {
+                  color: 'white',
                 }
             },
         },
@@ -96,41 +114,77 @@ function VerticalLinearStepper() {
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
+
     const [operationOpen, setOperationOpen] = React.useState(false);
+    const [fileOpen, setFileOpen] = React.useState(false);
+
     const [javaSelected, setJava] = React.useState(false);
     const [singleSelected, setSingle] = React.useState(false);
     const [multiSelected, setMulti] = React.useState(false);
     const [indentSelected, setIndent] = React.useState(false);
     const [whiteSelected, setWhite] = React.useState(false);
+    const [uploadedFiles, setUploadedFiles] = React.useState({});
+
+    function myCallback(files) {
+      setUploadedFiles(files);
+      if (files.length > 0) {
+        setFileOpen(false);
+      }
+    };
   
     const handleNext = () => {
-        if (activeStep === 1) {
-            if (!javaSelected && !singleSelected && !multiSelected && !whiteSelected && !indentSelected) {
-                setOperationOpen(true);
-            } else {
-                setOperationOpen(false);
-                setActiveStep((prevActiveStep) => prevActiveStep + 1);
-            }
+      if (activeStep == 0) {
+        if (uploadedFiles.length > 0) {
+          setFileOpen(false);
+          setActiveStep((prevActiveStep) => prevActiveStep + 1);
         } else {
-            setOperationOpen(false);
-            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+          setFileOpen(true);
         }
+      }
     };
   
     const handleBack = () => {
         if (activeStep === 1) {
             setJava(false);
             setSingle(false);
+            setMulti(false);
+            setWhite(false);
+            setIndent(false);
             if (operationOpen) {
                 setOperationOpen(false);
             }
         }
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
+
+    const handleRun = () => {
+      if (activeStep === 1) {
+        if (!javaSelected && !singleSelected && !multiSelected && !whiteSelected && !indentSelected) {
+            setOperationOpen(true);
+        } else {
+            setOperationOpen(false);
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        }
+      }
+    }
+
+    const handleDownload = () => {
+
+    }
   
     const handleReset = () => {
       setActiveStep(0);
     };
+
+    const handleButton = () => {
+      if (activeStep === 0) {
+        handleNext();
+      } else if (activeStep === 1) {
+        handleRun();
+      } else {
+        handleDownload();
+      }
+    }
 
     function JavadocToggle() {
         return (
@@ -173,14 +227,14 @@ function VerticalLinearStepper() {
     }
 
     function stepOne() {
-        return (
-          <Typography>
-              Upload a file (.java file) for which you would like the program to clear style check errors:
-              <p></p>
-              <UploadButtons></UploadButtons>
-              <p></p>
-          </Typography>
-        );
+      return (
+        <Typography>
+            Upload a file (.java file) for which you would like the program to clear style check errors:
+            <p></p>
+            <UploadButtons callbackFromParent={myCallback}></UploadButtons>
+            <p></p>
+        </Typography>
+      );
     }
 
     function stepTwo() {
@@ -200,7 +254,12 @@ function VerticalLinearStepper() {
     }
     
     function stepThree() {
-
+      return (
+        <Typography>
+          Enter a name for each file and download the files below. If you don't provide a name we will use the original file name
+          to download your file.
+        </Typography>
+      );
     }
 
     function getStepContent(step) {
@@ -230,6 +289,11 @@ function VerticalLinearStepper() {
                 </ThemeProvider>
               <StepContent>
                 <Typography>{getStepContent(index)}</Typography>
+                <Collapse in={fileOpen} timeout='auto'> 
+                    <p></p>
+                    <Alert severity="error">Please upload at least one file</Alert>
+                    <p></p>
+                </Collapse>
                 <Collapse in={operationOpen} timeout='auto'> 
                     <p></p>
                     <Alert severity="error">Please select at least one operation</Alert>
@@ -245,12 +309,14 @@ function VerticalLinearStepper() {
                       Back
                     </Button>
                     <Button
-                      onClick={handleNext}
+                      onClick={handleButton}
                       className={classes.button}
                       disableElevation
                       variant='contained'
                     >
-                      {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                      {activeStep === 0 && 'Next'}
+                      {activeStep === 1 && 'Run'}
+                      {activeStep === 2 && 'Download File'}
                     </Button>
                   </div>
                 </div>

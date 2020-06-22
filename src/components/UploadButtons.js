@@ -31,10 +31,24 @@ const useStyles = makeStyles((theme) => ({
   dropCard: {
     width: '790px',
     height: '130px',
-    paddingTop: '15px',
-    paddingLeft: '15px',
-    paddingRight: '20px',
-    paddingBottom: '20px',
+    paddingTop: '20px',
+    paddingLeft: '20px',
+    paddingRight: '15px',
+    paddingBottom: '15px',
+  },
+  dropCardBorder: {
+    border: 'dashed',
+    borderColor: '#6493a1',
+    borderWidth: '2px',
+    width: '780px',
+    height: '120px',
+  },
+  defaultCardBorder: {
+    border: 'dashed',
+    borderColor: '#D3D3D3',
+    borderWidth: '2px',
+    width: '780px',
+    height: '120px',
   },
   listCard: {
     color: '#154854',
@@ -48,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function UploadButtons() {
+export default function UploadButtons(props) {
   const classes = useStyles();
   const [acceptedOpen, setAcceptedOpen] = React.useState(false);
   const [rejectedOpen, setRejectedOpen] = React.useState(false);
@@ -66,6 +80,7 @@ export default function UploadButtons() {
     } else {
       setRejectedOpen(true);
     }
+    props.callbackFromParent(acceptedFiles);
   }
 
   function getFileList(list) {
@@ -88,13 +103,26 @@ export default function UploadButtons() {
         <Dropzone className={classes.dropCard} onDrop={onFileDrop} accept='.java'>
           {({getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept, acceptedFiles, rejectedFiles}) => (
             <section>
-              <div className='Dropzone' {...getRootProps()}>
+              <div {...getRootProps()}>
                 <input {...getInputProps()} />
-                <p></p>
-                <CloudUploadIcon className={classes.icon} fontSize='large'></CloudUploadIcon>
-                {!isDragActive && <p style={{ color: '#6493a1', whiteSpace: 'break-spaces' }}>Choose a file or drop it here</p>}
-                {isDragActive && <p style={{ color: '#6493a1', whiteSpace: 'break-spaces' }}>Drop it here!</p>}
-                <p></p>
+                {!isDragActive ? 
+                  <div className={classes.defaultCardBorder}>
+                    <div className='Dropzone'>
+                    <p></p>
+                    <CloudUploadIcon className={classes.icon} fontSize='large'></CloudUploadIcon>
+                    <p style={{ color: '#6493a1', whiteSpace: 'break-spaces' }}>Choose a file or drop it here</p>
+                    <p></p>
+                    </div>
+                  </div>:
+                  <div className={classes.dropCardBorder}>
+                    <div className='Dropzone'>
+                    <p></p>
+                    <CloudUploadIcon className={classes.icon} fontSize='large'></CloudUploadIcon>
+                    <p style={{ color: '#6493a1', whiteSpace: 'break-spaces' }}>Drop it here!</p>
+                    <p></p>
+                    </div>
+                  </div>
+                }
               </div>
             </section>
           )}
