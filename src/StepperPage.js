@@ -176,7 +176,9 @@ function VerticalLinearStepper() {
         return (
           <Typography>
               Upload a file (.java file) for which you would like the program to clear style check errors:
+              <p></p>
               <UploadButtons></UploadButtons>
+              <p></p>
           </Typography>
         );
     }

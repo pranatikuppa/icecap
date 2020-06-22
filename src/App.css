@@ -22,6 +22,18 @@
   background-position: bottom;
 }
 
+.Dropzone {
+  height: 100px;
+  width: 200px;
+  background-color: #fff;
+  border: 2px dashed rgb(187, 186, 186);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 16px;
+}
+
 @font-face {
   font-family: 'Open-Sans';
   font-weight: 300;
