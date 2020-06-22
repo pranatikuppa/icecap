@@ -96,8 +96,8 @@ const mainStyles = makeStyles((theme) => ({
   button: {
     display: 'flex',
     flexWrap: 'wrap',
-    backgroundColor: '#6493a1',
-    color: 'white',
+    backgroundColor: 'white',
+    color: '#154854',
     marginTop: theme.spacing(5),
     marginRight: theme.spacing(1),
     marginLeft: theme.spacing(11),
