@@ -132,7 +132,6 @@ function MainInfoPage() {
                 Start
             </Button>
         </div>
-        {/* <img src='./assets/mountain_image.jpeg' width='80px' height='80ox'></img> */}
       </Paper>
     </div>
   );

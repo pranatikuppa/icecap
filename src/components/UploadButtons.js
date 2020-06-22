@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
   dropCard: {
     width: '790px',
-    height: '100px',
+    height: '130px',
     paddingTop: '15px',
     paddingLeft: '15px',
     paddingRight: '20px',
@@ -43,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
     padding: '10px',
     alignContent: 'center',
   },
+  icon: {
+    color: '#6493a1'
+  }
 }));
 
 export default function UploadButtons() {
@@ -87,8 +90,11 @@ export default function UploadButtons() {
             <section>
               <div className='Dropzone' {...getRootProps()}>
                 <input {...getInputProps()} />
+                <p></p>
+                <CloudUploadIcon className={classes.icon} fontSize='large'></CloudUploadIcon>
                 {!isDragActive && <p style={{ color: '#6493a1', whiteSpace: 'break-spaces' }}>Choose a file or drop it here</p>}
-                {isDragActive && isDragAccept && <p style={{ color: '#6493a1', whiteSpace: 'break-spaces' }}>Drop it here!</p>}
+                {isDragActive && <p style={{ color: '#6493a1', whiteSpace: 'break-spaces' }}>Drop it here!</p>}
+                <p></p>
               </div>
             </section>
           )}
