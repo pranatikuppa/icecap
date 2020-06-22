@@ -1,3 +1,7 @@
+.App-body {
+  min-width: 1000px;
+}
+
 .App-header {
   font: Open-Sans;
   font-weight: 300;

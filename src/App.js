@@ -15,7 +15,7 @@ import ContactButton from './components/ContactButton';
 class App extends Component {
   render() {
     return (
-      <div>
+      <div className='App-body'>
           <PageHeader></PageHeader>
           <MainInfoPage></MainInfoPage>
           <StepperPage></StepperPage>
@@ -69,7 +69,7 @@ const mainStyles = makeStyles((theme) => ({
     fontSize: '150px',
     fontFamily: 'Open-Sans',
     marginLeft: theme.spacing(10),
-    marginTop: theme.spacing(13),
+    marginTop: theme.spacing(10),
     marginRight: theme.spacing(1),
   },
   subMainText: {

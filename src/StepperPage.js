@@ -190,7 +190,7 @@ function VerticalLinearStepper() {
                  the selected operations on the contents of the .java files and you can download the fixed version
                  in the next step:
               </p>
-              <div style={{ whiteSpace: 'break-spaces' }}>
+              <div style={{ whiteSpace: 'break-spaces', lineHeight: 4.5}}>
                   <p></p>
                   <JavadocToggle></JavadocToggle>    <SingleToggle></SingleToggle>    <MultiToggle></MultiToggle>    <WhitespaceToggle></WhitespaceToggle>    <IndentationToggle></IndentationToggle>
                   <p></p>
