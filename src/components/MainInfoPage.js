@@ -1,5 +1,5 @@
 import React from 'react';
-import '/Users/khushidesai/icecap/src/App.css';
+import './Component.css';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';

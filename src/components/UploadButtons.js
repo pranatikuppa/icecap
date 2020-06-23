@@ -5,6 +5,7 @@ import Card from '@material-ui/core/Card';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse';
+import './Component.css';
 
 var inputFiles = {};
 var rejectFiles = {};

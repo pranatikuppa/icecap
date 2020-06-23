@@ -7,7 +7,6 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import StepContent from '@material-ui/core/StepContent';
-import '/Users/khushidesai/icecap/src/App.css';
 import UploadButtons from './UploadButtons';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import SpaceBarIcon from '@material-ui/icons/SpaceBar';
@@ -17,6 +16,7 @@ import CodeIcon from '@material-ui/icons/Code';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse';
+import './Component.css';
 
 const mainStyles = makeStyles((theme) => ({
     root: {
@@ -63,31 +63,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const StyledToggle = withStyles({
-      root: {
-        color: '#white',
-        borderColor: '#white',
-        whiteSpace: 'break-spaces',
-        '&:hover': {
-          borderColor: '#6493a1',
-        },
-      },
-      selected: {
-        '&:active': {
-          backgroundColor: '#5c8794',
-        },
-        backgroundColor: '#bcf5bc',
-        color: '#154854',
-        borderColor: '#154854',
-        label: '#154854'
-      },
-      label: {
-        '&:active': {
-          color: '#154854',
-        },
-        '&:hover': {
-          color: '#6493a1',
-        },
-      }
+  root: {
+    color: '#white',
+    borderColor: '#white',
+    whiteSpace: 'break-spaces',
+    '&:hover': {
+      borderColor: '#6493a1',
+    },
+  },
+  selected: {
+    '&:active': {
+      backgroundColor: '#5c8794',
+    },
+    backgroundColor: '#bcf5bc',
+    color: '#154854',
+    borderColor: '#154854',
+    label: '#154854'
+  },
+  label: {
+    '&:active': {
+      color: '#154854',
+    },
+    '&:hover': {
+      color: '#6493a1',
+    },
+  }
 })(ToggleButton);
   
 function getSteps() {
@@ -183,7 +183,7 @@ function VerticalLinearStepper() {
     }
 
     const handleDownload = () => {
-      
+
     }
   
     const handleReset = () => {
@@ -258,9 +258,9 @@ function VerticalLinearStepper() {
                  the selected operations on the contents of the .java files and you can download the fixed version
                  in the next step:
               </p>
-              <div style={{ whiteSpace: 'break-spaces', lineHeight: 4.5}}>
+              <div style={{ whiteSpace: 'break-spaces', lineHeight: 4.5 }}>
                   <p></p>
-                  <JavadocToggle></JavadocToggle>    <SingleToggle></SingleToggle>    <MultiToggle></MultiToggle>    <WhitespaceToggle></WhitespaceToggle>    <IndentationToggle></IndentationToggle>
+                  <JavadocToggle></JavadocToggle><span>    </span><SingleToggle><span>    </span></SingleToggle><span>    </span><MultiToggle></MultiToggle><span>    </span><WhitespaceToggle></WhitespaceToggle><span>    </span><IndentationToggle></IndentationToggle>
                   <p></p>
               </div>
           </Typography>

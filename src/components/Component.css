@@ -1,0 +1,45 @@
+.App-header {
+    font: Open-Sans;
+    font-weight: 300;
+    color: #6493a1;
+}
+
+.Logo {
+    background-image: url(./assets/mountain_image.jpeg);
+    background-size: cover;
+    background-position: bottom;
+}
+
+.Step-header {
+    font: Open-Sans;
+    font-weight: 300;
+    color: #6493a1;
+}
+  
+.Step-content {
+    font: Open-Sans;
+    font-weight: 300;
+    color: '#154854';
+}
+  
+.Dropzone {
+    width: 780px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+  
+@font-face {
+    font-family: 'Open-Sans';
+    font-weight: 300;
+    src: local('Open-Sans-Light'), url(./fonts/OpenSans-Light.ttf) format('truetype');
+}
+  
+@font-face {
+    font-family: 'Open-Sans';
+    font-weight: 600;
+    src: local('Open-Sans-Semi-Bold'), url(./fonts/OpenSans-SemiBold.ttf) format('truetype');
+}
+  
