@@ -1,12 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import Dropzone from 'react-dropzone';
 import Card from '@material-ui/core/Card';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import { Icon, Paper } from '@material-ui/core';
-import CheckOutlinedIcon from '@material-ui/icons/CheckOutlined';
 import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse';
 

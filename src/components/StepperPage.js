@@ -7,8 +7,8 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import StepContent from '@material-ui/core/StepContent';
-import './App.css';
-import UploadButtons from './components/UploadButtons';
+import '/Users/khushidesai/icecap/src/App.css';
+import UploadButtons from './UploadButtons';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import SpaceBarIcon from '@material-ui/icons/SpaceBar';
 import SubjectIcon from '@material-ui/icons/Subject';
@@ -60,9 +60,9 @@ const useStyles = makeStyles((theme) => ({
     step: {
         color: '#154854',
     },
-  }));
+}));
 
-  const StyledToggle = withStyles({
+const StyledToggle = withStyles({
       root: {
         color: '#white',
         borderColor: '#white',
@@ -88,27 +88,27 @@ const useStyles = makeStyles((theme) => ({
           color: '#6493a1',
         },
       }
-  })(ToggleButton);
+})(ToggleButton);
   
-  function getSteps() {
-    return ['Choose a file', 'Choose operations', 'Download your file'];
-  }
+function getSteps() {
+  return ['Choose a file', 'Choose operations', 'Download your file'];
+}
 
-    const iconTheme = createMuiTheme({
-        props: {
-            MuiStepIcon: {
-                root: {
-                    color: '#6493a1',
-                },
-                active: {
-                    color: '#6493a1',
-                },
-                disabled: {
-                  color: 'white',
-                }
+const iconTheme = createMuiTheme({
+    props: {
+        MuiStepIcon: {
+            root: {
+                color: '#6493a1',
             },
+            active: {
+                color: '#6493a1',
+            },
+            disabled: {
+              color: 'white',
+            }
         },
-    });
+    },
+});
 
 function VerticalLinearStepper() {
     const classes = useStyles();
@@ -124,6 +124,7 @@ function VerticalLinearStepper() {
     const [indentSelected, setIndent] = React.useState(false);
     const [whiteSelected, setWhite] = React.useState(false);
     const [uploadedFiles, setUploadedFiles] = React.useState({});
+    var fixedFiles = {};
 
     function myCallback(files) {
       setUploadedFiles(files);
@@ -131,6 +132,19 @@ function VerticalLinearStepper() {
         setFileOpen(false);
       }
     };
+
+    function download(filename, text) {
+      var element = document.createElement('a');
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+      element.setAttribute('download', filename);
+    
+      element.style.display = 'none';
+      document.body.appendChild(element);
+    
+      element.click();
+    
+      document.body.removeChild(element);
+    }
   
     const handleNext = () => {
       if (activeStep == 0) {
@@ -169,7 +183,7 @@ function VerticalLinearStepper() {
     }
 
     const handleDownload = () => {
-
+      
     }
   
     const handleReset = () => {
@@ -274,7 +288,6 @@ function VerticalLinearStepper() {
               return 'Unknown step';
         }
     }
-
     return (
       <div className={classes.root}>
         <Stepper activeStep={activeStep} orientation="vertical" style={{ backgroundColor: '#e3ecef'}}>
