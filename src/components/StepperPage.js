@@ -17,6 +17,7 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse';
 import './Component.css';
+import Javadocs from './Javadocs'; 
 
 const mainStyles = makeStyles((theme) => ({
     root: {
@@ -177,6 +178,14 @@ function VerticalLinearStepper() {
             setOperationOpen(true);
         } else {
             setOperationOpen(false);
+            if (javaSelected) {
+              const java = new Javadocs();
+              var inputFile = uploadedFiles[0];
+              java.javadocMethod(inputFile).then(function(fileText) {
+                var newFileContent = java.addJavadocs(fileText);
+                download('filename', newFileContent);
+              });
+            }
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         }
       }
