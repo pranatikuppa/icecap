@@ -6,7 +6,7 @@ export default class Javadocs {
             "/**\n" + 
             " * \n" + 
             " * @author\n" + 
-            " */";
+            " */\n";
         this.methodPattern = new RegExp(
             "(\\p{Space})*(public |protected |private )?" +
             "(static )?" +
@@ -196,11 +196,11 @@ export default class Javadocs {
         var close = header.indexOf(')');
         var paramString = header.substring(open + 1, close);
         var segments = paramString.split(",");
-        var names = {};
+        var names = [];
         var i;
         for (i in segments) {
             var paramSplit = segments[i].split(" ");
-            names[i] = paramSplit[1];
+            names.push(paramSplit[paramSplit.length - 1]);
         }
         return names;
     }
