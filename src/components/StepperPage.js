@@ -125,7 +125,8 @@ function VerticalLinearStepper() {
     const [indentSelected, setIndent] = React.useState(false);
     const [whiteSelected, setWhite] = React.useState(false);
     const [uploadedFiles, setUploadedFiles] = React.useState({});
-    var fixedFiles = {};
+    const [fixedFileContents, setFixedFileContents] = React.useState([]);
+    const [downloadFileNames, setDownloadFileNames] = React.useState([]);
 
     function myCallback(files) {
       setUploadedFiles(files);
@@ -134,17 +135,14 @@ function VerticalLinearStepper() {
       }
     };
 
-    function download(filename, text) {
-      var element = document.createElement('a');
-      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-      element.setAttribute('download', filename);
-    
-      element.style.display = 'none';
-      document.body.appendChild(element);
-    
-      element.click();
-    
-      document.body.removeChild(element);
+    const handleButton = () => {
+      if (activeStep === 0) {
+        handleNext();
+      } else if (activeStep === 1) {
+        handleRun();
+      } else {
+        handleDownloadAll();
+      }
     }
   
     const handleNext = () => {
@@ -180,34 +178,48 @@ function VerticalLinearStepper() {
             setOperationOpen(false);
             if (javaSelected) {
               const java = new Javadocs();
-              var inputFile = uploadedFiles[0];
-              java.javadocMethod(inputFile).then(function(fileText) {
-                var newFileContent = java.addJavadocs(fileText);
-                download('filename', newFileContent);
-              });
+              var i;
+              var contentList = [];
+              for (i = 0; i < uploadedFiles.length; i++) {
+                var inputFile = uploadedFiles[i];
+                var fixedContent = "";
+                java.javadocMethod(inputFile).then(function(fileText) {
+                  fixedContent = java.addJavadocs(fileText);
+                  contentList.push(fixedContent);
+                });
+              }
+              setFixedFileContents(contentList);
             }
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         }
       }
     }
 
-    const handleDownload = () => {
+    const handleDownloadAll = () => {
+      var i;
+      for (i = 0; i < uploadedFiles.length; i++) {
+        var name = uploadedFiles[i].name;
+        var content = fixedFileContents[i];
+        download(name, content);
+      }
+    }
 
+    function download(filename, text) {
+      var element = document.createElement('a');
+      element.setAttribute('href', 'data:.java;charset=utf-8,' + encodeURIComponent(text));
+      element.setAttribute('download', filename);
+    
+      element.style.display = 'none';
+      document.body.appendChild(element);
+    
+      element.click();
+    
+      document.body.removeChild(element);
     }
   
     const handleReset = () => {
       setActiveStep(0);
     };
-
-    const handleButton = () => {
-      if (activeStep === 0) {
-        handleNext();
-      } else if (activeStep === 1) {
-        handleRun();
-      } else {
-        handleDownload();
-      }
-    }
 
     function JavadocToggle() {
         return (
@@ -252,7 +264,7 @@ function VerticalLinearStepper() {
     function stepOne() {
       return (
         <Typography>
-            Upload a file (.java file) for which you would like the program to clear style check errors:
+            Upload files (.java file) for which you would like the program to clear style check errors:
             <p></p>
             <UploadButtons callbackFromParent={myCallback}></UploadButtons>
             <p></p>
