@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
   dropCard: {
     width: '790px',
-    height: '130px',
+    height: '160px',
     paddingTop: '20px',
     paddingLeft: '20px',
     paddingRight: '15px',
@@ -38,14 +38,14 @@ const useStyles = makeStyles((theme) => ({
     borderColor: '#6493a1',
     borderWidth: '2px',
     width: '780px',
-    height: '120px',
+    height: '150px',
   },
   defaultCardBorder: {
     border: 'dashed',
     borderColor: '#D3D3D3',
     borderWidth: '2px',
     width: '780px',
-    height: '120px',
+    height: '150px',
   },
   listCard: {
     color: '#154854',

@@ -36,7 +36,7 @@ export default class Javadocs {
 
     javadocMethod(inputFile){
         return new Promise(
-          function(resolve, reject) {
+          function(resolve) {
             var reader = new FileReader();
             reader.onloadend = (function(reader)
             {
@@ -49,7 +49,6 @@ export default class Javadocs {
     }
 
     addJavadocs(content) {
-        // return "blah";
         var fileContent = "";
         var javadocFound = false;
         var lineNum = 1;

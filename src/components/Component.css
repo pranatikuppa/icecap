@@ -24,11 +24,17 @@
   
 .Dropzone {
     width: 780px;
-    height: 120px;
+    height: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+}
+
+.DownloadTextField {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
 }
   
 @font-face {

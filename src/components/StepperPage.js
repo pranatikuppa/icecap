@@ -18,6 +18,8 @@ import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse';
 import './Component.css';
 import Javadocs from './Javadocs'; 
+import FileDownloadComponent from './FileDownloadComponent';
+import FileButton from './FileButton';
 
 const mainStyles = makeStyles((theme) => ({
     root: {
@@ -125,15 +127,29 @@ function VerticalLinearStepper() {
     const [indentSelected, setIndent] = React.useState(false);
     const [whiteSelected, setWhite] = React.useState(false);
     const [uploadedFiles, setUploadedFiles] = React.useState({});
-    const [fixedFileContents, setFixedFileContents] = React.useState([]);
-    const [downloadFileNames, setDownloadFileNames] = React.useState([]);
+    const [fixedFileContents, setFixedFileContents] = React.useState({});
+    const [newFileNames, setNewFileNames] = React.useState([]);
 
     function myCallback(files) {
       setUploadedFiles(files);
       if (files.length > 0) {
         setFileOpen(false);
       }
+      setNewFileNames(files);
     };
+
+    function fileCallback(originalName, newName) {
+      var i;
+      var temp = [];
+      for (i = 0; i < uploadedFiles.length; i++) {
+        if (uploadedFiles[i].name === originalName) {
+          temp.push(newName);
+        } else {
+          temp.push(uploadedFiles[i].name);
+        }
+      }
+      setNewFileNames(temp);
+    }
 
     const handleButton = () => {
       if (activeStep === 0) {
@@ -146,7 +162,7 @@ function VerticalLinearStepper() {
     }
   
     const handleNext = () => {
-      if (activeStep == 0) {
+      if (activeStep === 0) {
         if (uploadedFiles.length > 0) {
           setFileOpen(false);
           setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -182,10 +198,8 @@ function VerticalLinearStepper() {
               var contentList = [];
               for (i = 0; i < uploadedFiles.length; i++) {
                 var inputFile = uploadedFiles[i];
-                var fixedContent = "";
-                java.javadocMethod(inputFile).then(function(fileText) {
-                  fixedContent = java.addJavadocs(fileText);
-                  contentList.push(fixedContent);
+                java.javadocMethod(inputFile).then(function(fileText){
+                  contentList.push(java.addJavadocs(fileText));
                 });
               }
               setFixedFileContents(contentList);
@@ -198,7 +212,7 @@ function VerticalLinearStepper() {
     const handleDownloadAll = () => {
       var i;
       for (i = 0; i < uploadedFiles.length; i++) {
-        var name = uploadedFiles[i].name;
+        var name = newFileNames[i].name;
         var content = fixedFileContents[i];
         download(name, content);
       }
@@ -287,12 +301,30 @@ function VerticalLinearStepper() {
           </Typography>
         );
     }
+
+    function getFileDownloadComponents() {
+      var i;
+      var componentList = [];
+      for (i = 0; i < uploadedFiles.length; i++) {
+        var name = uploadedFiles[i].name;
+        var index = i;
+        componentList.push(
+          <div>
+          <FileDownloadComponent callbackFromParent={fileCallback} defaultFileName={name} contentList={fixedFileContents} fileIndex={i}></FileDownloadComponent>
+          </div>
+        );
+      }
+      return componentList;
+    }
     
     function stepThree() {
       return (
         <Typography>
           Enter a name for each file and download the files below. If you don't provide a name we will use the original file name
           to download your file.
+          <p></p>
+          {getFileDownloadComponents()}
+          <p></p>
         </Typography>
       );
     }
@@ -350,7 +382,7 @@ function VerticalLinearStepper() {
                     >
                       {activeStep === 0 && 'Next'}
                       {activeStep === 1 && 'Run'}
-                      {activeStep === 2 && 'Download File'}
+                      {activeStep === 2 && 'Download All Files'}
                     </Button>
                   </div>
                 </div>
@@ -375,7 +407,7 @@ export default function StepperPage() {
   
     return(
       <div className={classes.root}>
-        <Paper elevation={0} style={{ backgroundColor: '#e3ecef', height: 3*window.screen.height/4, width: window.screen.width}}>
+        <Paper elevation={0} style={{ backgroundColor: '#e3ecef', height: 6*window.screen.height/7, width: window.screen.width}}>
             <VerticalLinearStepper>
             </VerticalLinearStepper>
         </Paper>

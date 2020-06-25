@@ -29,7 +29,7 @@ export default function PageHeader() {
             <Typography variant="App-header" className={classes.title}>
                 ICEcΔp v1.0
             </Typography>
-            <Button className={classes.button} variant="App-header" target="_blank" href="https://docs.google.com/forms/d/1A8qwG5T8pZIKmCaPYYSiEoqgzKsWMKBYmpUAqJ4zWw0/prefill" className={classes.button} color="inherit">contact us</Button>
+            <Button className={classes.button} variant="App-header" target="_blank" href="https://docs.google.com/forms/d/1A8qwG5T8pZIKmCaPYYSiEoqgzKsWMKBYmpUAqJ4zWw0/prefill" color="inherit">contact us</Button>
             {/* <ContactButton></ContactButton> */}
             </Toolbar>
         </AppBar>
