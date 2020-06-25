@@ -1,7 +1,6 @@
 export default class Javadocs {
 
     constructor() {
-        this.fileContent = "";
         this.classJavadoc =
             "/**\n" + 
             " * \n" + 
@@ -26,26 +25,18 @@ export default class Javadocs {
 
     }
 
-    get getFile() {
-        return this.file;
-    }
-
-    set setFileContent(text) {
-        this.fileContent = text;
-    }
-
     javadocMethod(inputFile){
         return new Promise(
-          function(resolve) {
-            var reader = new FileReader();
-            reader.onloadend = (function(reader)
-            {
-              return function() {
-                resolve(reader.result);
-              }
-            })(reader);
-            reader.readAsBinaryString(inputFile);
-          });
+        function(resolve) {
+        var reader = new FileReader();
+        reader.onloadend = (function(reader)
+        {
+            return function() {
+            resolve(reader.result);
+            }
+        })(reader);
+        reader.readAsBinaryString(inputFile);
+        });
     }
 
     addJavadocs(content) {
@@ -63,15 +54,15 @@ export default class Javadocs {
                 newline = "\n";
             }
             var lineTrim = line.trim();
-            if (!this.startsWith(lineTrim, "/**") && this.startsWith(lineTrim, "/*")) {
+            if (!lineTrim.startsWith("/**") && lineTrim.startsWith("/*")) {
                 fileContent += line + newline;
-            } else if (this.startsWith(lineTrim, "/**") && this.endsWith(lineTrim, "*/")) {
+            } else if (lineTrim.startsWith("/**") && lineTrim.endsWith("*/")) {
                 javadocFound = false;
                 javadoc += line + newline;
-            } else if (this.startsWith(lineTrim, "/**")) {
+            } else if (lineTrim.startsWith("/**")) {
                 javadocFound = true;
                 javadoc += line + newline;
-            } else if (this.endsWith(lineTrim, "*/")) {
+            } else if (lineTrim.endsWith("*/")) {
                 if (javadocFound) {
                     javadocFound = false;
                     javadoc += line + newline;
@@ -117,33 +108,6 @@ export default class Javadocs {
             lineNum++;
         }
         return fileContent;
-    }
-
-    startsWith(str, item) {
-        if (str.indexOf(item) === 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    endsWith(str, item) {
-        var endIndex = str.length - item.length;
-        if (str.indexOf(item) === endIndex) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    trimLeft(str) {
-        if(!str) return str;
-        return str.replace(/^\s+/g, '');
-    }
-
-    trimRight(str) {
-        if(!str) return str;
-        return str.replace(/\s+$/g, '');
     }
 
     validateJavadocComment(header, javadocComment) {

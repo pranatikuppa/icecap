@@ -19,7 +19,9 @@ import Collapse from '@material-ui/core/Collapse';
 import './Component.css';
 import Javadocs from './Javadocs'; 
 import FileDownloadComponent from './FileDownloadComponent';
-import FileButton from './FileButton';
+import SingleLines from './SingleLines';
+import MultiLines from './MultiLines';
+import Whitespaces from './Whitespaces';
 
 const mainStyles = makeStyles((theme) => ({
     root: {
@@ -174,17 +176,78 @@ function VerticalLinearStepper() {
   
     const handleBack = () => {
         if (activeStep === 1) {
-            setJava(false);
-            setSingle(false);
-            setMulti(false);
-            setWhite(false);
-            setIndent(false);
-            if (operationOpen) {
-                setOperationOpen(false);
-            }
+          setJava(false);
+          setSingle(false);
+          setMulti(false);
+          setWhite(false);
+          setIndent(false);
+          if (operationOpen) {
+              setOperationOpen(false);
+          }
+          setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        } else if (activeStep === 2) {
+          handleReset();
+        } else {
+          setActiveStep((prevActiveStep) => prevActiveStep - 1);
         }
-      setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
+
+    function performJava() {
+      const java = new Javadocs();
+      var i;
+      var contentList = [];
+      for (i = 0; i < uploadedFiles.length; i++) {
+        var inputFile = uploadedFiles[i];
+        java.javadocMethod(inputFile).then(function(fileText) {
+          contentList.push(java.addJavadocs(fileText));
+        });
+      }
+      setFixedFileContents(contentList);
+    }
+
+    function performSingle() {
+      const single = new SingleLines();
+      var i;
+      var contentList = [];
+      for (i = 0; i < uploadedFiles.length; i++) {
+        if (fixedFileContents.length > 0) {
+          contentList.push(single.removeSingleLines(fixedFileContents[i]));
+        } else {
+          var inputFile = uploadedFiles[i];
+          single.singleLineMethod(inputFile).then(function(fileText){
+            contentList.push(single.removeSingleLines(fileText));
+          });
+        }
+      }
+      setFixedFileContents(contentList);
+    }
+
+    function performMulti() {
+      const multi = new MultiLines();
+      var i;
+      var contentList = [];
+      for (i = 0; i < uploadedFiles.length; i++) {
+        if (fixedFileContents.length > 0) {
+          contentList.push(multi.removeMultiLines(fixedFileContents[i]));
+        } else {
+          var inputFile = uploadedFiles[i];
+          multi.multiLineMethod(inputFile).then(function(fileText){
+            contentList.push(multi.removeMultiLines(fileText));
+          });
+        }
+      }
+      setFixedFileContents(contentList);
+    }
+
+    function performWhitespace() {
+      const white = new Whitespaces();
+      var i;
+      var contentList = [];
+    }
+
+    function performIndent() {
+
+    }
 
     const handleRun = () => {
       if (activeStep === 1) {
@@ -192,41 +255,21 @@ function VerticalLinearStepper() {
             setOperationOpen(true);
         } else {
             setOperationOpen(false);
-            var i;
-            var contentList = [];
-            for (i = 0; i < uploadedFiles.length; i++) {
-              if (javaSelected) {
-                const java = newJavadocs();
-                var inputFile = uploadedFiles[i];
-                java.javadocMethod(inputFile).then(function(fileText) {
-                  contentList.push(java.addJavadocs(fileText));
-                });
-              }
-              if (singleSelected) {
-                
-              }
-              if (multiSelected) {
-
-              }
-              if (whiteSelected) {
-
-              }
-              if (indentSelected) {
-
-              }
+            if (javaSelected) {
+              performJava();
             }
-            // var i;
-            // var contentList = [];
-            // if (javaSelected) {
-            //   const java = new Javadocs();
-            //   for (i = 0; i < uploadedFiles.length; i++) {
-            //     var inputFile = uploadedFiles[i];
-            //     java.javadocMethod(inputFile).then(function(fileText){
-            //       contentList.push(java.addJavadocs(fileText));
-            //     });
-            //   }
-            // }
-            setFixedFileContents(contentList);
+            if (singleSelected) {
+              performSingle();
+            }
+            if (multiSelected) {
+              performMulti();
+            }
+            if (whiteSelected) {
+              performWhitespace();
+            }
+            if (indentSelected) {
+              performIndent();
+            }
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         }
       }
@@ -255,6 +298,17 @@ function VerticalLinearStepper() {
     }
   
     const handleReset = () => {
+      setJava(false);
+      setSingle(false);
+      setMulti(false);
+      setWhite(false);
+      setIndent(false);
+      if (operationOpen) {
+        setOperationOpen(false);
+      }
+      if (fileOpen) {
+        setFileOpen(false);
+      }
       setActiveStep(0);
     };
 
@@ -330,7 +384,6 @@ function VerticalLinearStepper() {
       var componentList = [];
       for (i = 0; i < uploadedFiles.length; i++) {
         var name = uploadedFiles[i].name;
-        var index = i;
         componentList.push(
           <div>
           <FileDownloadComponent callbackFromParent={fileCallback} defaultFileName={name} contentList={fixedFileContents} fileIndex={i}></FileDownloadComponent>
@@ -395,7 +448,8 @@ function VerticalLinearStepper() {
                       onClick={handleBack}
                       className={classes.backButton}
                     >
-                      Back
+                      {activeStep === 2 && 'Reset'}
+                      {activeStep < 2 && 'Back'}
                     </Button>
                     <Button
                       onClick={handleButton}
