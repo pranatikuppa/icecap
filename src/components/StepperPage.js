@@ -192,18 +192,41 @@ function VerticalLinearStepper() {
             setOperationOpen(true);
         } else {
             setOperationOpen(false);
-            if (javaSelected) {
-              const java = new Javadocs();
-              var i;
-              var contentList = [];
-              for (i = 0; i < uploadedFiles.length; i++) {
+            var i;
+            var contentList = [];
+            for (i = 0; i < uploadedFiles.length; i++) {
+              if (javaSelected) {
+                const java = newJavadocs();
                 var inputFile = uploadedFiles[i];
-                java.javadocMethod(inputFile).then(function(fileText){
+                java.javadocMethod(inputFile).then(function(fileText) {
                   contentList.push(java.addJavadocs(fileText));
                 });
               }
-              setFixedFileContents(contentList);
+              if (singleSelected) {
+                
+              }
+              if (multiSelected) {
+
+              }
+              if (whiteSelected) {
+
+              }
+              if (indentSelected) {
+
+              }
             }
+            // var i;
+            // var contentList = [];
+            // if (javaSelected) {
+            //   const java = new Javadocs();
+            //   for (i = 0; i < uploadedFiles.length; i++) {
+            //     var inputFile = uploadedFiles[i];
+            //     java.javadocMethod(inputFile).then(function(fileText){
+            //       contentList.push(java.addJavadocs(fileText));
+            //     });
+            //   }
+            // }
+            setFixedFileContents(contentList);
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         }
       }
