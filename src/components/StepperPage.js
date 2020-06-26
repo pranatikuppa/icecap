@@ -122,6 +122,8 @@ function VerticalLinearStepper() {
 
     const [operationOpen, setOperationOpen] = React.useState(false);
     const [fileOpen, setFileOpen] = React.useState(false);
+    const [acceptedOpen, setAcceptedOpen] = React.useState(false);
+    const [rejectedOpen, setRejectedOpen] = React.useState(false);
 
     const [javaSelected, setJava] = React.useState(false);
     const [singleSelected, setSingle] = React.useState(false);
@@ -131,6 +133,8 @@ function VerticalLinearStepper() {
     const [uploadedFiles, setUploadedFiles] = React.useState({});
     const [fixedFileContents, setFixedFileContents] = React.useState({});
     const [newFileNames, setNewFileNames] = React.useState([]);
+    const [intialAcceptedFiles, setIntialAcceptedFiles] = React.useState([]);
+    const [intialRejectedFiles, setIntialRejectedFiles] = React.useState([]);
 
     function myCallback(files) {
       setUploadedFiles(files);
@@ -167,6 +171,8 @@ function VerticalLinearStepper() {
       if (activeStep === 0) {
         if (uploadedFiles.length > 0) {
           setFileOpen(false);
+          setAcceptedOpen(false);
+          setRejectedOpen(false);
           setActiveStep((prevActiveStep) => prevActiveStep + 1);
         } else {
           setFileOpen(true);
@@ -183,6 +189,12 @@ function VerticalLinearStepper() {
           setIndent(false);
           if (operationOpen) {
               setOperationOpen(false);
+          }
+          setAcceptedOpen(true);
+          if (intialRejectedFiles.length <= 0) {
+            setRejectedOpen(false);
+          } else {
+            setRejectedOpen(true);
           }
           setActiveStep((prevActiveStep) => prevActiveStep - 1);
         } else if (activeStep === 2) {
@@ -309,6 +321,17 @@ function VerticalLinearStepper() {
       if (fileOpen) {
         setFileOpen(false);
       }
+      if (acceptedOpen) {
+        setAcceptedOpen(false);
+      }
+      if (rejectedOpen) {
+        setRejectedOpen(false);
+      }
+      setUploadedFiles({});
+      setIntialRejectedFiles([]);
+      setIntialAcceptedFiles([]);
+      setFixedFileContents({});
+      setNewFileNames([]);
       setActiveStep(0);
     };
 
@@ -352,12 +375,42 @@ function VerticalLinearStepper() {
         );
     }
 
+    function onFileDrop(acceptedFiles, rejectedFiles) {
+      setIntialAcceptedFiles(acceptedFiles);
+      setIntialRejectedFiles(rejectedFiles);
+      if (acceptedFiles.length <= 0) {
+        setAcceptedOpen(false);
+      } else {
+        setAcceptedOpen(true);
+      }
+      if (rejectedFiles.length <= 0) {
+        setRejectedOpen(false);
+      } else {
+        setRejectedOpen(true);
+      }
+      myCallback(acceptedFiles);
+    }
+
+    function getFileList(list) {
+      var fullString = "";
+      for (var item in list) {
+        fullString += list[item].name + ", ";
+      }
+      fullString = fullString.substring(0, fullString.length - 2);
+      return fullString;
+    }
+  
+    function getRejectFileList(num) {
+      var fullString = "";
+      return fullString + num + " file was not uploaded due to incorrect format";
+    }
+
     function stepOne() {
       return (
         <Typography>
             Upload files (.java file) for which you would like the program to clear style check errors:
             <p></p>
-            <UploadButtons callbackFromParent={myCallback}></UploadButtons>
+            <UploadButtons onFileDropped={onFileDrop} callbackFromParent={myCallback}></UploadButtons>
             <p></p>
         </Typography>
       );
@@ -417,6 +470,7 @@ function VerticalLinearStepper() {
               return 'Unknown step';
         }
     }
+
     return (
       <div className={classes.root}>
         <Stepper activeStep={activeStep} orientation="vertical" style={{ backgroundColor: '#e3ecef'}}>
@@ -431,6 +485,16 @@ function VerticalLinearStepper() {
                 </ThemeProvider>
               <StepContent>
                 <Typography>{getStepContent(index)}</Typography>
+                <Collapse in={acceptedOpen}>
+                  <p></p>
+                  <Alert width='100px'>{getFileList(intialAcceptedFiles)}</Alert>
+                  <p></p>
+                </Collapse>
+                <Collapse in={rejectedOpen}>
+                  <p></p>
+                  <Alert width='100px' severity="error">{getRejectFileList(intialRejectedFiles.length)}</Alert>
+                  <p></p>
+                </Collapse>
                 <Collapse in={fileOpen} timeout='auto'> 
                     <p></p>
                     <Alert severity="error">Please upload at least one file</Alert>

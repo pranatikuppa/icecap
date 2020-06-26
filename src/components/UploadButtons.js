@@ -7,9 +7,6 @@ import Alert from '@material-ui/lab/Alert';
 import Collapse from '@material-ui/core/Collapse';
 import './Component.css';
 
-var inputFiles = {};
-var rejectFiles = {};
-
 const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
@@ -61,43 +58,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function UploadButtons(props) {
   const classes = useStyles();
-  const [acceptedOpen, setAcceptedOpen] = React.useState(false);
-  const [rejectedOpen, setRejectedOpen] = React.useState(false);
-
-  function onFileDrop(acceptedFiles, rejectedFiles) {
-    inputFiles = acceptedFiles;
-    rejectFiles = rejectedFiles;
-    if (inputFiles.length <= 0) {
-      setAcceptedOpen(false);
-    } else {
-      setAcceptedOpen(true);
-    }
-    if (rejectFiles.length <= 0) {
-      setRejectedOpen(false);
-    } else {
-      setRejectedOpen(true);
-    }
-    props.callbackFromParent(acceptedFiles);
-  }
-
-  function getFileList(list) {
-    var fullString = "";
-    for (var item in list) {
-      fullString += list[item].name + ", ";
-    }
-    fullString = fullString.substring(0, fullString.length - 2);
-    return fullString;
-  }
-
-  function getRejectFileList(num) {
-    var fullString = "";
-    return fullString + num + " file was not uploaded due to incorrect format";
-  }
 
   return (
     <div className={classes.root}>
       <Card elevation={0} className={classes.dropCard}>
-        <Dropzone className={classes.dropCard} onDrop={onFileDrop} accept='.java'>
+        <Dropzone className={classes.dropCard} onDrop={props.onFileDropped} accept='.java'>
           {({getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept, acceptedFiles, rejectedFiles}) => (
             <section>
               <div {...getRootProps()}>
@@ -128,7 +93,7 @@ export default function UploadButtons(props) {
       <p>
 
       </p>
-      <Collapse in={acceptedOpen}>
+      {/* <Collapse in={acceptedOpen}>
         <Alert width='100px'>
           {getFileList(inputFiles)}
         </Alert>
@@ -137,7 +102,7 @@ export default function UploadButtons(props) {
         <Alert width='100px' severity="error">
           {getRejectFileList(rejectFiles.length)}
         </Alert>
-      </Collapse>
+      </Collapse> */}
     </div>
   );
 }

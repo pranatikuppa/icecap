@@ -1,5 +1,3 @@
-import { LinearProgress } from "@material-ui/core";
-
 export default class MultiLines {
 
     constructor() {
