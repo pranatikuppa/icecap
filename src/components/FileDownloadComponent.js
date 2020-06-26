@@ -30,9 +30,11 @@ const useStyles = makeStyles((theme) => ({
 export default function(props) {
 
     const classes = useStyles();
+    const [currentFileName, setCurrentFileName] = React.useState(props.defaultFileName);
 
     function handleChange(e) {
-        props.callbackFromParent(props.defaultFileName, e.target.value);
+        props.callbackFromParent(currentFileName, e.target.value);
+        setCurrentFileName(e.target.value);
     }
 
     function download(filename, text) {
@@ -49,7 +51,7 @@ export default function(props) {
     }
 
     function doDownload() {
-        download(props.defaultFileName, props.contentList[props.fileIndex]);    
+        download(currentFileName, props.contentList[props.fileIndex]);    
     }
 
     return (

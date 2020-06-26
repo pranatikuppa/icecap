@@ -136,25 +136,8 @@ function VerticalLinearStepper() {
     const [intialAcceptedFiles, setIntialAcceptedFiles] = React.useState([]);
     const [intialRejectedFiles, setIntialRejectedFiles] = React.useState([]);
 
-    function myCallback(files) {
-      setUploadedFiles(files);
-      if (files.length > 0) {
-        setFileOpen(false);
-      }
-      setNewFileNames(files);
-    };
-
-    function fileCallback(originalName, newName) {
-      var i;
-      var temp = [];
-      for (i = 0; i < uploadedFiles.length; i++) {
-        if (uploadedFiles[i].name === originalName) {
-          temp.push(newName);
-        } else {
-          temp.push(uploadedFiles[i].name);
-        }
-      }
-      setNewFileNames(temp);
+    function fileCallback(oldName, newName) {
+      setNewFileNames(newFileNames.map(function(filename){return (filename === oldName ? newName : filename)}));
     }
 
     const handleButton = () => {
@@ -289,10 +272,10 @@ function VerticalLinearStepper() {
 
     const handleDownloadAll = () => {
       var i;
-      for (i = 0; i < uploadedFiles.length; i++) {
-        var name = newFileNames[i].name;
+      for (i = 0; i < newFileNames.length; i++) {
+        var newFileName = newFileNames[i];
         var content = fixedFileContents[i];
-        download(name, content);
+        download(newFileName, content);
       }
     }
 
@@ -376,6 +359,8 @@ function VerticalLinearStepper() {
     }
 
     function onFileDrop(acceptedFiles, rejectedFiles) {
+      acceptedFiles = Array.from(acceptedFiles);
+      rejectedFiles = Array.from(rejectedFiles);
       setIntialAcceptedFiles(acceptedFiles);
       setIntialRejectedFiles(rejectedFiles);
       if (acceptedFiles.length <= 0) {
@@ -388,13 +373,19 @@ function VerticalLinearStepper() {
       } else {
         setRejectedOpen(true);
       }
-      myCallback(acceptedFiles);
+      setUploadedFiles(acceptedFiles);
+      var nameList = acceptedFiles.map(function(file){return file.name});
+      setNewFileNames(nameList);
+      if (acceptedFiles.length > 0) {
+        setFileOpen(false);
+      }
     }
 
     function getFileList(list) {
       var fullString = "";
-      for (var item in list) {
-        fullString += list[item].name + ", ";
+      var i;
+      for (i = 0; i < list.length; i++) {
+        fullString += list[i].name + ", ";
       }
       fullString = fullString.substring(0, fullString.length - 2);
       return fullString;
@@ -410,7 +401,7 @@ function VerticalLinearStepper() {
         <Typography>
             Upload files (.java file) for which you would like the program to clear style check errors:
             <p></p>
-            <UploadButtons onFileDropped={onFileDrop} callbackFromParent={myCallback}></UploadButtons>
+            <UploadButtons onFileDropped={onFileDrop}></UploadButtons>
             <p></p>
         </Typography>
       );
@@ -435,8 +426,8 @@ function VerticalLinearStepper() {
     function getFileDownloadComponents() {
       var i;
       var componentList = [];
-      for (i = 0; i < uploadedFiles.length; i++) {
-        var name = uploadedFiles[i].name;
+      for (i = 0; i < newFileNames.length; i++) {
+        var name = newFileNames[i];
         componentList.push(
           <div>
           <FileDownloadComponent callbackFromParent={fileCallback} defaultFileName={name} contentList={fixedFileContents} fileIndex={i}></FileDownloadComponent>

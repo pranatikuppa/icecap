@@ -3,9 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Dropzone from 'react-dropzone';
 import Card from '@material-ui/core/Card';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import Alert from '@material-ui/lab/Alert';
-import Collapse from '@material-ui/core/Collapse';
 import './Component.css';
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(1),
+    '&:hover': {
+      backgroundColor: '#537b86',
+    },
   },
   dropCard: {
     width: '790px',
@@ -64,7 +66,7 @@ export default function UploadButtons(props) {
       <Card elevation={0} className={classes.dropCard}>
         <Dropzone className={classes.dropCard} onDrop={props.onFileDropped} accept='.java'>
           {({getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept, acceptedFiles, rejectedFiles}) => (
-            <section>
+            <section style={{ width: 150, height: 780 }}>
               <div {...getRootProps()}>
                 <input {...getInputProps()} />
                 {!isDragActive ? 
@@ -93,16 +95,31 @@ export default function UploadButtons(props) {
       <p>
 
       </p>
-      {/* <Collapse in={acceptedOpen}>
-        <Alert width='100px'>
-          {getFileList(inputFiles)}
-        </Alert>
-      </Collapse>
-      <Collapse in={rejectedOpen}>
-        <Alert width='100px' severity="error">
-          {getRejectFileList(rejectFiles.length)}
-        </Alert>
-      </Collapse> */}
+      <div>
+      <input
+        accept=".java"
+        className={classes.input}
+        id="contained-button-file"
+        multiple
+        type="file"
+      />
+      <label htmlFor="contained-button-file">
+        <Button 
+        variant="contained" 
+        component="span"
+        className={classes.button}
+        disableElevation
+        onClick={() => {
+          document.getElementById('contained-button-file').onchange = function(event) {
+            var fileList = event.target.files;
+            props.onFileDropped(fileList, []);
+         }
+        }}
+        >
+          Upload Files
+        </Button>
+      </label>
+    </div>
     </div>
   );
 }
