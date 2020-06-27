@@ -4,18 +4,33 @@ export default class Whitespaces {
 
     }
 
-    whitespaceMethod(inputFile) {
-        return new Promise(
-        function(resolve) {
-            var reader = new FileReader();
-            reader.onloadend = (function(reader)
-            {
-            return function() {
-                resolve(reader.result);
-            }
-            })(reader);
-            reader.readAsBinaryString(inputFile);
-        });
+    fixWhitespaces(content) {
+      var fileContent = "";
+      var noSpaceBeforeKeywords = ["++", "--", ";", ")"];
+      var noSpaceAfterKeywords = ["(", "!", "++", "--"];
+      var spaceBeforeKeywords = ["&&", "||", "{", "*", "+", "-", "/", "=", "+=", "assert", "catch", "do", "else", "finally", 
+      "for", "if", "return", "synchronized", "try", "while"];
+      var spaceAfterKeywords = ["&&", "||", ";", ",", "+", "/", "-", "*", "=", "+=", "assert", "catch", "do", "else", "finally", 
+      "for", "if", "return", "synchronized", "try", "while"];
+      var i;
+      for (i = 0; i < noSpaceBeforeKeywords.length; i++) {
+        var item = noSpaceBeforeKeywords[i];
+        fileContent = this.noSpaceBefore(content.split("\n"), item);
+      }
+      for (i = 0; i < noSpaceAfterKeywords.length; i++) {
+        var item = noSpaceAfterKeywords[i];
+        fileContent = this.noSpaceAfter(fileContent.split("\n"), item);
+      }
+      for (i = 0; i < spaceBeforeKeywords.length; i++) {
+        var item = spaceBeforeKeywords[i];
+        fileContent = this.spaceBefore(fileContent.split("\n"), item);
+      }
+      for (i = 0; i < spaceAfterKeywords.length; i++) {
+        var item = spaceAfterKeywords[i];
+        fileContent = this.spaceAfter(fileContent.split("\n"), item);
+      }
+      fileContent = this.removeTrailingBlank(fileContent.split("\n"));;
+      return fileContent;
     }
 
     noSpaceBefore(lines, item) {
@@ -25,29 +40,30 @@ export default class Whitespaces {
         var changed = false;
         var numLines = lines.length;
         var lineNum = 1;
+        var i;
         for (i = 0; i < lines.length; i++) {
             var line = lines[i];
           if (line.includes(item)) {
             var ind = line.indexOf(item, 0);
-            var numPotentialErrs = numItems(line, item, itemLen);
-            //ALL INDICES HAS TO RETURN []
-            var indices = allIndices(line, item, ind, itemLen);
+            var numPotentialErrs = this.numItems(line, item, itemLen);
+            var indices = this.allIndices(line, item, ind, itemLen);
+            var j;
             for (j = 0; j < numPotentialErrs; j++) {
-                  if (!checkJavaDocInterfere(line)) {
-                      //changing == to .equals()
-                      if (toWrite.equals("")) {
-                    if (charAt(line, indices[j] - 1) == " ") {
+                  if (!this.checkJavaDocInterfere(line)) {
+                      if (toWrite === "") {
+                    if (line.charAt(indices[j] - 1) === " ") {
                     toWrite = line.substring(0, indices[j]).trimRight();
                     toWrite += line.substring(indices[j]);
-                    indices = allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
+                    indices = this.allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
                     changed = true;
                     }
                   } else {
-                  temp = toWrite.substring(indices[j]);
-                  toWrite = toWrite.substring(0, indices[j]).trimRight();
-                  toWrite += temp;
-                  indices = allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
-                          changed = true;
+                    var temp;
+                    temp = toWrite.substring(indices[j]);
+                    toWrite = toWrite.substring(0, indices[j]).trimRight();
+                    toWrite += temp;
+                    indices = this.allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
+                    changed = true;
                   }
                 }
             }
@@ -68,6 +84,7 @@ export default class Whitespaces {
           changed = false;
           lineNum++;
         }
+        return fileContent;
       }
 
       noSpaceAfter(lines, item) {
@@ -77,29 +94,28 @@ export default class Whitespaces {
         var changed = false;
         var numLines = lines.length;
         var lineNum = 1;
-        
-        //for (String line in lines) {
+        var i;
         for (i = 0; i < numLines; i++) {
             var line = lines[i];
           if (line.includes(item)) {
             var ind = line.indexOf(item, 0);
-            var numPotentialErrs = numItems(line, item, itemLen);
-            var indices = allIndices(line, item, ind, itemLen);
+            var numPotentialErrs = this.numItems(line, item, itemLen);
+            var indices = this.allIndices(line, item, ind, itemLen);
+            var j;
             for (j = 0; j < numPotentialErrs; j++) {
-                  if (!checkJavaDocInterfere(line)) {
-                      if (toWrite.equals("")) {
-                          //changing all the i --> j for inner statements
-                        if (charAt(line, indices[j] + 1) == " ") {
+                  if (!this.checkJavaDocInterfere(line)) {
+                      if (toWrite === "") {
+                        if (line.charAt(indices[j] + 1) === " ") {
                             toWrite = line.substring(0, indices[j] + itemLen);
                             toWrite += line.substring(indices[j] + itemLen).trimLeft();
-                            indices = allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
+                            indices = this.allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
                             changed = true;
                         }
                       } else {
                             var temp = toWrite.substring(indices[j] + itemLen).trimLeft();
                             toWrite = toWrite.substring(0, indices[j] + itemLen);
                             toWrite += temp;
-                            indices = allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
+                            indices = this.allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
                             changed = true;
                         } 
                   }
@@ -121,6 +137,7 @@ export default class Whitespaces {
           changed = false;
           lineNum++;
         }
+        return fileContent;
       }
     
       /*
@@ -136,50 +153,50 @@ export default class Whitespaces {
         var proper = "";
         var numLines = lines.length;
         var lineNum = 1;
-        //for (String line in lines) {
+        var i;
         for (i = 0; i < numLines; i++) {
             var line = lines[i];
           if (line.includes(item)) {
             var ind = line.indexOf(item);
-            var numPotentialErrs = numItems(line, item, itemLen);
-            var indices = allIndices(line, item, ind, itemLen);
+            var numPotentialErrs = this.numItems(line, item, itemLen);
+            var indices = this.allIndices(line, item, ind, itemLen);
+            var j;
             for (j = 0; j < numPotentialErrs; j++) {
-                  if (!checkJavaDocInterfere(line)) { 
-                      if (toWrite === "") {
-                        proper = getProperBefore(line, ind);
-                        if (ind == 0 && !checkMult(line, item) 
-                          && !checkMultiComment(line, item, indices[j])) {
+              if (!this.checkJavaDocInterfere(line)) { 
+                if (toWrite === "") {
+                  proper = this.getProperBefore(line, ind);
+                  if (ind === 0 && !this.checkMult(line, item) 
+                    && !this.checkMultiComment(line, item, indices[j])) {
                     toWrite = line.substring(0, indices[j]); 
                     toWrite += " " + line.substring(indices[j]); 
-                    indices = allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
+                    indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
                     changed = true; 
-                        }
-                      if (ind != 0) {
-                          if (charAt(line, ind - 1) != " " && !checkMult(line, item) 
-                          && !checkMultiComment(line, item, indices[j])) {
-                              toWrite = line.substring(0, indices[j]);
-                              toWrite += " " + line.substring(indices[j]);
-                              indices = allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
-                              changed = true;
-                        } else if (proper.trim() != line.trim() && !checkMult(line, item) 
-                            && !checkMultiComment(line, item, indices[j])) {
-                              toWrite = line.substring(0, indices[j]).trimRight();
-                              toWrite += " " + line.substring(indices[j]);
-                              indices = allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
-                              changed = true;
-                        }
-                
-                      }
-              } else {
-                  if (!checkMult(toWrite, item) && !checkMultiComment(toWrite, item, indices[j])) {
-                    proper = getProperBefore(toWrite, indices[j]);
+                  }
+                  if (ind !== 0) {
+                    if (line.charAt(ind - 1) !== " " && !this.checkMult(line, item) 
+                      && !this.checkMultiComment(line, item, indices[j])) {
+                      toWrite = line.substring(0, indices[j]);
+                      toWrite += " " + line.substring(indices[j]);
+                      indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
+                      changed = true;
+                    } else if (proper.trim() !== line.trim() && !this.checkMult(line, item) 
+                      && !this.checkMultiComment(line, item, indices[j])) {
+                      toWrite = line.substring(0, indices[j]).trimRight();
+                      toWrite += " " + line.substring(indices[j]);
+                      indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
+                      changed = true;
+                    }
+                  }
+                } else {
+                  if (!this.checkMult(toWrite, item) && !this.checkMultiComment(toWrite, item, indices[j])) {
+                    proper = this.getProperBefore(toWrite, indices[j]);
                     var temp = " " + toWrite.substring(indices[j]);
                     toWrite = toWrite.substring(0, indices[j]).trimRight();
                     toWrite += temp;
-                    indices = allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
+                    indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
                     changed = true;
-                        }
-                      }
+                  }
+                }
               }
             }
             if (toWrite !== "") {
@@ -199,6 +216,7 @@ export default class Whitespaces {
           changed = false;
           lineNum++;
         }
+        return fileContent;
       }
     
       /*
@@ -213,41 +231,41 @@ export default class Whitespaces {
         var changed = false;
         var numLines = lines.length;
         var lineNum = 1;
-        //for (String line in lines) {
+        var i;
         for (i = 0; i < numLines; i++) {
-            //changing .contains() to .includes()
             var line = lines[i];
           if (line.includes(item)) {
             var ind = line.indexOf(item, 0);
-            var numPotentialErrs = numItems(line, item, itemLen);
+            var numPotentialErrs = this.numItems(line, item, itemLen);
             var proper = "";
-            var indices = allIndices(line, item, ind, itemLen);
+            var indices = this.allIndices(line, item, ind, itemLen);
+            var j;
             for (j = 0; j < numPotentialErrs; j++) {
-                  if (!checkJavaDocInterfere(line)) {
+                  if (!this.checkJavaDocInterfere(line)) {
                       if (toWrite === "") {
-                  proper = getProperAfter(line, ind, itemLen);
-                  if (indices[j] == line.length - 1) {
+                  proper = this.getProperAfter(line, ind, itemLen);
+                  if (indices[j] === line.length - 1) {
                     toWrite = line + " ";
-                    indices = allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
+                    indices = this.allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
                     changed = true;
-                  } else if (proper.trim() != line.trim() && !checkMult(line, item)
-                    && !checkMultiComment(line, item, indices[j])) {
+                  } else if (proper.trim() !== line.trim() && !this.checkMult(line, item)
+                    && !this.checkMultiComment(line, item, indices[j])) {
                     toWrite = line.substring(0, indices[j] + itemLen);
                     toWrite += " " + line.substring(indices[j] + itemLen).trimLeft();
-                    indices = allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
+                    indices = this.allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
                     changed = true;
                   }
                 } else {
-                  if (indices[j] == toWrite.length - 1) {
+                  if (indices[j] === toWrite.length - 1) {
                     toWrite = toWrite + " ";
-                    indices = allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
+                    indices = this.allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
                     changed = true;
-                  } else if (!checkMult(toWrite, item) && !checkMultiComment(toWrite, item, indices[j])) {
-                    proper = getProperAfter(toWrite, indices[j], itemLen);
+                  } else if (!this.checkMult(toWrite, item) && !this.checkMultiComment(toWrite, item, indices[j])) {
+                    proper = this.getProperAfter(toWrite, indices[j], itemLen);
                     var temp = toWrite.substring(indices[j] + itemLen).trimLeft();
                     toWrite = toWrite.substring(0, indices[j] + itemLen) + " ";
                     toWrite += temp;
-                    indices = allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
+                    indices = this.allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
                     changed = true;
                   }
                 }
@@ -270,6 +288,7 @@ export default class Whitespaces {
           changed = false;
           lineNum++;
         }
+        return fileContent;
       }
         
       /*
@@ -277,7 +296,7 @@ export default class Whitespaces {
         * with other ICEcΔp edits.
       */
       checkJavaDocInterfere(line) {
-        if (line == "------- INCORRECT JAVADOC FORMAT -------" || line == "----------------------------------------") {
+        if (line === "------- INCORRECT JAVADOC FORMAT -------" || line === "----------------------------------------") {
           return true; 
         }
         return false; 
@@ -290,10 +309,10 @@ export default class Whitespaces {
       numItems(line, item, itemLen) {
         var total = 0;
         var temp = line;
-        while (temp.includes(item) && !(temp.trim() == item)) {
+        while (temp.includes(item) && !(temp.trim() === item)) {
           total++;
           var ind = temp.indexOf(item, 0);
-          if (itemLen == 1) {
+          if (itemLen === 1) {
             temp = temp.substring(ind + itemLen);
           } else {
             temp = temp.substring(ind + itemLen - 1);
@@ -311,16 +330,16 @@ export default class Whitespaces {
         var indices = [];
         indices.push(ind);
         var curr = 0;
-        if (itemLen == 1) {
+        if (itemLen === 1) {
           curr = ind + itemLen;
         } else {
           curr = ind + itemLen - 1;
         }
         var temp = line.substring(curr);
-        while (temp.includes(item) && !(temp.trim() == item)) {
+        while (temp.includes(item) && !(temp.trim() === item)) {
           curr += temp.indexOf(item, 0);
           indices.push(curr);
-          if (itemLen == 1) {
+          if (itemLen === 1) {
             curr += itemLen;
             temp = temp.substring(temp.indexOf(item, 0) + itemLen);
           } else {
@@ -338,7 +357,7 @@ export default class Whitespaces {
        */
       checkMult(line, item) {
         var ind = line.indexOf(item);
-        if (ind != 0 && ind != (line.length-1)) {
+        if (ind !== 0 && ind !== (line.length-1)) {
             //changing back to line.charAt(index)
             if ((item === "+" || item === "-" || item === "=")
             && (line.charAt(ind + 1) === "+" || line.charAt(ind + 1) === "-"
@@ -354,9 +373,9 @@ export default class Whitespaces {
           } else {
               return false;
           }
-        } else if (ind ==0) {
+        } else if (ind === 0) {
           if ((item === "+" || item === "-" || item === "=")
-            && (line.charAt(ind + 1) === "+" || line,charAt(ind + 1) === "-"
+            && (line.charAt(ind + 1) === "+" || line.charAt(ind + 1) === "-"
             || line.charAt(ind + 1) === "=")) {
             return true;
           } else if ((item === "+" && line.charAt(ind + 1) === "=")) {
@@ -366,7 +385,7 @@ export default class Whitespaces {
           } else {
               return false;
           }
-          } else if (ind != (line.length-1)) {
+          } else if (ind !== (line.length-1)) {
               if (item === "="
                 && line.charAt(ind - 1) === "+") {
                 return true;
@@ -386,16 +405,15 @@ export default class Whitespaces {
       checkMultiSlash(line, ind) {
         if (line.trim() === "*/" || line.trim() === "/**" || line.trim() === "/*") {
         return true; 
-        //changing back to line.charAt(index)
-        } else if (ind != 0) {
+        } else if (ind !== 0) {
             if (line.charAt(ind - 1) === '*') {
                 return true; 
             }
-        } else if (ind != line.length -1) {
+        } else if (ind !== line.length -1) {
             if (line.charAt(ind +1) === '*') {
                 return true; 
             }
-        } else if (ind != 0 && ind != line.length -1) {
+        } else if (ind !== 0 && ind !== line.length -1) {
             if (line.charAt(ind + 1) === '*' || line.charAt(ind - 1) === '*') {
                   return true;
             }
@@ -411,14 +429,14 @@ export default class Whitespaces {
       checkMultiStar(line, ind) {
         if (line.trim() === "*/" || line.trim() === "/**" || line.trim() === "/*") {
         return true; 
-        } else if (ind != 0 && ind != line.length -1) {
+        } else if (ind !== 0 && ind !== line.length -1) {
           if (line.charAt(ind + 1) === '/' || line.charAt(ind - 1) === '/') {
           return true;
         } else if (line.charAt(ind + 1) === '*' || line.charAt(ind - 1) === '*') {
           return true; 
         }
         return false; 
-        } else if (ind != line.length -1) {
+        } else if (ind !== line.length -1) {
              if (line.charAt(ind + 1) ==='/') {
           return true;
         } else if (line.charAt(ind + 1) === '*') {
@@ -437,9 +455,9 @@ export default class Whitespaces {
        * is part of a multiline comment declaration.  
        */
       checkMultiComment(line, item, ind) {
-        if (item.trim() === "*" && checkMultiStar(line, ind)) {
+        if (item.trim() === "*" && this.checkMultiStar(line, ind)) {
           return true;
-        } else if (item.trim() === "/" && checkMultiSlash(line, ind)) {
+        } else if (item.trim() === "/" && this.checkMultiSlash(line, ind)) {
           return true;
         } else {
           return false;
@@ -453,7 +471,7 @@ export default class Whitespaces {
        */
       getProperAfter(line, ind, itemLen) {
         var proper = "";
-        if (ind != line.length - 1 && (ind + itemLen) <= line.length - 1) {
+        if (ind !== line.length - 1 && (ind + itemLen) <= line.length - 1) {
           var portion = line.substring(0, ind + itemLen);
           var end = line.substring(ind + itemLen).trim();
           var proper = portion + " " + end;
@@ -480,16 +498,14 @@ export default class Whitespaces {
       removeTrailingBlank(lines) {
         var fileContent = "";
         var toWrite = "";
-        var lineNum = 1;
         var numLines = lines.length;
+        var i;
         for (i = 0; i < numLines; i++) {
+            var line = lines[i];
             toWrite = line.trimRight();
             fileContent += toWrite;
             fileContent += "\n"; 
         }
+        return fileContent;
       }
-    
-      //took out the manual 'charAt' method
-
-
 }

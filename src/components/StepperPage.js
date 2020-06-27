@@ -224,6 +224,7 @@ function VerticalLinearStepper() {
             fixedText = multi.removeMultiLines(fixedText);
           }
           if (whiteSelected) {
+            fixedText = white.fixWhitespaces(fixedText);
           }
           if (indentSelected) {
             fixedText = indent.fixIndentations(fixedText);
