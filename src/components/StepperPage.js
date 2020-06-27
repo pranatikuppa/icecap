@@ -297,7 +297,7 @@ function VerticalLinearStepper() {
     function JavadocToggle() {
         return (
           <StyledToggle value="javadoc" selected={javaSelected} onChange={() => {setJava(!javaSelected);}}>
-              <CodeIcon />   Javadocs
+              <CodeIcon />  Add Javadocs
           </StyledToggle>
         );
     }
@@ -305,7 +305,7 @@ function VerticalLinearStepper() {
     function SingleToggle() {
         return (
             <StyledToggle value="single" selected={singleSelected} onChange={() => {setSingle(!singleSelected);}}>
-                <SubjectIcon />   // Comments
+                <SubjectIcon /> Remove // Comments
             </StyledToggle>
         );
     }
@@ -313,7 +313,7 @@ function VerticalLinearStepper() {
     function MultiToggle() {
         return(
             <StyledToggle value="multi" selected={multiSelected} onChange={() => {setMulti(!multiSelected);}}>
-                <SubjectIcon />   /* Comments
+                <SubjectIcon /> Remove /* Comments
             </StyledToggle>
         );
     }
@@ -321,7 +321,7 @@ function VerticalLinearStepper() {
     function WhitespaceToggle() {
         return(
           <StyledToggle value="whitespace" selected={whiteSelected} onChange={() => {setWhite(!whiteSelected);}}>
-              <SpaceBarIcon />   Whitespaces
+              <SpaceBarIcon /> Fix Whitespaces
           </StyledToggle>
         );
     }
@@ -329,7 +329,7 @@ function VerticalLinearStepper() {
     function IndentationToggle() {
         return (
           <StyledToggle value="indent" selected={indentSelected} onChange={() => {setIndent(!indentSelected);}}>
-              <FormatIndentIncreaseIcon />   Indentations
+              <FormatIndentIncreaseIcon /> Fix Indentations
           </StyledToggle>
         );
     }
