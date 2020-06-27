@@ -1,22 +1,21 @@
+/**
+ * MultiLines class that removes multi line comments
+ * from the provided java code.
+ */
 export default class MultiLines {
 
+    /**
+     * Default constructor for the MultiLines
+     * class.
+     */
     constructor() {
     }
 
-    multiLineMethod(inputFile) {
-        return new Promise(
-        function(resolve) {
-            var reader = new FileReader();
-            reader.onloadend = (function(reader)
-            {
-            return function() {
-                resolve(reader.result);
-            }
-            })(reader);
-            reader.readAsBinaryString(inputFile);
-        });
-    }
-
+    /**
+     * Takes in the file content and removes all the multi line comments
+     * from the provided file content, returning the fixed file content.
+     * @param {String} content the content of the original file.
+     */
     removeMultiLines(content) {
         var fileContent = "";
         var lines = content.split("\n");

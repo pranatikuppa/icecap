@@ -23,6 +23,7 @@ import SingleLines from './SingleLines';
 import MultiLines from './MultiLines';
 import Whitespaces from './Whitespaces';
 import Indentations from './Indentations';
+import RmJavadocs from './RmJavadocs';
 
 const mainStyles = makeStyles((theme) => ({
     root: {
@@ -131,11 +132,13 @@ function VerticalLinearStepper() {
     const [multiSelected, setMulti] = React.useState(false);
     const [indentSelected, setIndent] = React.useState(false);
     const [whiteSelected, setWhite] = React.useState(false);
+    const [rmJavaSelected, setRmJavaSelected] = React.useState(false);
+
+    const [intialAcceptedFiles, setIntialAcceptedFiles] = React.useState([]);
+    const [intialRejectedFiles, setIntialRejectedFiles] = React.useState([]);
     const [uploadedFiles, setUploadedFiles] = React.useState({});
     const [fixedFileContents, setFixedFileContents] = React.useState({});
     const [newFileNames, setNewFileNames] = React.useState([]);
-    const [intialAcceptedFiles, setIntialAcceptedFiles] = React.useState([]);
-    const [intialRejectedFiles, setIntialRejectedFiles] = React.useState([]);
 
     function fileCallback(oldName, newName) {
       setNewFileNames(newFileNames.map(function(filename){return (filename === oldName ? newName : filename)}));
@@ -171,6 +174,7 @@ function VerticalLinearStepper() {
           setMulti(false);
           setWhite(false);
           setIndent(false);
+          setRmJavaSelected(false);
           if (operationOpen) {
               setOperationOpen(false);
           }
@@ -208,12 +212,16 @@ function VerticalLinearStepper() {
       const multi = new MultiLines();
       const white = new Whitespaces();
       const indent = new Indentations();
+      const rmJava = new RmJavadocs();
       var i;
       var contentList = [];
       for (i = 0; i < uploadedFiles.length; i++) {
         var inputFile = uploadedFiles[i];
         fileAccessMethod(inputFile).then(function(fileText) {
           var fixedText = fileText;
+          if (rmJavaSelected) {
+            fixedText = rmJava.removeJavadocs(fixedText);
+          }
           if (javaSelected) {
             fixedText = java.addJavadocs(fixedText);
           }
@@ -237,7 +245,7 @@ function VerticalLinearStepper() {
 
     const handleRun = () => {
       if (activeStep === 1) {
-        if (!javaSelected && !singleSelected && !multiSelected && !whiteSelected && !indentSelected) {
+        if (!javaSelected && !singleSelected && !multiSelected && !whiteSelected && !indentSelected && !rmJavaSelected) {
             setOperationOpen(true);
         } else {
             setOperationOpen(false);
@@ -275,6 +283,7 @@ function VerticalLinearStepper() {
       setMulti(false);
       setWhite(false);
       setIndent(false);
+      setRmJavaSelected(false);
       if (operationOpen) {
         setOperationOpen(false);
       }
@@ -335,6 +344,14 @@ function VerticalLinearStepper() {
         );
     }
 
+    function RmJavadocsToggle() {
+      return (
+        <StyledToggle value="rmJava" selected={rmJavaSelected} onChange={() => {setRmJavaSelected(!rmJavaSelected);}}>
+            <FormatIndentIncreaseIcon /> Remove Javadocs
+        </StyledToggle>
+      );
+    }
+
     function onFileDrop(acceptedFiles, rejectedFiles) {
       acceptedFiles = Array.from(acceptedFiles);
       rejectedFiles = Array.from(rejectedFiles);
@@ -393,7 +410,12 @@ function VerticalLinearStepper() {
               </p>
               <div style={{ whiteSpace: 'break-spaces', lineHeight: 4.5 }}>
                   <p></p>
-                  <JavadocToggle></JavadocToggle><span>    </span><SingleToggle><span>    </span></SingleToggle><span>    </span><MultiToggle></MultiToggle><span>    </span><WhitespaceToggle></WhitespaceToggle><span>    </span><IndentationToggle></IndentationToggle>
+                  <JavadocToggle></JavadocToggle><span>    </span>
+                  <SingleToggle></SingleToggle><span>    </span>
+                  <MultiToggle></MultiToggle><span>    </span>
+                  <WhitespaceToggle></WhitespaceToggle><span>    </span>
+                  <IndentationToggle></IndentationToggle><span>    </span>
+                  <RmJavadocsToggle></RmJavadocsToggle>
                   <p></p>
               </div>
           </Typography>

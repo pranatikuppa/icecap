@@ -3,20 +3,6 @@ export default class SingleLines {
     constructor() {
     }
 
-    singleLineMethod(inputFile) {
-        return new Promise(
-        function(resolve) {
-            var reader = new FileReader();
-            reader.onloadend = (function(reader)
-            {
-            return function() {
-                resolve(reader.result);
-            }
-            })(reader);
-            reader.readAsBinaryString(inputFile);
-        });
-    }
-
     removeSingleLines(content) {
         var fileContent = "";
         var lines = content.split("\n");

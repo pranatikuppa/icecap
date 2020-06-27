@@ -1,5 +1,14 @@
+/**
+ * Javadocs class that adds java doc comment templates
+ * to the provided java code.
+ */
 export default class Javadocs {
 
+    /**
+     * Default constructor for the Javadocs class.
+     * Contains information about javadoc class and method
+     * formats, and method and class patterns.
+     */
     constructor() {
         this.classJavadoc =
             "/**\n" + 
@@ -25,20 +34,13 @@ export default class Javadocs {
 
     }
 
-    javadocMethod(inputFile){
-        return new Promise(
-        function(resolve) {
-        var reader = new FileReader();
-        reader.onloadend = (function(reader)
-        {
-            return function() {
-            resolve(reader.result);
-            }
-        })(reader);
-        reader.readAsBinaryString(inputFile);
-        });
-    }
-
+    /**
+     * Adds javadoc comment templates before each method and 
+     * class header. Highlights incorrect javadoc comments
+     * with a header in order to notify the user to change
+     * the javadoc format.
+     * @param {String} content the content of the original file.
+     */
     addJavadocs(content) {
         var fileContent = "";
         var javadocFound = false;
@@ -91,7 +93,13 @@ export default class Javadocs {
                 }
             } else if (this.classPattern.exec(line)) {
                 if (javadoc !== "") {
-                    fileContent += javadoc;
+                    if (this.validateClassJavadocComment(javadoc)) {
+                        fileContent += javadoc;
+                    } else {
+                        fileContent += "------- ADD @AUTHOR TAG TO JAVADOC -------\n";
+                        fileContent += javadoc;
+                        fileContent += "----------------------------------------\n";
+                    }
                     fileContent += line + newline;
                     javadoc = "";
                 } else {
@@ -110,6 +118,13 @@ export default class Javadocs {
         return fileContent;
     }
 
+    /**
+     * Returns true if the provided javadoc comment and 
+     * the header are of correct format according 
+     * to the style guide and false otherwise.
+     * @param {String} header the method header.
+     * @param {String} javadocComment the provided javadoc comment.
+     */
     validateJavadocComment(header, javadocComment) {
         var returnVal = this.containsReturn(header);
         var paramNames = this.getParamList(header);
@@ -129,6 +144,20 @@ export default class Javadocs {
         return true;
     }
 
+    /**
+     * Returns true if the provided class javadoc comment
+     * is of correct format according to
+     * the style guide and false otherwise.
+     * @param {String} classJavadocComment the provided class javadoc comment.
+     */
+    validateClassJavadocComment(classJavadocComment) {
+        return classJavadocComment.includes("@author");
+    }
+
+    /**
+     * Returns a javadoc template for a method header provided.
+     * @param {String} header the method header.
+     */
     generateMethodJavadoc(header) {
         var params = this.countParameters(header);
         var returnVal = this.containsReturn(header);
@@ -150,10 +179,20 @@ export default class Javadocs {
         return comment;
     }
 
+    /**
+     * Returns the number of parameters in the provided method 
+     * header.
+     * @param {String} header the method header. 
+     */
     countParameters(header) {
         return this.getParamList(header).length;
     }
 
+    /**
+     * Returns an array of parameter names that are 
+     * contained within the method header provided.
+     * @param {String} header the method header.
+     */
     getParamList(header) {
         var open = header.indexOf('(');
         var close = header.indexOf(')');
@@ -168,10 +207,20 @@ export default class Javadocs {
         return names;
     }
 
+    /**
+     * Returns true if the method header contains a return
+     * type other than void and false otherwise.
+     * @param {String} header the method header.
+     */
     containsReturn(header) {
         return !header.includes("void");
     }
 
+    /**
+     * Returns the number of indentations before the method
+     * header provided.
+     * @param {String} header the method header. 
+     */
     countIndentations(header) {
         var count = 0;
         var spaceCount = 0;
