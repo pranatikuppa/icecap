@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/icecap/static/css/main.9e90bdab.chunk.css",
+    "main.js": "/icecap/static/js/main.afd3308f.chunk.js",
+    "main.js.map": "/icecap/static/js/main.afd3308f.chunk.js.map",
+    "runtime-main.js": "/icecap/static/js/runtime-main.0fe271a5.js",
+    "runtime-main.js.map": "/icecap/static/js/runtime-main.0fe271a5.js.map",
+    "static/js/2.137c34cd.chunk.js": "/icecap/static/js/2.137c34cd.chunk.js",
+    "static/js/2.137c34cd.chunk.js.map": "/icecap/static/js/2.137c34cd.chunk.js.map",
+    "index.html": "/icecap/index.html",
+    "precache-manifest.a6aa114c11cf40b6ec395c17940ee90c.js": "/icecap/precache-manifest.a6aa114c11cf40b6ec395c17940ee90c.js",
+    "service-worker.js": "/icecap/service-worker.js",
+    "static/css/main.9e90bdab.chunk.css.map": "/icecap/static/css/main.9e90bdab.chunk.css.map",
+    "static/js/2.137c34cd.chunk.js.LICENSE.txt": "/icecap/static/js/2.137c34cd.chunk.js.LICENSE.txt",
+    "static/media/Component.css": "/icecap/static/media/mountain_image.792b1428.jpeg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.0fe271a5.js",
+    "static/js/2.137c34cd.chunk.js",
+    "static/css/main.9e90bdab.chunk.css",
+    "static/js/main.afd3308f.chunk.js"
+  ]
+}
