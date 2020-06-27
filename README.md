@@ -6,9 +6,11 @@
  ## preliminary interface:
  
  **Homepage**: 
+  ![](src/components/assets/homepage.png)
  
- **Uploading a file**: 
+ **Uploading a files**: 
  
- **Choose which operation to apply**: 
+ **Choose which operations to apply**: 
+  ![](src/components/assets/choosing_operations.gif)
  
  **Downloading a file**: 
