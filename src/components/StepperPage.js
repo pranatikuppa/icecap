@@ -22,6 +22,7 @@ import FileDownloadComponent from './FileDownloadComponent';
 import SingleLines from './SingleLines';
 import MultiLines from './MultiLines';
 import Whitespaces from './Whitespaces';
+import Indentations from './Indentations';
 
 const mainStyles = makeStyles((theme) => ({
     root: {
@@ -187,61 +188,50 @@ function VerticalLinearStepper() {
         }
     };
 
-    function performJava() {
+    function fileAccessMethod(inputFile){
+      return new Promise(
+      function(resolve) {
+      var reader = new FileReader();
+      reader.onloadend = (function(reader)
+      {
+          return function() {
+          resolve(reader.result);
+          }
+      })(reader);
+      reader.readAsText(inputFile);
+      });
+    }
+
+    function performAll() {
       const java = new Javadocs();
+      const single = new SingleLines();
+      const multi = new MultiLines();
+      const white = new Whitespaces();
+      const indent = new Indentations();
       var i;
       var contentList = [];
       for (i = 0; i < uploadedFiles.length; i++) {
         var inputFile = uploadedFiles[i];
-        java.javadocMethod(inputFile).then(function(fileText) {
-          contentList.push(java.addJavadocs(fileText));
+        fileAccessMethod(inputFile).then(function(fileText) {
+          var fixedText = fileText;
+          if (javaSelected) {
+            fixedText = java.addJavadocs(fixedText);
+          }
+          if (singleSelected) {
+            fixedText = single.removeSingleLines(fixedText);
+          }
+          if (multiSelected) {
+            fixedText = multi.removeMultiLines(fixedText);
+          }
+          if (whiteSelected) {
+          }
+          if (indentSelected) {
+            fixedText = indent.fixIndentations(fixedText);
+          }
+          contentList.push(fixedText);
         });
       }
       setFixedFileContents(contentList);
-    }
-
-    function performSingle() {
-      const single = new SingleLines();
-      var i;
-      var contentList = [];
-      for (i = 0; i < uploadedFiles.length; i++) {
-        if (fixedFileContents.length > 0) {
-          contentList.push(single.removeSingleLines(fixedFileContents[i]));
-        } else {
-          var inputFile = uploadedFiles[i];
-          single.singleLineMethod(inputFile).then(function(fileText){
-            contentList.push(single.removeSingleLines(fileText));
-          });
-        }
-      }
-      setFixedFileContents(contentList);
-    }
-
-    function performMulti() {
-      const multi = new MultiLines();
-      var i;
-      var contentList = [];
-      for (i = 0; i < uploadedFiles.length; i++) {
-        if (fixedFileContents.length > 0) {
-          contentList.push(multi.removeMultiLines(fixedFileContents[i]));
-        } else {
-          var inputFile = uploadedFiles[i];
-          multi.multiLineMethod(inputFile).then(function(fileText){
-            contentList.push(multi.removeMultiLines(fileText));
-          });
-        }
-      }
-      setFixedFileContents(contentList);
-    }
-
-    function performWhitespace() {
-      const white = new Whitespaces();
-      var i;
-      var contentList = [];
-    }
-
-    function performIndent() {
-
     }
 
     const handleRun = () => {
@@ -250,21 +240,7 @@ function VerticalLinearStepper() {
             setOperationOpen(true);
         } else {
             setOperationOpen(false);
-            if (javaSelected) {
-              performJava();
-            }
-            if (singleSelected) {
-              performSingle();
-            }
-            if (multiSelected) {
-              performMulti();
-            }
-            if (whiteSelected) {
-              performWhitespace();
-            }
-            if (indentSelected) {
-              performIndent();
-            }
+            performAll();
             setActiveStep((prevActiveStep) => prevActiveStep + 1);
         }
       }
