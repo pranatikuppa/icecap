@@ -8,10 +8,10 @@ export default class Whitespaces {
       var fileContent = "";
       var noSpaceBeforeKeywords = ["++", "--", ";", ")"];
       var noSpaceAfterKeywords = ["(", "!", "++", "--"];
-      var spaceBeforeKeywords = ["&&", "||", "{", "*", "+", "-", "/", "=", "+=", "assert", "catch", "do", "else", "finally", 
-      "for", "if", "return", "synchronized", "try", "while"];
-      var spaceAfterKeywords = ["&&", "||", ";", ",", "+", "/", "-", "*", "=", "+=", "assert", "catch", "do", "else", "finally", 
-      "for", "if", "return", "synchronized", "try", "while"];
+      var spaceBeforeKeywords = ["&&", "||", "{", "*", "+", "-", "/", "=", "==", "+=","-=", "assert", "catch", "do", "else", "finally", 
+      "for", "if", "return", "synchronized", "try", "while", "?", ":"];
+      var spaceAfterKeywords = ["&&", "||", ";", ",", "+", "/", "-", "*", "=", "+=", "==", "-=", "assert", "catch", "do", "else", "finally", 
+      "for", "if", "return", "synchronized", "try", "while", "?", ":"];
       var i;
       for (i = 0; i < noSpaceBeforeKeywords.length; i++) {
         var item = noSpaceBeforeKeywords[i];
@@ -44,17 +44,19 @@ export default class Whitespaces {
         for (i = 0; i < lines.length; i++) {
             var line = lines[i];
           if (line.includes(item)) {
-            var ind = line.indexOf(item, 0);
+            //indexOf(item, 0)
+            var ind = line.indexOf(item);
             var numPotentialErrs = this.numItems(line, item, itemLen);
             var indices = this.allIndices(line, item, ind, itemLen);
             var j;
             for (j = 0; j < numPotentialErrs; j++) {
                   if (!this.checkJavaDocInterfere(line)) {
                       if (toWrite === "") {
-                    if (line.charAt(indices[j] - 1) === " ") {
+                    if (line.charAt(indices[j] - 1) === ' ') {
                     toWrite = line.substring(0, indices[j]).trimRight();
                     toWrite += line.substring(indices[j]);
-                    indices = this.allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
+                    //indexOf(item, 0)
+                    indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
                     changed = true;
                     }
                   } else {
@@ -62,7 +64,8 @@ export default class Whitespaces {
                     temp = toWrite.substring(indices[j]);
                     toWrite = toWrite.substring(0, indices[j]).trimRight();
                     toWrite += temp;
-                    indices = this.allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
+                    //indexOf(item, 0)
+                    indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
                     changed = true;
                   }
                 }
@@ -98,24 +101,27 @@ export default class Whitespaces {
         for (i = 0; i < numLines; i++) {
             var line = lines[i];
           if (line.includes(item)) {
-            var ind = line.indexOf(item, 0);
+            //indexOf(item, 0)
+            var ind = line.indexOf(item);
             var numPotentialErrs = this.numItems(line, item, itemLen);
             var indices = this.allIndices(line, item, ind, itemLen);
             var j;
             for (j = 0; j < numPotentialErrs; j++) {
                   if (!this.checkJavaDocInterfere(line)) {
                       if (toWrite === "") {
-                        if (line.charAt(indices[j] + 1) === " ") {
+                        if (line.charAt(indices[j] + 1) ===  ' ') {
                             toWrite = line.substring(0, indices[j] + itemLen);
                             toWrite += line.substring(indices[j] + itemLen).trimLeft();
-                            indices = this.allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
+                            //indexOf(item, 0)
+                            indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
                             changed = true;
                         }
                       } else {
                             var temp = toWrite.substring(indices[j] + itemLen).trimLeft();
                             toWrite = toWrite.substring(0, indices[j] + itemLen);
                             toWrite += temp;
-                            indices = this.allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
+                            //indexOf(item, 0)
+                            indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
                             changed = true;
                         } 
                   }
@@ -166,21 +172,21 @@ export default class Whitespaces {
                 if (toWrite === "") {
                   proper = this.getProperBefore(line, ind);
                   if (ind === 0 && !this.checkMult(line, item) 
-                    && !this.checkMultiComment(line, item, indices[j])) {
+                    && !this.checkMultiComment(line, item, indices[j])&& !this.partOfWord(line, item, indices[j])) {
                     toWrite = line.substring(0, indices[j]); 
                     toWrite += " " + line.substring(indices[j]); 
                     indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
                     changed = true; 
                   }
                   if (ind !== 0) {
-                    if (line.charAt(ind - 1) !== " " && !this.checkMult(line, item) 
-                      && !this.checkMultiComment(line, item, indices[j])) {
+                    if (line.charAt(ind - 1) !== ' ' && !this.checkMult(line, item) 
+                      && !this.checkMultiComment(line, item, indices[j])&& !this.partOfWord(line, item, indices[j])) {
                       toWrite = line.substring(0, indices[j]);
                       toWrite += " " + line.substring(indices[j]);
                       indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
                       changed = true;
                     } else if (proper.trim() !== line.trim() && !this.checkMult(line, item) 
-                      && !this.checkMultiComment(line, item, indices[j])) {
+                      && !this.checkMultiComment(line, item, indices[j]) && !this.partOfWord(line, item, indices[j])) {
                       toWrite = line.substring(0, indices[j]).trimRight();
                       toWrite += " " + line.substring(indices[j]);
                       indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
@@ -188,7 +194,7 @@ export default class Whitespaces {
                     }
                   }
                 } else {
-                  if (!this.checkMult(toWrite, item) && !this.checkMultiComment(toWrite, item, indices[j])) {
+                  if (!this.checkMult(toWrite, item) && !this.checkMultiComment(toWrite, item, indices[j]) && !this.partOfWord(line, item, indices[j])) {
                     proper = this.getProperBefore(toWrite, indices[j]);
                     var temp = " " + toWrite.substring(indices[j]);
                     toWrite = toWrite.substring(0, indices[j]).trimRight();
@@ -235,7 +241,8 @@ export default class Whitespaces {
         for (i = 0; i < numLines; i++) {
             var line = lines[i];
           if (line.includes(item)) {
-            var ind = line.indexOf(item, 0);
+            //indexOf(item, 0)
+            var ind = line.indexOf(item);
             var numPotentialErrs = this.numItems(line, item, itemLen);
             var proper = "";
             var indices = this.allIndices(line, item, ind, itemLen);
@@ -243,34 +250,34 @@ export default class Whitespaces {
             for (j = 0; j < numPotentialErrs; j++) {
                   if (!this.checkJavaDocInterfere(line)) {
                       if (toWrite === "") {
-                  proper = this.getProperAfter(line, ind, itemLen);
-                  if (indices[j] === line.length - 1) {
-                    toWrite = line + " ";
-                    indices = this.allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
-                    changed = true;
-                  } else if (proper.trim() !== line.trim() && !this.checkMult(line, item)
-                    && !this.checkMultiComment(line, item, indices[j])) {
-                    toWrite = line.substring(0, indices[j] + itemLen);
-                    toWrite += " " + line.substring(indices[j] + itemLen).trimLeft();
-                    indices = this.allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
-                    changed = true;
+                          proper = this.getProperAfter(line, ind, itemLen);
+                          if (indices[j] === line.length - 1) {
+                            toWrite = line + " ";
+                            indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
+                            changed = true;
+                          } else if (proper.trim() !== line.trim() && !this.checkMult(line, item)
+                           && !this.checkMultiComment(line, item, indices[j]) && !this.partOfWord(line, item, indices[j])) {
+                            toWrite = line.substring(0, indices[j] + itemLen);
+                            toWrite += " " + line.substring(indices[j] + itemLen).trimLeft();
+                            indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
+                            changed = true;
+                        }
+                      } else {
+                        if (indices[j] === toWrite.length - 1) {
+                          toWrite = toWrite + " ";
+                          indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
+                          changed = true;
+                        } else if (!this.checkMult(toWrite, item) && !this.checkMultiComment(toWrite, item, indices[j]) && !this.partOfWord(line, item, indices[j])) {
+                          proper = this.getProperAfter(toWrite, indices[j], itemLen);
+                          var temp = toWrite.substring(indices[j] + itemLen).trimLeft();
+                          toWrite = toWrite.substring(0, indices[j] + itemLen) + " ";
+                          toWrite += temp;
+                          indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
+                          changed = true;
+                        }
+                      }
+                    }
                   }
-                } else {
-                  if (indices[j] === toWrite.length - 1) {
-                    toWrite = toWrite + " ";
-                    indices = this.allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
-                    changed = true;
-                  } else if (!this.checkMult(toWrite, item) && !this.checkMultiComment(toWrite, item, indices[j])) {
-                    proper = this.getProperAfter(toWrite, indices[j], itemLen);
-                    var temp = toWrite.substring(indices[j] + itemLen).trimLeft();
-                    toWrite = toWrite.substring(0, indices[j] + itemLen) + " ";
-                    toWrite += temp;
-                    indices = this.allIndices(toWrite, item, toWrite.indexOf(item, 0), itemLen);
-                    changed = true;
-                  }
-                }
-                }
-            }
             if (toWrite !== ("")) {
               fileContent += toWrite;
               if (lineNum < numLines) {
@@ -311,7 +318,8 @@ export default class Whitespaces {
         var temp = line;
         while (temp.includes(item) && !(temp.trim() === item)) {
           total++;
-          var ind = temp.indexOf(item, 0);
+          //indexOf(item, 0)
+          var ind = temp.indexOf(item);
           if (itemLen === 1) {
             temp = temp.substring(ind + itemLen);
           } else {
@@ -337,17 +345,50 @@ export default class Whitespaces {
         }
         var temp = line.substring(curr);
         while (temp.includes(item) && !(temp.trim() === item)) {
-          curr += temp.indexOf(item, 0);
+          //indexOf(item, 0)
+          curr += temp.indexOf(item);
           indices.push(curr);
           if (itemLen === 1) {
             curr += itemLen;
-            temp = temp.substring(temp.indexOf(item, 0) + itemLen);
+            temp = temp.substring(temp.indexOf(item) + itemLen);
           } else {
             curr += itemLen - 1;
-            temp = temp.substring(temp.indexOf(item, 0) + itemLen - 1);
+            temp = temp.substring(temp.indexOf(item) + itemLen - 1);
           }
         }
         return indices;
+      }
+
+      partOfWord(line, item, ind) { //include int ind, so that 
+        var itemLen = item.length; 
+        // boolean zeroInd = (ind == 0); 
+        // boolean 
+        var letters = /^[A-Za-z]+$/; 
+    
+        if (ind != 0 && ind+itemLen+1 <= line.length-1) { //preventing out of bounds
+          var strBefore = line.substring(ind-1, ind);
+          var strAfter = line.substring(ind+itemLen, ind+itemLen+1); 
+          
+          if (strBefore.match(letters) || strAfter.match(letters)) {
+            //the keyword might be part of an actual word
+            return true; 
+          } 
+          //return false;
+        } else if (ind == 0) { // ex. doSmth
+          var strAfter = line.substring(ind+itemLen, ind+itemLen+1); 
+          if (strAfter.match(letters)) {
+            //the keyword might be part of an actual word
+            return true; 
+          }
+        } else if (ind+itemLen+1 > line.length-1) { //ex. howdo
+          var strBefore = line.substring(ind-1, ind);
+          if (strBefore.match(letters)) {
+            //the keyword might be part of an actual word
+            return true; 
+          }
+        }
+        return false; 
+        
       }
     
       /*
@@ -360,36 +401,36 @@ export default class Whitespaces {
         if (ind !== 0 && ind !== (line.length-1)) {
             //changing back to line.charAt(index)
             if ((item === "+" || item === "-" || item === "=")
-            && (line.charAt(ind + 1) === "+" || line.charAt(ind + 1) === "-"
-            || line.charAt(ind + 1) === "=")) {
+            && (line.charAt(ind + 1) === '+' || line.charAt(ind + 1) === '-'
+            || line.charAt(ind + 1) === '=')) {
             return true;
-          } else if ((item === "+" && line.charAt(ind + 1) === "=") || item === "="
-              && line.charAt(ind - 1) === "+") {
+          } else if ((item === "+" && line.charAt(ind + 1) === '=') || item === "="
+              && line.charAt(ind - 1) === '+') {
               return true;
-          } else if (item === "/" && line.charAt(ind + 1) === "/") {
+          } else if (item === "/" && line.charAt(ind + 1) === '/') {
               return true;
-          } else if (item === "/" && line.charAt(ind - 1) === "/") {
+          } else if (item === "/" && line.charAt(ind - 1) === '/') {
               return true;
           } else {
               return false;
           }
         } else if (ind === 0) {
           if ((item === "+" || item === "-" || item === "=")
-            && (line.charAt(ind + 1) === "+" || line.charAt(ind + 1) === "-"
-            || line.charAt(ind + 1) === "=")) {
+            && (line.charAt(ind + 1) === '+' || line.charAt(ind + 1) === '-'
+            || line.charAt(ind + 1) === '=')) {
             return true;
-          } else if ((item === "+" && line.charAt(ind + 1) === "=")) {
+          } else if ((item === "+" && line.charAt(ind + 1) === '=')) {
               return true;
-          } else if (item === "/" && line.charAt(ind + 1) === "/") {
+          } else if (item === "/" && line.charAt(ind + 1) === '/') {
               return true;
           } else {
               return false;
           }
           } else if (ind !== (line.length-1)) {
               if (item === "="
-                && line.charAt(ind - 1) === "+") {
+                && line.charAt(ind - 1) === '+') {
                 return true;
-          } else if (item === "/" && line.charAt(ind - 1) === "/") {
+          } else if (item === "/" && line.charAt(ind - 1) === '/') {
               return true;
           } else {
               return false;
@@ -405,18 +446,21 @@ export default class Whitespaces {
       checkMultiSlash(line, ind) {
         if (line.trim() === "*/" || line.trim() === "/**" || line.trim() === "/*") {
         return true; 
-        } else if (ind !== 0) {
-            if (line.charAt(ind - 1) === '*') {
+        } else if (ind !== 0 && ind != line.length-1) {
+            if (line.charAt(ind + 1) === '*' || line.charAt(ind-1) === '*') {
                 return true; 
             }
+            return false; 
         } else if (ind !== line.length -1) {
             if (line.charAt(ind +1) === '*') {
                 return true; 
             }
-        } else if (ind !== 0 && ind !== line.length -1) {
-            if (line.charAt(ind + 1) === '*' || line.charAt(ind - 1) === '*') {
+            return false; 
+        } else if (ind !== 0) {
+            if (line.charAt(ind - 1) === '*') {
                   return true;
             }
+            return false; 
         }    
         return false;
       }
@@ -429,20 +473,24 @@ export default class Whitespaces {
       checkMultiStar(line, ind) {
         if (line.trim() === "*/" || line.trim() === "/**" || line.trim() === "/*") {
         return true; 
-        } else if (ind !== 0 && ind !== line.length -1) {
-          if (line.charAt(ind + 1) === '/' || line.charAt(ind - 1) === '/') {
-          return true;
-        } else if (line.charAt(ind + 1) === '*' || line.charAt(ind - 1) === '*') {
+        } else if (ind != 0 && line.charAt(ind-1)=== '.') {
+          //likely part of an import 
           return true; 
-        }
-        return false; 
+        } 
+        else if (ind !== 0 && ind !== line.length -1) {
+            if (line.charAt(ind + 1) === '/' || line.charAt(ind - 1) === '/') {
+              return true;
+            } else if (line.charAt(ind + 1) === '*' || line.charAt(ind - 1) === '*') {
+              return true; 
+            }
+            return false; 
         } else if (ind !== line.length -1) {
              if (line.charAt(ind + 1) ==='/') {
-          return true;
-        } else if (line.charAt(ind + 1) === '*') {
-          return true; 
-        }
-        return false; 
+                return true;
+              } else if (line.charAt(ind + 1) === '*') {
+                return true; 
+            }
+            return false; 
             
         }
         
