@@ -1,8 +1,20 @@
+/**
+ * The SingleLines class that removes single line
+ * comments from the java code provided.
+ */
 export default class SingleLines {
     
+    /**
+     * Default constructor of the single lines class.
+     */
     constructor() {
     }
 
+    /**
+     * Method that removes single line comments from the java code
+     * provided and returns the new fixed file content.
+     * @param {String} content the content of the original file.
+     */
     removeSingleLines(content) {
         var fileContent = "";
         var lines = content.split("\n");

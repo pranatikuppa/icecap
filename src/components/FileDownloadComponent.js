@@ -4,6 +4,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
+/**
+ * Styled text field to include within the FileDownloadComponent.
+ */
 const CssTextField = withStyles({
     root: {
         '& .MuiOutlinedInput-root': {
@@ -15,6 +18,9 @@ const CssTextField = withStyles({
     },
 }) (TextField);
 
+/**
+ * The styles that are used to customize other components.
+ */
 const useStyles = makeStyles((theme) => ({
     button: {
         backgroundColor: '#6493a1',

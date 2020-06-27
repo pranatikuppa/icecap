@@ -1,8 +1,20 @@
+/**
+ * Indentations class that fixes the indentations within
+ * java code.
+ */
 export default class Indentations {
     
+    /**
+     * Default constructor of Indentations.
+     */
     constructor() {
     }
 
+    /**
+     * Method that fixes the indentations within the content of the file 
+     * provided.
+     * @param {String} content the original contents of the file.
+     */
     fixIndentations(content) {
         var fileContent = "";
         var levels = 0;
@@ -52,6 +64,11 @@ export default class Indentations {
         return fileContent;
     }
 
+    /**
+     * Returns true if the line ends with an indicator to increment
+     * an indentation in the next line, and false otherwise.
+     * @param {String} line the line to check for.
+     */
     isIndentMark(line) {
         if (line.trim().endsWith("{")) {
             return true;
@@ -64,6 +81,11 @@ export default class Indentations {
         return false;
     }
 
+    /**
+     * Returns true if the line ends with an indicator
+     * to decrement indentation in the next line, and false otherwise.
+     * @param {String} line the line to check for.
+     */
     isEndIndentMark(line) {
         if (line.trim() === "}" || line.trim() === "};") {
             return true;
@@ -71,6 +93,12 @@ export default class Indentations {
         return false;
     }
 
+    /**
+     * Returns true if the line indicates an else or else if
+     * condition where indentation requires unique formatting
+     * accordingly.
+     * @param {String} line the line to look over. 
+     */
     elseIndentMark(line) {
         if (line.includes("}")) {
             if (line.includes("else") && (line.indexOf("}") < line.indexOf("else"))) {
@@ -84,6 +112,11 @@ export default class Indentations {
         }
     }
 
+    /**
+     * Returns indentation based on the number of levels of 
+     * indentation is required.
+     * @param {number} levels the number of indentation levels.
+     */
     generateIndentation(levels) {
         var indent = "";
         var i;

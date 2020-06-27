@@ -2,7 +2,7 @@
  * MultiLines class that removes multi line comments
  * from the provided java code.
  */
-export default class MultiLines {
+ export default class MultiLines {
 
     /**
      * Default constructor for the MultiLines
