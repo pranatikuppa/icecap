@@ -416,7 +416,7 @@ function VerticalLinearStepper() {
     function stepThree() {
       return (
         <Typography>
-          Enter a name for each file and download the files below. If you don't provide a name we will use the original file name
+          Enter a name for each file (without spaces) and download the files below. If you don't provide a name we will use the original file name
           to download your file.
           <p></p>
           {getFileDownloadComponents()}

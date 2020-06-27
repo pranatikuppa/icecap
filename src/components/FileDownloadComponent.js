@@ -32,9 +32,28 @@ export default function(props) {
     const classes = useStyles();
     const [currentFileName, setCurrentFileName] = React.useState(props.defaultFileName);
 
+    function validateFilename(filename) {
+        var otherPattern = new RegExp("\\W");
+        if (filename.trim() === "" || otherPattern.exec(filename)) {
+            return currentFileName;
+        } else {
+            filename = filename.replace(" ", "_");
+            if (!filename.includes(".") && !filename.includes(".java")) {
+                return filename + ".java";
+            } else if (filename.includes(".")) {
+                var dotIndex = filename.indexOf(".", 0);
+                return filename.substring(0, dotIndex) + ".java";
+            } else {
+                return filename;
+            }
+        }
+    }
+
     function handleChange(e) {
-        props.callbackFromParent(currentFileName, e.target.value);
-        setCurrentFileName(e.target.value);
+        var newUnfilteredName = e.target.value;
+        var newFilteredName = validateFilename(newUnfilteredName);
+        props.callbackFromParent(currentFileName, newFilteredName);
+        setCurrentFileName(newFilteredName);
     }
 
     function download(filename, text) {
