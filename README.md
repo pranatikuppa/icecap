@@ -11,6 +11,6 @@
  **Uploading a files**: 
  
  **Choose which operations to apply**: 
-  ![](src/components/assets/choosing_operations.gif)
+  ![](src/components/assets/choosing-operations.gif)
  
  **Downloading a file**: 
