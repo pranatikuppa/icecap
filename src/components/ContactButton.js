@@ -7,6 +7,9 @@ import Button from '@material-ui/core/Button';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
+/**
+ * Styles to apply to the app bar elements of the page.
+ */
 const appBarStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -19,21 +22,39 @@ const appBarStyles = makeStyles((theme) => ({
       color: '#6493a1',
       borderColor: '#6493a1',
     }
-  }));
+}));
 
+/**
+ * The ContactButton component created to open a dialog 
+ * within the application for the user to interact with.
+ */
 export default function ContactButton() {
+    /**
+     * Styles and necessary states of the button
+     * to keep track of.
+     */
     const classes = appBarStyles();
-  
     const [open, setOpen] = React.useState(false);
   
+    /**
+     * The handler method that handles when the button
+     * is clicked to open.
+     */
     const handleClickOpen = () => {
       setOpen(true);
     };
   
+    /**
+     * The handler method that handles when the button 
+     * is clicked to close.
+     */
     const handleClose = () => {
       setOpen(false);
     };
   
+    /**
+     * The components that make up the ContactButton.
+     */
     return (
       <div>
         <Button variant="outlined" className={classes.button} onClick={handleClickOpen}>
