@@ -8,7 +8,7 @@
  **Homepage**: 
   ![](src/components/assets/homepage.png)
  
- **Uploading a files**: 
+ **Uploading files**: 
    ![](src/components/assets/upload.gif)
  
  **Choose which operations to apply**: 
