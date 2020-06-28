@@ -6,6 +6,10 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import './Component.css';
 import { Button } from '@material-ui/core';
 
+/**
+ * Styles used to customize the upload button and 
+ * the file dropzone for upload.
+ */
 const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
@@ -58,9 +62,18 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+/**
+ * The upload button component that contains both the upload button
+ * and the file dropzone. The component collects and returns back 
+ * to the parent the accepted and rejected files.
+ * @param {Object} props the props used to pull information from the parent.
+ */
 export default function UploadButtons(props) {
   const classes = useStyles();
 
+  /**
+   * The components that make up the Upload Button.
+   */
   return (
     <div className={classes.root}>
       <Card elevation={0} className={classes.dropCard}>

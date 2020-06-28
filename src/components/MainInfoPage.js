@@ -6,6 +6,10 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { animateScroll as scroll } from "react-scroll";
 
+/**
+ * Styles used to customize text and other components within the
+ * MainInfoPage.
+ */
 const mainStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
@@ -56,13 +60,27 @@ const mainStyles = makeStyles((theme) => ({
       marginRight: theme.spacing(1),
       marginLeft: theme.spacing(11),
     },
-  }));
+}));
   
+/**
+ * The MainInfoPage component.
+ */
 export default function MainInfoPage() {
+  /**
+   * The styles used in the components below.
+   */
   const classes = mainStyles();
+
+  /**
+   * Handler method that controlls the page scrolling.
+   */
   const scrollToTop = () => {
     scroll.scrollTo(6*window.screen.height/7);
   };
+
+  /**
+   * The components that make up the MainInfoPage.
+   */
   return (
     <div className={classes.root}>
       <Paper elevation={0} className='Logo' style={{ height: 2*window.screen.height/3, width: window.screen.width }}>

@@ -3,6 +3,7 @@
  * from the code.
  */
 export default class RmJavadocs {
+    
     /**
      * Default constructor of the RmJavadocs class.
      */

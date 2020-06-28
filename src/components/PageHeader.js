@@ -7,6 +7,9 @@ import Button from '@material-ui/core/Button';
 import ContactButton from './ContactButton';
 import './Component.css';
 
+/**
+ * The styles that are used to customize the page header.
+ */
 const appBarStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -18,10 +21,20 @@ const appBarStyles = makeStyles((theme) => ({
     button: {
       color: '#6493a1',
     }
-  }));
+}));
   
+/**
+ * The PageHeader component.
+ */
 export default function PageHeader() {
+    /**
+     * The styles that are used for the components below.
+     */
     const classes = appBarStyles();
+    
+    /**
+     * The components that make up the PageHeader.
+     */
     return (
         <div className={classes.root}>
         <AppBar elevation={0} position="static" color='inherit'>

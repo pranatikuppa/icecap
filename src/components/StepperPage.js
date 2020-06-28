@@ -25,6 +25,9 @@ import Whitespaces from './Whitespaces';
 import Indentations from './Indentations';
 import RmJavadocs from './RmJavadocs';
 
+/**
+ * The styles that are used to customize the components below.
+ */
 const mainStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
@@ -35,7 +38,6 @@ const mainStyles = makeStyles((theme) => ({
       },
     },
 }));
-
 const useStyles = makeStyles((theme) => ({
     root: {
         color: '#6493a1',
@@ -69,6 +71,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+/**
+ * The styled toggle button that is customized according to the
+ * app theme.
+ */
 const StyledToggle = withStyles({
   root: {
     color: '#white',
@@ -97,10 +103,16 @@ const StyledToggle = withStyles({
   }
 })(ToggleButton);
   
+/**
+ * Method that returns the step headers for the main stepper.
+ */
 function getSteps() {
   return ['Choose a file', 'Choose operations', 'Download your file'];
 }
 
+/**
+ * The theme that is applied to the icons of the stepper.
+ */
 const iconTheme = createMuiTheme({
     props: {
         MuiStepIcon: {
@@ -117,16 +129,30 @@ const iconTheme = createMuiTheme({
     },
 });
 
+/**
+ * The vertical linear stepper component.
+ */
 function VerticalLinearStepper() {
+    /**
+     * The classes and the step variables that are used to track
+     * the state of the stepper.
+     */
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
 
+    /**
+     * The variables that are used to track the states of the different 
+     * alerts 
+     */
     const [operationOpen, setOperationOpen] = React.useState(false);
     const [fileOpen, setFileOpen] = React.useState(false);
     const [acceptedOpen, setAcceptedOpen] = React.useState(false);
     const [rejectedOpen, setRejectedOpen] = React.useState(false);
 
+    /**
+     * The variables that indicate which operations were selected.
+     */
     const [javaSelected, setJava] = React.useState(false);
     const [singleSelected, setSingle] = React.useState(false);
     const [multiSelected, setMulti] = React.useState(false);
@@ -134,16 +160,30 @@ function VerticalLinearStepper() {
     const [whiteSelected, setWhite] = React.useState(false);
     const [rmJavaSelected, setRmJavaSelected] = React.useState(false);
 
+    /**
+     * The variables that keep track of the updated file names, the accepted files,
+     * the rejected files and the fixed file contents.
+     */
     const [intialAcceptedFiles, setIntialAcceptedFiles] = React.useState([]);
     const [intialRejectedFiles, setIntialRejectedFiles] = React.useState([]);
     const [uploadedFiles, setUploadedFiles] = React.useState({});
     const [fixedFileContents, setFixedFileContents] = React.useState({});
     const [newFileNames, setNewFileNames] = React.useState([]);
 
+    /**
+     * Callback method that takes in the updated file name and replaces it
+     * within the new files state array.
+     * @param {String} oldName the old name of the file.
+     * @param {String} newName the new name of the file.
+     */
     function fileCallback(oldName, newName) {
       setNewFileNames(newFileNames.map(function(filename){return (filename === oldName ? newName : filename)}));
     }
 
+    /**
+     * Handler method that handles the click of the next 
+     * button during each step of the stepper.
+     */
     const handleButton = () => {
       if (activeStep === 0) {
         handleNext();
@@ -154,6 +194,11 @@ function VerticalLinearStepper() {
       }
     }
   
+    /**
+     * Handler method that handles the click of the next
+     * button specifically moving from the upload
+     * stage to the operation stage.
+     */
     const handleNext = () => {
       if (activeStep === 0) {
         if (uploadedFiles.length > 0) {
@@ -167,6 +212,10 @@ function VerticalLinearStepper() {
       }
     };
   
+    /**
+     * Handler method that handles the click of the back button
+     * based on which stage the user is on in the stepper.
+     */
     const handleBack = () => {
         if (activeStep === 1) {
           setJava(false);
@@ -192,6 +241,11 @@ function VerticalLinearStepper() {
         }
     };
 
+    /**
+     * Method that access the file contents and calls the resolve
+     * method to use the content accessed.
+     * @param {File} inputFile the file uploaded by the user.
+     */
     function fileAccessMethod(inputFile){
       return new Promise(
       function(resolve) {
@@ -206,6 +260,10 @@ function VerticalLinearStepper() {
       });
     }
 
+    /**
+     * Method that calls all the operations depending
+     * on which operations were selected.
+     */
     function performAll() {
       const java = new Javadocs();
       const single = new SingleLines();
@@ -243,6 +301,10 @@ function VerticalLinearStepper() {
       setFixedFileContents(contentList);
     }
 
+    /**
+     * Handler method that handles the run function and 
+     * displays alerts if no operations have been selected.
+     */
     const handleRun = () => {
       if (activeStep === 1) {
         if (!javaSelected && !singleSelected && !multiSelected && !whiteSelected && !indentSelected && !rmJavaSelected) {
@@ -255,6 +317,10 @@ function VerticalLinearStepper() {
       }
     }
 
+    /**
+     * Handler method that handles the downloading
+     * of all files.
+     */
     const handleDownloadAll = () => {
       var i;
       for (i = 0; i < newFileNames.length; i++) {
@@ -264,6 +330,12 @@ function VerticalLinearStepper() {
       }
     }
 
+    /**
+     * Helper method that downloads a single file using
+     * the filename and the content provided.
+     * @param {String} filename the name of the file.
+     * @param {String} text the content of the file.
+     */
     function download(filename, text) {
       var element = document.createElement('a');
       element.setAttribute('href', 'data:.java;charset=utf-8,' + encodeURIComponent(text));
@@ -277,6 +349,11 @@ function VerticalLinearStepper() {
       document.body.removeChild(element);
     }
   
+    /**
+     * Handler method that performs a reset on all
+     * state variables for reuse in a second round 
+     * of the stepper series.
+     */
     const handleReset = () => {
       setJava(false);
       setSingle(false);
@@ -304,6 +381,9 @@ function VerticalLinearStepper() {
       setActiveStep(0);
     };
 
+    /**
+     * StyledToggle used to create the Add Javadoc button.
+     */
     function JavadocToggle() {
         return (
           <StyledToggle value="javadoc" selected={javaSelected} onChange={() => {setJava(!javaSelected);}}>
@@ -312,6 +392,9 @@ function VerticalLinearStepper() {
         );
     }
 
+    /**
+     * StyledToggle used to create the Remove // Comments button.
+     */
     function SingleToggle() {
         return (
             <StyledToggle value="single" selected={singleSelected} onChange={() => {setSingle(!singleSelected);}}>
@@ -320,6 +403,9 @@ function VerticalLinearStepper() {
         );
     }
 
+    /**
+     * StyledToggle used to create the Remove /* Comments button.
+     */
     function MultiToggle() {
         return(
             <StyledToggle value="multi" selected={multiSelected} onChange={() => {setMulti(!multiSelected);}}>
@@ -328,6 +414,9 @@ function VerticalLinearStepper() {
         );
     }
 
+    /**
+     * StyledToggle used to create the Fix Whitespaces button.
+     */
     function WhitespaceToggle() {
         return(
           <StyledToggle value="whitespace" selected={whiteSelected} onChange={() => {setWhite(!whiteSelected);}}>
@@ -336,6 +425,9 @@ function VerticalLinearStepper() {
         );
     }
 
+    /**
+     * StyledToggle used to create the Fix Indentations button.
+     */
     function IndentationToggle() {
         return (
           <StyledToggle value="indent" selected={indentSelected} onChange={() => {setIndent(!indentSelected);}}>
@@ -344,6 +436,9 @@ function VerticalLinearStepper() {
         );
     }
 
+    /**
+     * StyledToggle used to create the Remove Javadocs button.
+     */
     function RmJavadocsToggle() {
       return (
         <StyledToggle value="rmJava" selected={rmJavaSelected} onChange={() => {setRmJavaSelected(!rmJavaSelected);}}>
@@ -352,6 +447,12 @@ function VerticalLinearStepper() {
       );
     }
 
+    /**
+     * Method that is called when files are added to the uploader. Both 
+     * rejected and accepted files are passed in for display.
+     * @param {FileList, Array} acceptedFiles the array of files or the list of accepted files.
+     * @param {FileList, Array} rejectedFiles the array of files or the list of rejected files.
+     */
     function onFileDrop(acceptedFiles, rejectedFiles) {
       acceptedFiles = Array.from(acceptedFiles);
       rejectedFiles = Array.from(rejectedFiles);
@@ -375,6 +476,11 @@ function VerticalLinearStepper() {
       }
     }
 
+    /**
+     * Returns a string representation of the list of files
+     * in order to display in the alert.
+     * @param {Array} list the list of files.
+     */
     function getFileList(list) {
       var fullString = "";
       var i;
@@ -385,11 +491,19 @@ function VerticalLinearStepper() {
       return fullString;
     }
   
+    /**
+     * Returns a string representation of the number of files
+     * that were rejected to display in the alert.
+     * @param {number} num the number of files.
+     */
     function getRejectFileList(num) {
       var fullString = "";
       return fullString + num + " file was not uploaded due to incorrect format";
     }
 
+    /**
+     * Returns the components that make up the first step in the stepper.
+     */
     function stepOne() {
       return (
         <Typography>
@@ -401,6 +515,9 @@ function VerticalLinearStepper() {
       );
     }
 
+    /**
+     * Returns the components that make up the second step in the stepper.
+     */
     function stepTwo() {
         return (
           <Typography>
@@ -422,6 +539,11 @@ function VerticalLinearStepper() {
         );
     }
 
+    /**
+     * Creates the file download components using the fixed
+     * file information and returns a list of the components to be 
+     * added to the third step in the stepper.
+     */
     function getFileDownloadComponents() {
       var i;
       var componentList = [];
@@ -436,6 +558,9 @@ function VerticalLinearStepper() {
       return componentList;
     }
     
+    /**
+     * Returns the components that make up the third step in the stepper.
+     */
     function stepThree() {
       return (
         <Typography>
@@ -448,6 +573,11 @@ function VerticalLinearStepper() {
       );
     }
 
+    /**
+     * Returns the content of each step based on the number
+     * of the step provided.
+     * @param {number} step the step number.
+     */
     function getStepContent(step) {
         switch (step) {
           case 0:
@@ -461,6 +591,10 @@ function VerticalLinearStepper() {
         }
     }
 
+    /**
+     * Returns the stepper that contains all the information
+     * and functionality to run the software UI.
+     */
     return (
       <div className={classes.root}>
         <Stepper activeStep={activeStep} orientation="vertical" style={{ backgroundColor: '#e3ecef'}}>
@@ -525,6 +659,10 @@ function VerticalLinearStepper() {
     );
   }
 
+  /**
+   * The stepper page itself, which is a paper that surrounds the 
+   * stepper and contains the vertical linear stepper widget.
+   */
 export default function StepperPage() {
     const classes = mainStyles();
   
