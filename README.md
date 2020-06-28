@@ -12,7 +12,7 @@
    ![](src/components/assets/upload.gif)
  
  **Choose which operations to apply**: 
-  ![](src/components/assets/choosing-operations.gif)
+  ![](src/components/assets/chooseops.gif)
  
  **Downloading a file**: 
  ![](src/components/assets/downloads.gif)
