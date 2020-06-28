@@ -9,8 +9,10 @@
   ![](src/components/assets/homepage.png)
  
  **Uploading a files**: 
+   ![](src/components/assets/uploads.gif)
  
  **Choose which operations to apply**: 
   ![](src/components/assets/choosing-operations.gif)
  
  **Downloading a file**: 
+ ![](src/components/assets/downloads.gif)
