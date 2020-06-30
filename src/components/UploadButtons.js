@@ -87,7 +87,7 @@ export default function UploadButtons(props) {
                     <div className='Dropzone'>
                     <p></p>
                     <CloudUploadIcon className={classes.icon} fontSize='large'></CloudUploadIcon>
-                    <p style={{ color: '#6493a1', whiteSpace: 'break-spaces' }}>Choose a file or drop it here</p>
+                    <p style={{ color: '#6493a1', whiteSpace: 'break-spaces' }}>Choose files or drop them here</p>
                     <p></p>
                     </div>
                   </div>:

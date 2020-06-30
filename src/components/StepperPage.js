@@ -107,7 +107,7 @@ const StyledToggle = withStyles({
  * Method that returns the step headers for the main stepper.
  */
 function getSteps() {
-  return ['Choose a file', 'Choose operations', 'Download your file'];
+  return ['Choose files', 'Choose operations', 'Download your file'];
 }
 
 /**
