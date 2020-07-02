@@ -3,6 +3,7 @@ import './App.css';
 import StepperPage from './components/StepperPage';
 import PageHeader from './components/PageHeader';
 import MainInfoPage from './components/MainInfoPage';
+import TutorialPage from './components/TutorialPage';
 
 /**
  * The main App for ICEcap. The component consists of the
@@ -14,6 +15,7 @@ class App extends Component {
       <div className='App-body'>
           <PageHeader></PageHeader>
           <MainInfoPage></MainInfoPage>
+          <TutorialPage></TutorialPage>
           <StepperPage></StepperPage>
       </div>
     );

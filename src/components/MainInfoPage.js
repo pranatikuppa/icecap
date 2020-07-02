@@ -60,6 +60,15 @@ const mainStyles = makeStyles((theme) => ({
       marginRight: theme.spacing(1),
       marginLeft: theme.spacing(11),
     },
+    button2: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      backgroundColor: 'white',
+      color: '#154854',
+      marginRight: theme.spacing(1),
+      marginLeft: theme.spacing(27),
+      marginBotton: theme.spacing(5),
+    }
 }));
   
 /**
@@ -72,10 +81,17 @@ export default function MainInfoPage() {
   const classes = mainStyles();
 
   /**
-   * Handler method that controlls the page scrolling.
+   * Handler method that controlls the page scroll to the software.
    */
-  const scrollToTop = () => {
-    scroll.scrollTo(6*window.screen.height/7);
+  const scrollToStart = () => {
+    scroll.scrollTo(1.65 * window.screen.height);
+  };
+
+  /**
+   * Handler method that controlls the page scroll to the tutorial.
+   */
+  const scrollToTutorial = () => {
+    scroll.scrollTo(0.85 * window.screen.height);
   };
 
   /**
@@ -93,14 +109,24 @@ export default function MainInfoPage() {
             We all have faced issues with the 200+ style check errors that appear right when we are ready to submit our CS 61B
             projects. In three easy steps below, you can get rid of many style check errors from your project.
           </Typography>
-            <Button
-                className={classes.button}
+          <Typography>
+              <Button
+                  className={classes.button}
+                  disableElevation
+                  variant='contained'
+                  onClick={scrollToStart}
+                >
+                  Start
+              </Button>
+              <Button
+                className={classes.button2}
                 disableElevation
                 variant='contained'
-                onClick={scrollToTop}
+                onClick={scrollToTutorial}
               >
-                Start
-            </Button>
+                Mini Tutorial
+              </Button>
+          </Typography>
         </div>
       </Paper>
     </div>
