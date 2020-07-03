@@ -1,4 +1,5 @@
 import React from 'react';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import { makeStyles } from '@material-ui/core/styles';
 import Dropzone from 'react-dropzone';
 import Card from '@material-ui/core/Card';
@@ -13,7 +14,7 @@ import { Button } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
-      margin: theme.spacing(1),
+      margin: theme.spacing(4),
     },
   },
   input: {
@@ -29,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   dropCard: {
-    width: '790px',
-    height: '160px',
+    width: '500px',
+    height: '560px',
     paddingTop: '20px',
     paddingLeft: '20px',
     paddingRight: '15px',
@@ -38,27 +39,27 @@ const useStyles = makeStyles((theme) => ({
   },
   dropCardBorder: {
     border: 'dashed',
-    borderColor: '#6493a1',
+    borderColor: '#D3D3D3',
     borderWidth: '2px',
-    width: '780px',
-    height: '150px',
+    width: '490px',
+    height: '550px',
   },
   defaultCardBorder: {
     border: 'dashed',
-    borderColor: '#D3D3D3',
+    borderColor: 'white',
     borderWidth: '2px',
-    width: '780px',
-    height: '150px',
-  },
-  listCard: {
-    color: '#154854',
-    width: '200px',
-    backgroundColor: '#6493a1',
-    padding: '10px',
-    alignContent: 'center',
+    width: '490px',
+    height: '550px',
   },
   icon: {
     color: '#6493a1'
+  },
+  textField: {
+      maxWidth: 490,
+      minWidth: 490,
+      minHeight: 550,
+      maxHeight: 550,
+      borderColor: '#6493a1',
   }
 }));
 
@@ -70,6 +71,16 @@ const useStyles = makeStyles((theme) => ({
  */
 export default function UploadButtons(props) {
   const classes = useStyles();
+  const [uploadedContent, setUploadedContent] = React.useState();
+  const [filesToDisplay, setFilesToDisplay] = React.useState();
+  const [fileTextList, setFileTextList] = React.useState();
+
+  function handleDrop(acceptFiles, rejectFiles) {
+      setFilesToDisplay(filesToDisplay);
+      var fileTexts = [];
+
+      props.onFileDropped(acceptFiles, rejectFiles);
+  }
 
   /**
    * The components that make up the Upload Button.
@@ -77,18 +88,29 @@ export default function UploadButtons(props) {
   return (
     <div className={classes.root}>
       <Card elevation={0} className={classes.dropCard}>
-        <Dropzone onClick={null} className={classes.dropCard} onDrop={props.onFileDropped} accept='.java'>
+        <Dropzone className={classes.dropCard} onDrop={handleDrop} accept='.java'>
           {({getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept, acceptedFiles, rejectedFiles}) => (
-            <section style={{ width: 780, height: 150 }}>
-              <div {...getRootProps()}>
+            <section style={{ width: 150, height: 490 }}>
+              <div {...getRootProps({onClick: event => event.stopPropagation()})}>
                 <input {...getInputProps()} />
                 {!isDragActive ? 
                   <div className={classes.defaultCardBorder}>
-                    <div className='Dropzone'>
-                    <p></p>
-                    <CloudUploadIcon className={classes.icon} fontSize='large'></CloudUploadIcon>
-                    <p style={{ color: '#6493a1', whiteSpace: 'break-spaces' }}>Choose files or drop them here</p>
-                    <p></p>
+                    <div className='Dropzone2'>
+                        <TextareaAutosize
+                            className={classes.textField}
+                            defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua."
+                        />
                     </div>
                   </div>:
                   <div className={classes.dropCardBorder}>
@@ -125,7 +147,7 @@ export default function UploadButtons(props) {
         onClick={() => {
           document.getElementById('contained-button-file').onchange = function(event) {
             var fileList = event.target.files;
-            props.onFileDropped(fileList, []);
+            handleDrop(fileList, []);
          }
         }}
         >

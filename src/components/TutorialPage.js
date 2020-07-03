@@ -10,7 +10,7 @@ const mainStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
         '& > *': {
-          margin: theme.spacing(7),
+          margin: theme.spacing(4),
           width: theme.spacing(window.screen.width),
           height: theme.spacing(window.screen.height),
         },
@@ -23,7 +23,7 @@ export default function TutorialPage() {
 
     return(
         <div className={classes.root}>
-            <Paper elevation={0} style={{ backgroundColor: '#e3ecef', height: 2*window.screen.height/3, width: window.screen.width }}>
+            <Paper elevation={0} style={{ backgroundColor: '#e3ecef', height: 4*window.screen.height/5, width: window.screen.width }}>
                 This is the tutorial page.
             </Paper>
         </div>

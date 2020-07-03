@@ -31,6 +31,15 @@
     flex-direction: column;
 }
 
+.Dropzone2 {
+    width: 490px;
+    height: 550px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
 .DownloadTextField {
     align-items: center;
     display: flex;

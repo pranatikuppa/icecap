@@ -14,9 +14,9 @@ const mainStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
       '& > *': {
-        margin: theme.spacing(7),
-        width: theme.spacing(window.screen.width),
-        height: theme.spacing(window.screen.height),
+        margin: theme.spacing(4),
+        width: window.screen.width,
+        height: window.screen.height,
       },
     },
     mainText: {
@@ -66,8 +66,9 @@ const mainStyles = makeStyles((theme) => ({
       backgroundColor: 'white',
       color: '#154854',
       marginRight: theme.spacing(1),
-      marginLeft: theme.spacing(27),
+      marginLeft: theme.spacing(11),
       marginBotton: theme.spacing(5),
+      marginTop: theme.spacing(5),
     }
 }));
   
@@ -84,14 +85,14 @@ export default function MainInfoPage() {
    * Handler method that controlls the page scroll to the software.
    */
   const scrollToStart = () => {
-    scroll.scrollTo(1.65 * window.screen.height);
+    scroll.scrollTo(1.75 * window.screen.height);
   };
 
   /**
    * Handler method that controlls the page scroll to the tutorial.
    */
   const scrollToTutorial = () => {
-    scroll.scrollTo(0.85 * window.screen.height);
+    scroll.scrollTo(0.875 * window.screen.height);
   };
 
   /**
@@ -99,7 +100,7 @@ export default function MainInfoPage() {
    */
   return (
     <div className={classes.root}>
-      <Paper elevation={0} className='Logo' style={{ height: 2*window.screen.height/3, width: window.screen.width }}>
+      <Paper elevation={0} className='Logo' style={{ height: 3*window.screen.height/4, width: window.screen.width }}>
         <div>  
           <Typography className={classes.mainText}>ICEcΔp</Typography>
           <Typography className={classes.subMainText}>

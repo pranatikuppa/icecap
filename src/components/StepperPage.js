@@ -32,12 +32,13 @@ const mainStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
       '& > *': {
-        margin: theme.spacing(7),
+        margin: theme.spacing(4),
         width: theme.spacing(window.screen.width),
         height: theme.spacing(window.screen.height),
       },
     },
 }));
+
 const useStyles = makeStyles((theme) => ({
     root: {
         color: '#6493a1',
