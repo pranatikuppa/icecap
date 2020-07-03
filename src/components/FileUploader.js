@@ -1,16 +1,17 @@
 import React from 'react';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Dropzone from 'react-dropzone';
 import Card from '@material-ui/core/Card';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import './Component.css';
 import { Button } from '@material-ui/core';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import InputBase from '@material-ui/core/InputBase';
 
-/**
- * Styles used to customize the upload button and 
- * the file dropzone for upload.
- */
 const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
@@ -60,33 +61,154 @@ const useStyles = makeStyles((theme) => ({
       minHeight: 550,
       maxHeight: 550,
       borderColor: '#6493a1',
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
   }
 }));
 
-/**
- * The upload button component that contains both the upload button
- * and the file dropzone. The component collects and returns back 
- * to the parent the accepted and rejected files.
- * @param {Object} props the props used to pull information from the parent.
- */
-export default function UploadButtons(props) {
+const CustomInput = withStyles((theme) => ({
+  root: {
+    'label + &': {
+      color: '#154854',
+      marginTop: theme.spacing(2),
+    },
+  },
+  input: {
+    borderRadius: 4,
+    position: 'relative',
+    backgroundColor: theme.palette.background.paper,
+    border: '1px solid #6493a1',
+    fontSize: 16,
+    padding: '10px 26px 10px 12px',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    '&:focus': {
+      borderRadius: 4,
+      borderColor: '#6493a1',
+      color: '#6493a1',
+    },
+  },
+})) (InputBase);
+
+const CustomInputLabel = withStyles((theme) => ({
+  root: {
+    color: '#808080',
+    '&:focus': {
+      color: '#6493a1',
+    }
+  },
+  focused: {
+    color: '#808080',
+    '&:focus': {
+      color: '#6493a1',
+    }
+  }
+})) (InputLabel);
+
+export default function FileUploader(props) {
+
   const classes = useStyles();
-  const [uploadedContent, setUploadedContent] = React.useState();
-  const [filesToDisplay, setFilesToDisplay] = React.useState();
-  const [fileTextList, setFileTextList] = React.useState();
+  const [index, setIndex] = React.useState(0);
+  const [uploadedFiles, setUploadedFiles] = React.useState([]);
+  const [originalFileTexts, setOriginalFileTexts] = React.useState([]);
+  const [display, setDisplay] = React.useState("");
 
-  function handleDrop(acceptFiles, rejectFiles) {
-      setFilesToDisplay(filesToDisplay);
-      var fileTexts = [];
+  const handleChange = (event) => {
+    setIndex(event.target.value);
+  };
 
-      props.onFileDropped(acceptFiles, rejectFiles);
+  function getDisplayText() {
+    if (uploadedFiles.length > 0) {
+      var inputFile = uploadedFiles[index];
+      fileAccessMethod(inputFile).then(function(fileText) {
+          var text = fileText;
+          setDisplay(text);
+      });
+      return display;
+    } else {
+      return "";
+    }
   }
 
-  /**
-   * The components that make up the Upload Button.
-   */
+  function fileAccessMethod(inputFile){
+    return new Promise(
+    function(resolve) {
+    var reader = new FileReader();
+    reader.onloadend = (function(reader)
+    {
+        return function() {
+        resolve(reader.result);
+        }
+    })(reader);
+    reader.readAsText(inputFile);
+    });
+  }
+
+  function handleDrop(acceptedFiles, rejectedFiles) {
+    setUploadedFiles(acceptedFiles);
+  }
+
+  function getOptions() {
+    if (uploadedFiles.length < 0) {
+      return <option aria-label='None' value=""></option>;
+    } else {
+      var options = [];
+      var i;
+      for (i = 0; i < uploadedFiles.length; i++) {
+        options.push(<option value={i}>{uploadedFiles[i].name}</option>)
+      }
+      return options;
+    }
+  }
+
   return (
     <div className={classes.root}>
+      <p>
+
+      </p>
+      <div style={{ whiteSpace: 'break-spaces', lineHeight: 4.5 }}>
+        <input
+          accept=".java"
+          className={classes.input}
+          id="contained-button-file"
+          multiple
+          type="file"
+        />
+        <label htmlFor="contained-button-file">
+          <Button 
+          variant="contained" 
+          component="span"
+          className={classes.button}
+          disableElevation
+          onClick={() => {
+            document.getElementById('contained-button-file').onchange = function(event) {
+            var fileList = event.target.files;
+            handleDrop(fileList, []);
+          }
+          }}
+          >
+            Upload Files
+          </Button>
+        </label>
+        <span>            </span>
+        <FormControl className={classes.formControl}>
+          <CustomInputLabel shrink htmlFor="outlined-age-native-simple">Select a file</CustomInputLabel>
+          <Select
+            native
+            value={index}
+            onChange={handleChange}
+            label="Age"
+            input={<CustomInput />}
+            inputProps={{
+              name: 'age',
+              id: 'outlined-age-native-simple',
+            }}
+          >
+            {getOptions()}
+          </Select>
+        </FormControl>
+      </div>
       <Card elevation={0} className={classes.dropCard}>
         <Dropzone className={classes.dropCard} onDrop={handleDrop} accept='.java'>
           {({getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept, acceptedFiles, rejectedFiles}) => (
@@ -96,25 +218,15 @@ export default function UploadButtons(props) {
                 {!isDragActive ? 
                   <div className={classes.defaultCardBorder}>
                     <div className='Dropzone2'>
-                        <TextareaAutosize
-                            className={classes.textField}
-                            defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua."
+                        <TextareaAutosize 
+                        rowsMin={550} 
+                        defaultValue={getDisplayText()} 
+                        className={classes.textField}
                         />
                     </div>
                   </div>:
                   <div className={classes.dropCardBorder}>
-                    <div className='Dropzone'>
+                    <div className='Dropzone2'>
                     <p></p>
                     <CloudUploadIcon className={classes.icon} fontSize='large'></CloudUploadIcon>
                     <p style={{ color: '#6493a1', whiteSpace: 'break-spaces' }}>Drop it here!</p>
@@ -127,34 +239,6 @@ export default function UploadButtons(props) {
           )}
         </Dropzone>
       </Card>
-      <p>
-
-      </p>
-      <div>
-      <input
-        accept=".java"
-        className={classes.input}
-        id="contained-button-file"
-        multiple
-        type="file"
-      />
-      <label htmlFor="contained-button-file">
-        <Button 
-        variant="contained" 
-        component="span"
-        className={classes.button}
-        disableElevation
-        onClick={() => {
-          document.getElementById('contained-button-file').onchange = function(event) {
-            var fileList = event.target.files;
-            handleDrop(fileList, []);
-         }
-        }}
-        >
-          Upload Files
-        </Button>
-      </label>
-    </div>
     </div>
   );
 }
