@@ -47,13 +47,13 @@ function MainApp() {
       <MainInfoPage></MainInfoPage>
       <TutorialPage></TutorialPage>
       <Grid component="label" container alignItems="center" spacing={1} className={classes.root}>
-        <Grid item>Stepper Wizard</Grid>
+        <Grid item>Static</Grid>
         <Grid item>
           <CustomSwitch
           onChange={handleSwitch}
           ></CustomSwitch>
         </Grid>
-        <Grid item>Live Editor</Grid>
+        <Grid item>Live</Grid>
       </Grid>
       {isStep ? 
       <StepperPage></StepperPage> :

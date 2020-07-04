@@ -27,7 +27,7 @@ const mainStyles = makeStyles((theme) => ({
       fontSize: '150px',
       fontFamily: 'Open-Sans',
       marginLeft: theme.spacing(10),
-      marginTop: theme.spacing(10),
+      marginTop: theme.spacing(14),
       marginRight: theme.spacing(1),
     },
     subMainText: {
@@ -110,14 +110,14 @@ export default function MainInfoPage() {
             We all have faced issues with the 200+ style check errors that appear right when we are ready to submit our CS 61B
             projects. In three easy steps below, you can get rid of many style check errors from your project.
           </Typography>
-          <Typography>
+          <div>
               <Button
                   className={classes.button}
                   disableElevation
                   variant='contained'
                   onClick={scrollToStart}
                 >
-                  Start
+                  Start Editing
               </Button>
               <Button
                 className={classes.button2}
@@ -127,7 +127,7 @@ export default function MainInfoPage() {
               >
                 Mini Tutorial
               </Button>
-          </Typography>
+          </div>
         </div>
       </Paper>
     </div>

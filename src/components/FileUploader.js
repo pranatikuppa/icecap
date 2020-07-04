@@ -91,27 +91,12 @@ const CustomInput = withStyles((theme) => ({
   },
 })) (InputBase);
 
-const CustomInputLabel = withStyles((theme) => ({
-  root: {
-    color: '#808080',
-    '&:focus': {
-      color: '#6493a1',
-    }
-  },
-  focused: {
-    color: '#808080',
-    '&:focus': {
-      color: '#6493a1',
-    }
-  }
-})) (InputLabel);
-
 export default function FileUploader(props) {
 
   const classes = useStyles();
   const [index, setIndex] = React.useState(0);
   const [uploadedFiles, setUploadedFiles] = React.useState([]);
-  const [originalFileTexts, setOriginalFileTexts] = React.useState([]);
+  const [fileTextList, setFileTextList] = React.useState([]);
   const [display, setDisplay] = React.useState("");
 
   const handleChange = (event) => {
@@ -123,11 +108,16 @@ export default function FileUploader(props) {
       var inputFile = uploadedFiles[index];
       fileAccessMethod(inputFile).then(function(fileText) {
           var text = fileText;
-          setDisplay(text);
+          setDisplay(fileText);
       });
-      return display;
+      return <TextareaAutosize 
+      rowsMin={550} 
+      className={classes.textField}
+      defaultValue={display}
+      >
+      </TextareaAutosize>;
     } else {
-      return "";
+      return <TextareaAutosize rowsMin={550} className={classes.textField}></TextareaAutosize>;
     }
   }
 
@@ -193,7 +183,7 @@ export default function FileUploader(props) {
         </label>
         <span>            </span>
         <FormControl className={classes.formControl}>
-          <CustomInputLabel shrink htmlFor="outlined-age-native-simple">Select a file</CustomInputLabel>
+          <InputLabel shrink htmlFor="outlined-age-native-simple">Select a file</InputLabel>
           <Select
             native
             value={index}
@@ -218,11 +208,7 @@ export default function FileUploader(props) {
                 {!isDragActive ? 
                   <div className={classes.defaultCardBorder}>
                     <div className='Dropzone2'>
-                        <TextareaAutosize 
-                        rowsMin={550} 
-                        defaultValue={getDisplayText()} 
-                        className={classes.textField}
-                        />
+                      {getDisplayText()}
                     </div>
                   </div>:
                   <div className={classes.dropCardBorder}>
