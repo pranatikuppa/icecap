@@ -97,27 +97,34 @@ export default function FileUploader(props) {
   const [index, setIndex] = React.useState(0);
   const [uploadedFileNames, setUploadedFileNames] = React.useState([]);
   const [fileTextList, setFileTextList] = React.useState([]);
-  const [display, setDisplay] = React.useState("");
+
+  const handleReset = (event) => {
+    setFileTextList([]);
+    setUploadedFileNames([]);
+    setIndex(0);
+  };
 
   const handleChange = (event) => {
     setIndex(event.target.value);
   };
 
+  const handleTextChange = (event) => {
+    var newText = event.target.value;
+    var temp = fileTextList;
+    temp[index] = newText;
+    setFileTextList(temp);
+  };
+
   function getDisplayText() {
     if (fileTextList.length > 0) {
-      // var inputFile = uploadedFiles[index];
-      // fileAccessMethod(inputFile).then(function(fileText) {
-      //     var text = fileText;
-      //     setDisplay(fileText);
-      // });
       return <TextareaAutosize 
       rowsMin={550} 
       className={classes.textField}
-      defaultValue={fileTextList[index]}
+      value={fileTextList[index]}
       >
       </TextareaAutosize>;
     } else {
-      return <TextareaAutosize rowsMin={550} className={classes.textField}></TextareaAutosize>;
+      return <TextareaAutosize onChange={handleTextChange} rowsMin={550} className={classes.textField}></TextareaAutosize>;
     }
   }
 
@@ -136,28 +143,26 @@ export default function FileUploader(props) {
   }
 
   function handleDrop(acceptedFiles, rejectedFiles) {
-    // setUploadedFiles(acceptedFiles);
+    setUploadedFileNames(acceptedFiles);
     var i;
     var texts = [];
-    var names = [];
     for(i = 0; i < acceptedFiles.length; i++) {
       var inputFile = acceptedFiles[i];
       fileAccessMethod(inputFile).then(function(fileText){
         texts.push(fileText);
       });
-      names.push(inputFile.name);
     }
     setFileTextList(texts);
   }
 
   function getOptions() {
-    if (uploadedFiles.length < 0) {
+    if (uploadedFileNames.length < 0) {
       return <option aria-label='None' value=""></option>;
     } else {
       var options = [];
       var i;
-      for (i = 0; i < uploadedFiles.length; i++) {
-        options.push(<option value={i}>{uploadedFiles[i].name}</option>)
+      for (i = 0; i < uploadedFileNames.length; i++) {
+        options.push(<option value={i}>{uploadedFileNames[i].name}</option>)
       }
       return options;
     }
@@ -209,6 +214,16 @@ export default function FileUploader(props) {
             {getOptions()}
           </Select>
         </FormControl>
+        <span>            </span>
+        <Button 
+          variant="contained" 
+          component="span"
+          className={classes.button}
+          disableElevation
+          onClick={handleReset}
+          >
+            Reset Files
+          </Button>
       </div>
       <Card elevation={0} className={classes.dropCard}>
         <Dropzone className={classes.dropCard} onDrop={handleDrop} accept='.java'>
