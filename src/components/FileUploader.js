@@ -13,11 +13,13 @@ import FormControl from '@material-ui/core/FormControl';
 import InputBase from '@material-ui/core/InputBase';
 import Collapse from '@material-ui/core/Collapse';
 import Alert from '@material-ui/lab/Alert';
+import IconButton from '@material-ui/core/IconButton';
+import Close from '@material-ui/icons/Close';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
-      margin: theme.spacing(4),
+      margin: theme.spacing(3),
     },
   },
   input: {
@@ -32,9 +34,18 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: '#537b86',
     },
   },
+  disableButton: {
+    backgroundColor: '#808080',
+    color: 'white',
+    marginTop: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    '&:hover': {
+      backgroundColor: '#808080',
+    },
+  },
   dropCard: {
     width: '500px',
-    height: '540px',
+    height: '520px',
     paddingTop: '20px',
     paddingLeft: '20px',
     paddingRight: '15px',
@@ -45,14 +56,14 @@ const useStyles = makeStyles((theme) => ({
     borderColor: '#D3D3D3',
     borderWidth: '2px',
     width: '490px',
-    height: '530px',
+    height: '510px',
   },
   defaultCardBorder: {
     border: 'dashed',
     borderColor: 'white',
     borderWidth: '2px',
     width: '490px',
-    height: '530px',
+    height: '510px',
   },
   icon: {
     color: '#6493a1'
@@ -60,8 +71,8 @@ const useStyles = makeStyles((theme) => ({
   textField: {
       maxWidth: 490,
       minWidth: 490,
-      minHeight: 530,
-      maxHeight: 530,
+      minHeight: 510,
+      maxHeight: 510,
       borderColor: '#6493a1',
   },
   formControl: {
@@ -102,13 +113,20 @@ export default function FileUploader(props) {
   const [isEditing, setIsEditing] = React.useState(true);
   const [display, setDisplay] = React.useState("");
   const [inputText, setInputText] = React.useState("");
+  const [openSave, setOpenSave] = React.useState(false);
+  const [openInfo, setOpenInfo] = React.useState(false);
 
   const handleEdit = (event) => {
+    setOpenSave(false);
     setIsEditing(!isEditing);
   };
 
   const handleChange = (event) => {
-    setIndex(event.target.value);
+    if (!isEditing) {
+      setIndex(event.target.value);
+    } else {
+      setOpenSave(true);
+    }
   };
 
   const handleTextChange = (event) => {
@@ -157,6 +175,7 @@ export default function FileUploader(props) {
   }
 
   function handleDrop(acceptedFiles, rejectedFiles) {
+    setOpenInfo(true);
     var i;
     var texts = [];
     for(i = 0; i < acceptedFiles.length; i++) {
@@ -230,16 +249,48 @@ export default function FileUploader(props) {
           </Select>
         </FormControl>
         <span>            </span>
+        {fileTextList.length === 0 && inputText === "" ?
         <Button 
-          variant="contained" 
-          component="span"
-          className={classes.button}
-          disableElevation
-          onClick={handleEdit}
-          >
-            {isEditing ? 'Save Text' : 'Edit Text'}
-          </Button>
+        variant="contained" 
+        component="span"
+        className={classes.disableButton}
+        disableElevation
+        disable
+        >
+          Edit Text
+        </Button> :
+        <Button 
+        variant="contained" 
+        component="span"
+        className={classes.button}
+        disableElevation
+        onClick={handleEdit}
+        >
+          {isEditing ? 'Save Text' : 'Edit Text'}
+        </Button>
+        }
       </div>
+      <Collapse in={openSave}>
+        <Alert variant="outlined" severity="error">
+          Please click the 'Save File' button before you switch to a different file.
+        </Alert>
+      </Collapse>
+      <Collapse in={openInfo}>
+        <Alert variant="outlined" severity="info" 
+        action={
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={() => {
+                setOpenInfo(false);
+              }}
+            >
+              <Close fontSize="inherit" />
+            </IconButton>}>
+          Use the 'Edit File' button in the top right to edit the file content displayed.
+        </Alert>
+      </Collapse>
       <Card elevation={0} className={classes.dropCard}>
         <Dropzone className={classes.dropCard} onDrop={handleDrop} accept='.java'>
           {({getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept, acceptedFiles, rejectedFiles}) => (

@@ -21,7 +21,7 @@ export default function EditorPage() {
 
     return(
         <div className={classes.root}>
-            <Paper elevation={0} style={{ backgroundColor: '#e3ecef', height: 6*window.screen.height/7, width: window.screen.width}}>
+            <Paper elevation={0} style={{ backgroundColor: '#e3ecef', height: 7*window.screen.height/8, width: window.screen.width}}>
                 <FileUploader></FileUploader>
             </Paper>
         </div>
