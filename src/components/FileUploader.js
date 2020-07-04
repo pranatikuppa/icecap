@@ -95,7 +95,7 @@ export default function FileUploader(props) {
 
   const classes = useStyles();
   const [index, setIndex] = React.useState(0);
-  const [uploadedFiles, setUploadedFiles] = React.useState([]);
+  const [uploadedFileNames, setUploadedFileNames] = React.useState([]);
   const [fileTextList, setFileTextList] = React.useState([]);
   const [display, setDisplay] = React.useState("");
 
@@ -139,11 +139,13 @@ export default function FileUploader(props) {
     // setUploadedFiles(acceptedFiles);
     var i;
     var texts = [];
+    var names = [];
     for(i = 0; i < acceptedFiles.length; i++) {
       var inputFile = acceptedFiles[i];
       fileAccessMethod(inputFile).then(function(fileText){
         texts.push(fileText);
       });
+      names.push(inputFile.name);
     }
     setFileTextList(texts);
   }
