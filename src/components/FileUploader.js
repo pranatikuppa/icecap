@@ -104,16 +104,16 @@ export default function FileUploader(props) {
   };
 
   function getDisplayText() {
-    if (uploadedFiles.length > 0) {
-      var inputFile = uploadedFiles[index];
-      fileAccessMethod(inputFile).then(function(fileText) {
-          var text = fileText;
-          setDisplay(fileText);
-      });
+    if (fileTextList.length > 0) {
+      // var inputFile = uploadedFiles[index];
+      // fileAccessMethod(inputFile).then(function(fileText) {
+      //     var text = fileText;
+      //     setDisplay(fileText);
+      // });
       return <TextareaAutosize 
       rowsMin={550} 
       className={classes.textField}
-      defaultValue={display}
+      defaultValue={fileTextList[index]}
       >
       </TextareaAutosize>;
     } else {
@@ -136,7 +136,16 @@ export default function FileUploader(props) {
   }
 
   function handleDrop(acceptedFiles, rejectedFiles) {
-    setUploadedFiles(acceptedFiles);
+    // setUploadedFiles(acceptedFiles);
+    var i;
+    var texts = [];
+    for(i = 0; i < acceptedFiles.length; i++) {
+      var inputFile = acceptedFiles[i];
+      fileAccessMethod(inputFile).then(function(fileText){
+        texts.push(fileText);
+      });
+    }
+    setFileTextList(texts);
   }
 
   function getOptions() {
