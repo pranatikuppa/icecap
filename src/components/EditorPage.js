@@ -2,7 +2,8 @@ import Paper from '@material-ui/core/Paper';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import FileUploader from './FileUploader';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import Button from '@material-ui/core/Button';
+import Operator from './Operator';
 
 const mainStyles = makeStyles((theme) => ({
     root: {
@@ -13,16 +14,35 @@ const mainStyles = makeStyles((theme) => ({
         height: theme.spacing(window.screen.height),
       },
     },
+    editorDiv: {
+        display: 'flex',
+        flex: 1,
+        flexDirection: 'row',
+    }
 }));
 
 export default function EditorPage() {
 
     const classes = mainStyles();
+    const [uploadedTextList, setUploadedTextList] = React.useState();
+    const [inputText, setInputText] = React.useState();
+
+    function uploadCallback(textList) {
+        setUploadedTextList(textList);
+    }
+
+    function inputCallback(text) {
+        setInputText(text);
+    }
 
     return(
         <div className={classes.root}>
-            <Paper elevation={0} style={{ backgroundColor: '#e3ecef', height: 7*window.screen.height/8, width: window.screen.width}}>
-                <FileUploader></FileUploader>
+            <Paper elevation={0} style={{ backgroundColor: '#e3ecef', height: 10*window.screen.height/11, width: window.screen.width}}>
+                <div className={classes.editorDiv}>
+                <FileUploader callback1={uploadCallback} callback2={inputCallback}></FileUploader>
+                <span>        </span>
+                <Operator></Operator>
+                </div>
             </Paper>
         </div>
     );

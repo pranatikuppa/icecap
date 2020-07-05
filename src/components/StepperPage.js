@@ -669,7 +669,7 @@ export default function StepperPage() {
   
     return(
       <div className={classes.root}>
-        <Paper elevation={0} style={{ backgroundColor: '#e3ecef', height: 6*window.screen.height/7, width: window.screen.width}}>
+        <Paper elevation={0} style={{ backgroundColor: '#e3ecef', height: 8*window.screen.height/9, width: window.screen.width}}>
             <VerticalLinearStepper>
             </VerticalLinearStepper>
         </Paper>

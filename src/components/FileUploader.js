@@ -90,19 +90,29 @@ const CustomInput = withStyles((theme) => ({
   },
   input: {
     borderRadius: 4,
-    position: 'relative',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: '#e3ecef',
     border: '1px solid #6493a1',
     fontSize: 16,
     padding: '10px 26px 10px 12px',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
     '&:focus': {
       borderRadius: 4,
       borderColor: '#6493a1',
-      color: '#6493a1',
+      color: '#154854',
     },
   },
 })) (InputBase);
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+        elevation: 0,
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+        },
+    },
+};
 
 export default function FileUploader(props) {
 
@@ -122,10 +132,12 @@ export default function FileUploader(props) {
   };
 
   const handleChange = (event) => {
-    if (!isEditing) {
-      setIndex(event.target.value);
-    } else {
-      setOpenSave(true);
+    if (uploadedFiles.length !== 0) {
+      if (!isEditing) {
+        setIndex(event.target.value);
+      } else {
+        setOpenSave(true);
+      }
     }
   };
 
@@ -133,9 +145,12 @@ export default function FileUploader(props) {
     var newText = event.target.value;
     if (fileTextList.length > 0) {
       var oldText = fileTextList[index];
-      setFileTextList(fileTextList.map(function(filetext){return (filetext === oldText ? newText : filetext)}));
+      var changedFileTextList = fileTextList.map(function(filetext){return (filetext === oldText ? newText : filetext)});
+      setFileTextList(changedFileTextList);
+      props.callback1(changedFileTextList);
     } else {
       setInputText(newText);
+      props.callback2(newText);
     }
   };
 
@@ -174,7 +189,7 @@ export default function FileUploader(props) {
     });
   }
 
-  function handleDrop(acceptedFiles, rejectedFiles) {
+  function handleDrop(acceptedFiles) {
     setOpenInfo(true);
     var i;
     var texts = [];
@@ -185,18 +200,21 @@ export default function FileUploader(props) {
       });
     }
     setFileTextList(texts);
-    setUploadedFiles(acceptedFiles);
+    props.callback1(texts);
+    setUploadedFiles(Array.from(acceptedFiles));
     setIsEditing(false);
+    setInputText("");
+    props.callback2("");
   }
 
   function getOptions() {
-    if (uploadedFiles.length < 0) {
-      return <option aria-label='None' value=""></option>;
+    if (uploadedFiles.length === 0) {
+      return <MenuItem value="">None</MenuItem>;
     } else {
       var options = [];
       var i;
       for (i = 0; i < uploadedFiles.length; i++) {
-        options.push(<option value={i}>{uploadedFiles[i].name}</option>)
+        options.push(<MenuItem value={i}>{uploadedFiles[i].name}</MenuItem>)
       }
       return options;
     }
@@ -233,17 +251,17 @@ export default function FileUploader(props) {
         </label>
         <span>            </span>
         <FormControl className={classes.formControl}>
-          <InputLabel shrink htmlFor="outlined-age-native-simple">Select a file</InputLabel>
+          <InputLabel shrink htmlFor="file-selector">Select a file</InputLabel>
           <Select
-            native
             value={index}
             onChange={handleChange}
-            label="Age"
+            label="File"
             input={<CustomInput />}
             inputProps={{
-              name: 'age',
-              id: 'outlined-age-native-simple',
+              name: 'file',
+              id: 'file-selector',
             }}
+            MenuProps={MenuProps}
           >
             {getOptions()}
           </Select>
@@ -272,7 +290,7 @@ export default function FileUploader(props) {
       </div>
       <Collapse in={openSave}>
         <Alert variant="outlined" severity="error">
-          Please click the 'Save File' button before you switch to a different file.
+          Please click the 'Save Text' button before you switch to a different file.
         </Alert>
       </Collapse>
       <Collapse in={openInfo}>
@@ -288,7 +306,7 @@ export default function FileUploader(props) {
             >
               <Close fontSize="inherit" />
             </IconButton>}>
-          Use the 'Edit File' button in the top right to edit the file content displayed.
+          Use the 'Edit Text' button in the top right to edit the file content displayed.
         </Alert>
       </Collapse>
       <Card elevation={0} className={classes.dropCard}>
