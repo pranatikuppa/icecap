@@ -267,7 +267,7 @@ export default function FileUploader(props) {
           </Select>
         </FormControl>
         <span>            </span>
-        {fileTextList.length === 0 || inputText === "" ?
+        {fileTextList.length === 0 || inputText !== "" ?
         <Button 
         variant="contained" 
         component="span"
