@@ -11,13 +11,18 @@ import Collapse from '@material-ui/core/Collapse';
 import Alert from '@material-ui/lab/Alert'
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Button from '@material-ui/core/Button';
+import RmJavadocs from './RmJavadocs';
+import SingleLines from './SingleLines';
+import MultiLines from './MultiLines';
+import Javadocs from './Javadocs';
+import Whitespaces from './Whitespaces';
 
 const CustomInput = withStyles((theme) => ({
     root: {
-      'label + &': {
+        'label + &': {
         color: '#154854',
         marginTop: theme.spacing(2),
-      },
+        },
     },
     input: {
         minWidth: 150,
@@ -117,16 +122,71 @@ const operations = [
     'Remove /* Comments', 'Add Javadocs', 'Fix Whitespaces'
 ];
 
-export default function Operator() {
+export default function Operator(props) {
 
     const [chosenOperations, setChosenOperations] = React.useState([]);
-    const [openOperation, setOpenOperation] = React.useState(false);
+    const [fixedText, setFixedText] = React.useState("");
     const classes = useStyles();
     const theme = useTheme();
+    const [display, setDisplay] = React.useState("");
+    const [isEditing, setIsEditing] = React.useState(true);
 
     const handleChange = (event) => {
         setChosenOperations(event.target.value);
     };
+
+    function getDisplayText() {
+        // if (fixedFileTexts.length === 0) {
+        //     setDisplay(fixedText);
+        //     return <TextareaAutosize 
+        //         rowsMin={550} 
+        //         className={classes.textField}
+        //         defaultValue={display}
+        //         >
+        //     </TextareaAutosize>;
+        // } else {
+        //     return <TextareaAutosize rowsMin={550}
+        //     className={classes.textField}></TextareaAutosize>
+        // }
+        if (!isEditing) {
+            return <TextareaAutosize
+            rowsMin={550}
+            className={classes.textField}
+            defaultValue={display}
+            ></TextareaAutosize>;
+        } else {
+            return <TextareaAutosize 
+            rowsMin={550}
+            className={classes.textField}>
+            </TextareaAutosize>;
+        }
+    }
+
+    function handleRun() {
+        var newText = props.originalText;
+        if (chosenOperations.indexOf("Remove Javadocs") !== -1) {
+            var rmJava = new RmJavadocs();
+            newText = rmJava.removeJavadocs(newText);
+        }
+        if (chosenOperations.indexOf("Remove // Comments") !== -1) {
+            var single = new SingleLines();
+            newText = single.removeSingleLines(newText);
+        }
+        if (chosenOperations.indexOf("Remove /* Comments") !== -1) {
+            var multi = new MultiLines();
+            newText = multi.removeMultiLines(newText);
+        }
+        if (chosenOperations.indexOf("Add Javadocs") !== -1) {
+            var java = new Javadocs();
+            newText = java.addJavadocs(newText);
+        }
+        if (chosenOperations.indexOf("Fix Whitespaces") !== -1) {
+            var whitespace = new Whitespaces();
+            newText = whitespace.fixWhitespaces(newText);
+        }
+        setDisplay(newText);
+        setFixedText(newText);
+    }
 
     return (
         <div className={classes.root} style={{ whiteSpace: 'break-spaces'}}>
@@ -138,20 +198,22 @@ export default function Operator() {
                 <InputLabel shrink htmlFor='operation-selector' id="operation-label">Select Operations</InputLabel>
                 <Select
                 autoWidth
+                defaultValue="Select Operations"
                 variant='outlined'
                 labelId="operation-label"
                 id="operation-chip"
                 multiple
                 value={chosenOperations}
                 onChange={handleChange}
-                input={<CustomInput />}
+                input={<CustomInput placeholder="Select Operations" />}
                 inputProps={{
                     name: 'operation',
                     id: 'operation-selector',
                 }}
                 renderValue={(selected) => (
                     <div className={classes.chips}>
-                    {selected.map((value) => (
+                    {selected.length !== 0 &&
+                    selected.map((value) => (
                         <Chip key={value} label={value} className={classes.chip}></Chip>
                     ))}
                     </div>
@@ -168,7 +230,7 @@ export default function Operator() {
             <span></span>
             <div style={{ padding: 28}}>
             {chosenOperations.length === 0 ? <Button className={classes.disableButton}>Run</Button> :
-            <Button className={classes.button}>Run</Button>}
+            <Button className={classes.button} onClick={handleRun}>Run</Button>}
             <span>   </span>
             <Button className={classes.button}>Download File</Button>
             </div>
@@ -177,12 +239,15 @@ export default function Operator() {
                 <span>    </span>
             </div>
             <Card elevation={0} className={classes.resultCard}>
-            <TextareaAutosize 
-                rowsMin={550} 
-                className={classes.textField}
-                value="Something random"
-                >
+            <div>
+            <TextareaAutosize
+            defaultValue={display}
+            className={classes.textField}
+            rowsMin={550}
+            >
+
             </TextareaAutosize>
+            </div>
             </Card>
         </div>
     );

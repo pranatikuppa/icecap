@@ -2,7 +2,6 @@ import Paper from '@material-ui/core/Paper';
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import FileUploader from './FileUploader';
-import Button from '@material-ui/core/Button';
 import Operator from './Operator';
 
 const mainStyles = makeStyles((theme) => ({
@@ -24,12 +23,7 @@ const mainStyles = makeStyles((theme) => ({
 export default function EditorPage() {
 
     const classes = mainStyles();
-    const [uploadedTextList, setUploadedTextList] = React.useState();
-    const [inputText, setInputText] = React.useState();
-
-    function uploadCallback(textList) {
-        setUploadedTextList(textList);
-    }
+    const [inputText, setInputText] = React.useState("");
 
     function inputCallback(text) {
         setInputText(text);
@@ -39,9 +33,9 @@ export default function EditorPage() {
         <div className={classes.root}>
             <Paper elevation={0} style={{ backgroundColor: '#e3ecef', height: 10*window.screen.height/11, width: window.screen.width}}>
                 <div className={classes.editorDiv}>
-                <FileUploader callback1={uploadCallback} callback2={inputCallback}></FileUploader>
+                <FileUploader callback={inputCallback}></FileUploader>
                 <span>        </span>
-                <Operator></Operator>
+                <Operator originalText={inputText}></Operator>
                 </div>
             </Paper>
         </div>

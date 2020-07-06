@@ -135,6 +135,7 @@ export default function FileUploader(props) {
     if (uploadedFiles.length !== 0) {
       if (!isEditing) {
         setIndex(event.target.value);
+        props.callback(fileTextList[event.target.value]);
       } else {
         setOpenSave(true);
       }
@@ -147,10 +148,10 @@ export default function FileUploader(props) {
       var oldText = fileTextList[index];
       var changedFileTextList = fileTextList.map(function(filetext){return (filetext === oldText ? newText : filetext)});
       setFileTextList(changedFileTextList);
-      props.callback1(changedFileTextList);
+      props.callback(changedFileTextList[index]);
     } else {
       setInputText(newText);
-      props.callback2(newText);
+      props.callback(newText);
     }
   };
 
@@ -160,6 +161,7 @@ export default function FileUploader(props) {
       fileAccessMethod(inputFile).then(function(fileText) {
         if (fileText === fileTextList[index]) {
           setDisplay(fileText);
+          props.callback(fileText);
         } else {
           setDisplay(fileTextList[index]);
         }
@@ -200,11 +202,9 @@ export default function FileUploader(props) {
       });
     }
     setFileTextList(texts);
-    props.callback1(texts);
     setUploadedFiles(Array.from(acceptedFiles));
     setIsEditing(false);
     setInputText("");
-    props.callback2("");
   }
 
   function getOptions() {
@@ -267,7 +267,7 @@ export default function FileUploader(props) {
           </Select>
         </FormControl>
         <span>            </span>
-        {fileTextList.length === 0 && inputText === "" ?
+        {fileTextList.length === 0 || inputText === "" ?
         <Button 
         variant="contained" 
         component="span"
