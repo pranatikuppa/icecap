@@ -6,12 +6,13 @@ import React from 'react';
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputBase from '@material-ui/core/InputBase';
-import Card from '@material-ui/core/Card';
+import DialogContent from '@material-ui/core/DialogContent';
 import Collapse from '@material-ui/core/Collapse';
-import Alert from '@material-ui/lab/Alert'
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import DialogTitle from '@material-ui/core/DialogTitle'
+import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import DialogActions from '@material-ui/core/DialogActions';
 import RmJavadocs from './RmJavadocs';
 import SingleLines from './SingleLines';
 import MultiLines from './MultiLines';
@@ -19,7 +20,9 @@ import Javadocs from './Javadocs';
 import Whitespaces from './Whitespaces';
 import AceEditor from 'react-ace';
 import "ace-builds/src-noconflict/mode-java";
-import "ace-builds/src-noconflict/theme-dawn";
+import "ace-builds/src-noconflict/theme-katzenmilch";
+import { diff as DiffEditor } from "react-ace";
+import { DialogContentText } from '@material-ui/core';
 
 const CustomInput = withStyles((theme) => ({
     root: {
@@ -150,12 +153,15 @@ export default function Operator(props) {
     const [display, setDisplay] = React.useState("");
     const [filename, setFilename] = React.useState("");
     const [openField, setOpenField] = React.useState(false);
+    const [openDiff, setOpenDiff] = React.useState(false);
+    const [diffVal, setDiffVal] = React.useState([]);
 
     const handleChange = (event) => {
         setChosenOperations(event.target.value);
     };
 
     function handleTextChange(newText) {
+        setDisplay(newText);
         setFixedText(newText);
     }
 
@@ -231,18 +237,18 @@ export default function Operator(props) {
         if (display === "") {
             return <AceEditor
             mode="java"
-            width="490px"
-            height="510px"
-            theme="dawn"
+            width="510px"
+            height="530px"
+            theme="katzenmilch"
             onChange={handleTextChange}
             >
             </AceEditor>;
         } else {
             return <AceEditor
-            theme="dawn"
+            theme="katzenmilch"
             mode="java"
-            width="490px"
-            height="510px"
+            width="510px"
+            height="530px"
             onChange={handleTextChange}
             value={display}
             >
@@ -250,10 +256,22 @@ export default function Operator(props) {
         }
     }
 
+    function handleDiffOpen() {
+        setDiffVal([props.originalText, fixedText]);
+        setOpenDiff(true);
+    }
+
+    function handleDiffClose() {
+        setOpenDiff(false);
+    }
+
+    function handleDiffChange(newVal) {
+        setDiffVal(newVal);
+    }
+
     return (
         <div className={classes.root} style={{ whiteSpace: 'break-spaces', lineHeight: 8}}>
             <p>
-
             </p>
             <FormControl className={classes.formControl}>
                 <InputLabel shrink htmlFor='operation-selector' id="operation-label">Select Operations</InputLabel>
@@ -289,32 +307,68 @@ export default function Operator(props) {
                 </Select>
             </FormControl>
             <p>
-
             </p>
-            
             <div style={{  flexDirection: 'row', display: 'flex'}}>
-            {getDisplayText()}
-            <span>           </span>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {chosenOperations.length === 0 || props.originalText === "" ? <Button className={classes.disableButton}>Run</Button> :
-            <Button className={classes.button} onClick={handleRun}>Run</Button>}
-            <p>
-            </p>
-            {fixedText !== "" ? <Button className={classes.button} onClick={() => {setOpenField(!openField)}}>{openField ? 'Done' : 'Change Filename'}</Button> :
-            <Button className={classes.disableButton}>Change Filename</Button>}
-            <p>
-            </p>
-            <Collapse in={openField}>
-                <CssTextField 
-                onChange={handleFilenameChange}
-                id="outlined-required"
-                label="Enter filename"
-                variant="outlined">
-                </CssTextField>
-            </Collapse>
-            {fixedText !== "" ? <Button className={classes.button} onClick={handleDownload}>Download File</Button> :
-            <Button className={classes.disableButton}>Download File</Button>}
-            </div>
+                {getDisplayText()}
+                <span>           </span>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    {chosenOperations.length === 0 || props.originalText === "" ? <Button className={classes.disableButton}>Run</Button> :
+                    <Button className={classes.button} onClick={handleRun}>Run</Button>}
+                    <p>
+                    </p>
+                    {fixedText !== "" ? <Button className={classes.button} onClick={() => {setOpenField(!openField)}}>{openField ? 'Done' : 'Change Filename'}</Button> :
+                    <Button className={classes.disableButton}>Change Filename</Button>}
+                    <p>
+                    </p>
+                    <Collapse in={openField}>
+                        <CssTextField 
+                        onChange={handleFilenameChange}
+                        id="outlined-required"
+                        label="Enter filename"
+                        variant="outlined">
+                        </CssTextField>
+                    </Collapse>
+                    {fixedText !== "" ? <Button className={classes.button} onClick={handleDownload}>Download File</Button> :
+                    <Button className={classes.disableButton}>Download File</Button>}
+                    <p>
+                    </p>
+                    {fixedText !== "" ? <Button className={classes.button} onClick={handleDiffOpen}>View Difference</Button> :
+                    <Button className={classes.disableButton}>View Difference</Button>}
+                    <Dialog
+                        maxWidth='lg'
+                        fullWidth
+                        PaperProps={{
+                            style: {
+                                height: 1000,
+                            }
+                        }}
+                        open={openDiff}
+                        onClose={handleDiffClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">{"View the differences in your code below:"}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>The highlighted lines show the differences between your original code (on the left) and the version fixed by ICEcap (on the right).</DialogContentText>
+                            <DiffEditor
+                            className={'codeMarker'}
+                            onChange={handleDiffChange}
+                            width="1000px"
+                            height="500px"
+                            value={diffVal}
+                            setOptions={{useWorker: false}}
+                            mode="java"
+                            theme="katzenmilch"
+                            >
+                            </DiffEditor>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button onClick={handleDiffClose} className={classes.button}>
+                            Close
+                        </Button>
+                        </DialogActions>
+                    </Dialog>
+                </div>
             </div>
         </div>
     );

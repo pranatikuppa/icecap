@@ -15,6 +15,7 @@ const mainStyles = makeStyles((theme) => ({
       marginLeft: theme.spacing(4),
     },
     color: '#154854',
+    width: 300,
   },
 }));
 
@@ -47,15 +48,15 @@ function MainApp() {
       <MainInfoPage></MainInfoPage>
       <TutorialPage></TutorialPage>
       <Grid component="label" container alignItems="center" spacing={1} className={classes.root}>
-        <Grid item>Static</Grid>
+        <Grid item>Live</Grid>
         <Grid item>
           <CustomSwitch
           onChange={handleSwitch}
           ></CustomSwitch>
         </Grid>
-        <Grid item>Live</Grid>
+        <Grid item>Static</Grid>
       </Grid>
-      {isStep ? 
+      {!isStep ? 
       <StepperPage></StepperPage> :
       <EditorPage></EditorPage>
       }

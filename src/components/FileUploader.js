@@ -1,5 +1,4 @@
 import React from 'react';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Dropzone from 'react-dropzone';
 import Card from '@material-ui/core/Card';
@@ -17,7 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Close from '@material-ui/icons/Close';
 import AceEditor from 'react-ace';
 import "ace-builds/src-noconflict/mode-java";
-import "ace-builds/src-noconflict/theme-dawn";
+import "ace-builds/src-noconflict/theme-katzenmilch";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,8 +47,8 @@ const useStyles = makeStyles((theme) => ({
   },
   dropCard: {
     backgroundColor: '#e3ecef',
-    width: '500px',
-    height: '520px',
+    width: '520px',
+    height: '530px',
     paddingTop: '20px',
     paddingLeft: '20px',
     paddingRight: '15px',
@@ -59,25 +58,18 @@ const useStyles = makeStyles((theme) => ({
     border: 'dashed',
     borderColor: '#6493a1',
     borderWidth: '2px',
-    width: '490px',
-    height: '510px',
+    width: '510px',
+    height: '530px',
   },
   defaultCardBorder: {
     border: 'dashed',
     borderColor: '#e3ecef',
     borderWidth: '2px',
-    width: '490px',
-    height: '510px',
+    width: '510px',
+    height: '530px',
   },
   icon: {
     color: '#6493a1'
-  },
-  textField: {
-      maxWidth: 490,
-      minWidth: 490,
-      minHeight: 510,
-      maxHeight: 510,
-      borderColor: '#6493a1',
   },
   formControl: {
     margin: theme.spacing(1),
@@ -126,7 +118,6 @@ export default function FileUploader(props) {
   const [fileTextList, setFileTextList] = React.useState([]);
   const [display, setDisplay] = React.useState("");
   const [inputText, setInputText] = React.useState("");
-  const [openInfo, setOpenInfo] = React.useState(false);
 
   const handleChange = (event) => {
     if (uploadedFiles.length !== 0) {
@@ -140,13 +131,14 @@ export default function FileUploader(props) {
     if (fileTextList.length > 0) {
       var oldText = fileTextList[index];
       var changedFileTextList = fileTextList.map(function(filetext){return (filetext === oldText ? newText : filetext)});
+      setDisplay(newText);
       setFileTextList(changedFileTextList);
       props.callback(changedFileTextList[index]);
       props.callbackFilename(uploadedFiles[index].name);
     } else {
       setInputText(newText);
       props.callback(newText);
-      props.callback("File1.java");
+      props.callbackFilename("File1.java");
     }
   };
 
@@ -163,9 +155,9 @@ export default function FileUploader(props) {
         }
       });
       return <AceEditor
-      theme="dawn"
-      width="490px"
-      height="510px"
+      theme="katzenmilch"
+      width="510px"
+      height="530px"
       value={display}
       onChange={handleTextChange}
       mode="java"
@@ -174,9 +166,9 @@ export default function FileUploader(props) {
     } else {
       return <AceEditor
       mode="java"
-      width="490px"
-      height="510px"
-      theme="dawn"
+      width="510px"
+      height="530px"
+      theme="katzenmilch"
       onChange={handleTextChange}
       >
       </AceEditor>;
@@ -198,7 +190,6 @@ export default function FileUploader(props) {
   }
 
   function handleDrop(acceptedFiles) {
-    setOpenInfo(true);
     var i;
     var texts = [];
     for(i = 0; i < acceptedFiles.length; i++) {
@@ -226,95 +217,82 @@ export default function FileUploader(props) {
   }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} style={{ whiteSpace: 'break-spaces', lineHeight: 4.8}}>
       <p>
-
       </p>
-      <div style={{ whiteSpace: 'break-spaces', lineHeight: 4.5 }}>
-        <input
-          accept=".java"
-          className={classes.input}
-          id="contained-button-file"
-          multiple
-          type="file"
-        />
-        <label htmlFor="contained-button-file">
-          <Button 
-          variant="contained" 
-          component="span"
-          className={classes.button}
-          disableElevation
-          onClick={() => {
-            document.getElementById('contained-button-file').onchange = function(event) {
-            var fileList = event.target.files;
-            handleDrop(fileList, []);
-          }
-          }}
-          >
-            Upload Files
-          </Button>
-        </label>
-        <span>            </span>
-        <FormControl className={classes.formControl}>
-          <InputLabel shrink htmlFor="file-selector">Select a file</InputLabel>
-          <Select
-            value={index}
-            onChange={handleChange}
-            label="File"
-            input={<CustomInput />}
-            inputProps={{
-              name: 'file',
-              id: 'file-selector',
-            }}
-            MenuProps={MenuProps}
-          >
-            {getOptions()}
-          </Select>
-        </FormControl>
-        <span>            </span>
-      </div>
-      <Collapse in={openInfo}>
-        <Alert variant="outlined" severity="info" 
-        action={
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
+        <div style={{ display: 'flex', flexDirection: 'row', flex: 1, }}>
+          <span>      </span>
+          <div>
+            <input
+              accept=".java"
+              className={classes.input}
+              id="contained-button-file"
+              multiple
+              type="file"
+            />
+            <label htmlFor="contained-button-file">
+              <Button 
+              variant="contained" 
+              component="span"
+              className={classes.button}
+              disableElevation
               onClick={() => {
-                setOpenInfo(false);
+                document.getElementById('contained-button-file').onchange = function(event) {
+                var fileList = event.target.files;
+                handleDrop(fileList, []);
+              }
               }}
-            >
-              <Close fontSize="inherit" />
-            </IconButton>}>
-          Edits will be saved automatically while switching between files.
-        </Alert>
-      </Collapse>
-      <Card elevation={0} className={classes.dropCard}>
-        <Dropzone className={classes.dropCard} onDrop={handleDrop} accept='.java'>
-          {({getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept, acceptedFiles, rejectedFiles}) => (
-            <section style={{ width: 150, height: 490 }}>
-              <div {...getRootProps({onClick: event => event.stopPropagation()})}>
-                <input {...getInputProps()} />
-                {!isDragActive ? 
-                  <div className={classes.defaultCardBorder}>
-                    <div className='Dropzone2'>
-                      {getDisplayText()}
+              >
+                Upload Files
+              </Button>
+            </label>
+          </div>
+          <span>           </span>
+          <div style={{ lineHeight: 6.2, whiteSpace: 'break-spaces'}}>
+            <FormControl className={classes.formControl}>
+              <InputLabel shrink htmlFor="file-selector">Select a file</InputLabel>
+              <Select
+                value={index}
+                onChange={handleChange}
+                label="File"
+                input={<CustomInput />}
+                inputProps={{
+                  name: 'file',
+                  id: 'file-selector',
+                }}
+                MenuProps={MenuProps}
+              >
+                {getOptions()}
+              </Select>
+            </FormControl>
+          </div>
+        </div>
+        <Card elevation={0} className={classes.dropCard}>
+          <Dropzone className={classes.dropCard} onDrop={handleDrop} accept='.java'>
+            {({getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept, acceptedFiles, rejectedFiles}) => (
+              <section style={{ width: 150, height: 490 }}>
+                <div {...getRootProps({onClick: event => event.stopPropagation()})}>
+                  <input {...getInputProps()} />
+                  {!isDragActive ? 
+                    <div className={classes.defaultCardBorder}>
+                      <div className='Dropzone2'>
+                        {getDisplayText()}
+                      </div>
+                    </div>:
+                    <div className={classes.dropCardBorder}>
+                      <div className='Dropzone2'>
+                      <p></p>
+                      <CloudUploadIcon className={classes.icon} fontSize='large'></CloudUploadIcon>
+                      <p style={{ color: '#6493a1', whiteSpace: 'break-spaces' }}>Drop it here!</p>
+                      <p></p>
+                      </div>
                     </div>
-                  </div>:
-                  <div className={classes.dropCardBorder}>
-                    <div className='Dropzone2'>
-                    <p></p>
-                    <CloudUploadIcon className={classes.icon} fontSize='large'></CloudUploadIcon>
-                    <p style={{ color: '#6493a1', whiteSpace: 'break-spaces' }}>Drop it here!</p>
-                    <p></p>
-                    </div>
-                  </div>
-                }
-              </div>
-            </section>
-          )}
-        </Dropzone>
-      </Card>
+                  }
+                </div>
+              </section>
+            )}
+          </Dropzone>
+        </Card>
     </div>
   );
 }
