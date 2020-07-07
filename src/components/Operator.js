@@ -13,6 +13,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
+import Typography from '@material-ui/core/Typography';
 import RmJavadocs from './RmJavadocs';
 import SingleLines from './SingleLines';
 import MultiLines from './MultiLines';
@@ -116,6 +117,14 @@ const useStyles = makeStyles((theme) => ({
             backgroundColor: '#808080',
         },
     },
+    subText: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        color: '#154854',
+        fontSize: '17px',
+        fontWeight: 400,
+        fontFamily: 'Open-Sans',
+      },
 }));
 
 function getStyles(operation, operationNames, theme) {
@@ -271,8 +280,7 @@ export default function Operator(props) {
 
     return (
         <div className={classes.root} style={{ whiteSpace: 'break-spaces', lineHeight: 8}}>
-            <p>
-            </p>
+            <p></p>
             <FormControl className={classes.formControl}>
                 <InputLabel shrink htmlFor='operation-selector' id="operation-label">Select Operations</InputLabel>
                 <Select

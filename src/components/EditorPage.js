@@ -3,6 +3,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import FileUploader from './FileUploader';
 import Operator from './Operator';
+import { Typography } from '@material-ui/core';
 
 const mainStyles = makeStyles((theme) => ({
     root: {
@@ -16,6 +17,19 @@ const mainStyles = makeStyles((theme) => ({
     editorDiv: {
         display: 'flex',
         flexDirection: 'row',
+    },
+    subText: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        color: '#154854',
+        fontSize: '17px',
+        fontWeight: 400,
+        fontFamily: 'Open-Sans',
+    },
+    paper: {
+        '& > *': {
+            margin: theme.spacing(3),
+        },
     }
 }));
 
@@ -35,7 +49,11 @@ export default function EditorPage() {
 
     return(
         <div className={classes.root}>
-            <Paper elevation={0} style={{ backgroundColor: '#e3ecef', height: 10*window.screen.height/11, width: window.screen.width}}>
+            <Paper className={classes.paper} elevation={0} style={{ backgroundColor: '#e3ecef', height: window.screen.height, width: window.screen.width}}>
+            <Typography className={classes.subText}>Upload files with the button or by dragging and dropping, or directly copy and paste your code in the textbox below. 
+            Choose 1 or more operations using the selector and click run. You can change the file name and edit the fixed code before downloading. Using the "View Difference" button
+             you can see highlighted differences between your original file and the fixed file.
+            </Typography>
                 <div className={classes.editorDiv}>
                 <FileUploader callback={inputCallback} callbackFilename={filenameCallback}></FileUploader>
                 <Operator originalText={inputText} fileName={filename}></Operator>

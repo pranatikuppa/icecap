@@ -10,10 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import InputBase from '@material-ui/core/InputBase';
-import Collapse from '@material-ui/core/Collapse';
-import Alert from '@material-ui/lab/Alert';
-import IconButton from '@material-ui/core/IconButton';
-import Close from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
 import AceEditor from 'react-ace';
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-katzenmilch";
@@ -74,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
-  }
+  },
 }));
 
 const CustomInput = withStyles((theme) => ({
@@ -217,9 +214,7 @@ export default function FileUploader(props) {
   }
 
   return (
-    <div className={classes.root} style={{ whiteSpace: 'break-spaces', lineHeight: 4.8}}>
-      <p>
-      </p>
+    <div className={classes.root} style={{ whiteSpace: 'break-spaces', lineHeight: 4.7}}>
         <div style={{ display: 'flex', flexDirection: 'row', flex: 1, }}>
           <span>      </span>
           <div>
