@@ -357,7 +357,7 @@ export default function Operator(props) {
                     >
                         <DialogTitle id="alert-dialog-title">{"View the differences in your code below:"}</DialogTitle>
                         <DialogContent>
-                            <DialogContentText>The highlighted lines show the differences between your original code (on the left) and the version fixed by ICEcap (on the right).</DialogContentText>
+                            <DialogContentText>The highlighted lines show the differences between your original code (on the left) and the version fixed by ICEcap (on the right). Making changes to either of the files will not change the file content in the live editor</DialogContentText>
                             <DiffEditor
                             className={'codeMarker'}
                             onChange={handleDiffChange}
