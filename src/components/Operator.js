@@ -17,6 +17,9 @@ import SingleLines from './SingleLines';
 import MultiLines from './MultiLines';
 import Javadocs from './Javadocs';
 import Whitespaces from './Whitespaces';
+import AceEditor from 'react-ace';
+import "ace-builds/src-noconflict/mode-java";
+import "ace-builds/src-noconflict/theme-dawn";
 
 const CustomInput = withStyles((theme) => ({
     root: {
@@ -152,8 +155,8 @@ export default function Operator(props) {
         setChosenOperations(event.target.value);
     };
 
-    const handleTextChange = (event) => {
-        setFixedText(event.target.value);
+    function handleTextChange(newText) {
+        setFixedText(newText);
     }
 
     function validateFilename(name) {
@@ -224,6 +227,29 @@ export default function Operator(props) {
         }
     }
 
+    function getDisplayText() {
+        if (display === "") {
+            return <AceEditor
+            mode="java"
+            width="490px"
+            height="510px"
+            theme="dawn"
+            onChange={handleTextChange}
+            >
+            </AceEditor>;
+        } else {
+            return <AceEditor
+            theme="dawn"
+            mode="java"
+            width="490px"
+            height="510px"
+            onChange={handleTextChange}
+            value={display}
+            >
+            </AceEditor>;
+        }
+    }
+
     return (
         <div className={classes.root} style={{ whiteSpace: 'break-spaces', lineHeight: 8}}>
             <p>
@@ -265,19 +291,9 @@ export default function Operator(props) {
             <p>
 
             </p>
+            
             <div style={{  flexDirection: 'row', display: 'flex'}}>
-            <Card elevation={0} className={classes.resultCard}>
-            <div>
-            <TextareaAutosize
-            defaultValue={display}
-            className={classes.textField}
-            rowsMin={550}
-            onChange={handleTextChange}
-            >
-
-            </TextareaAutosize>
-            </div>
-            </Card>
+            {getDisplayText()}
             <span>           </span>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
             {chosenOperations.length === 0 || props.originalText === "" ? <Button className={classes.disableButton}>Run</Button> :

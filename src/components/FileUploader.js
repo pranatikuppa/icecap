@@ -15,6 +15,9 @@ import Collapse from '@material-ui/core/Collapse';
 import Alert from '@material-ui/lab/Alert';
 import IconButton from '@material-ui/core/IconButton';
 import Close from '@material-ui/icons/Close';
+import AceEditor from 'react-ace';
+import "ace-builds/src-noconflict/mode-java";
+import "ace-builds/src-noconflict/theme-dawn";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   dropCard: {
+    backgroundColor: '#e3ecef',
     width: '500px',
     height: '520px',
     paddingTop: '20px',
@@ -53,14 +57,14 @@ const useStyles = makeStyles((theme) => ({
   },
   dropCardBorder: {
     border: 'dashed',
-    borderColor: '#D3D3D3',
+    borderColor: '#6493a1',
     borderWidth: '2px',
     width: '490px',
     height: '510px',
   },
   defaultCardBorder: {
     border: 'dashed',
-    borderColor: 'white',
+    borderColor: '#e3ecef',
     borderWidth: '2px',
     width: '490px',
     height: '510px',
@@ -120,31 +124,19 @@ export default function FileUploader(props) {
   const [index, setIndex] = React.useState(0);
   const [uploadedFiles, setUploadedFiles] = React.useState([]);
   const [fileTextList, setFileTextList] = React.useState([]);
-  const [isEditing, setIsEditing] = React.useState(true);
   const [display, setDisplay] = React.useState("");
   const [inputText, setInputText] = React.useState("");
-  const [openSave, setOpenSave] = React.useState(false);
   const [openInfo, setOpenInfo] = React.useState(false);
-
-  const handleEdit = (event) => {
-    setOpenSave(false);
-    setIsEditing(!isEditing);
-  };
 
   const handleChange = (event) => {
     if (uploadedFiles.length !== 0) {
-      if (!isEditing) {
-        setIndex(event.target.value);
-        props.callback(fileTextList[event.target.value]);
-        props.callbackFilename(uploadedFiles[event.target.value].name);
-      } else {
-        setOpenSave(true);
-      }
+      setIndex(event.target.value);
+      props.callback(fileTextList[event.target.value]);
+      props.callbackFilename(uploadedFiles[event.target.value].name);
     }
   };
 
-  const handleTextChange = (event) => {
-    var newText = event.target.value;
+  function handleTextChange(newText) {
     if (fileTextList.length > 0) {
       var oldText = fileTextList[index];
       var changedFileTextList = fileTextList.map(function(filetext){return (filetext === oldText ? newText : filetext)});
@@ -159,7 +151,7 @@ export default function FileUploader(props) {
   };
 
   function getDisplayText() {
-    if (!isEditing) {
+    if (uploadedFiles.length !== 0) {
       var inputFile = uploadedFiles[index];
       fileAccessMethod(inputFile).then(function(fileText) {
         if (fileText === fileTextList[index]) {
@@ -170,14 +162,24 @@ export default function FileUploader(props) {
           setDisplay(fileTextList[index]);
         }
       });
-      return <TextareaAutosize 
-      rowsMin={550} 
-      className={classes.textField}
+      return <AceEditor
+      theme="dawn"
+      width="490px"
+      height="510px"
       value={display}
+      onChange={handleTextChange}
+      mode="java"
       >
-      </TextareaAutosize>;
+      </AceEditor>;
     } else {
-      return <TextareaAutosize onChange={handleTextChange} rowsMin={550} className={classes.textField}></TextareaAutosize>;
+      return <AceEditor
+      mode="java"
+      width="490px"
+      height="510px"
+      theme="dawn"
+      onChange={handleTextChange}
+      >
+      </AceEditor>;
     }
   }
 
@@ -207,7 +209,6 @@ export default function FileUploader(props) {
     }
     setFileTextList(texts);
     setUploadedFiles(Array.from(acceptedFiles));
-    setIsEditing(false);
     setInputText("");
   }
 
@@ -271,32 +272,7 @@ export default function FileUploader(props) {
           </Select>
         </FormControl>
         <span>            </span>
-        {fileTextList.length === 0 || inputText !== "" ?
-        <Button 
-        variant="contained" 
-        component="span"
-        className={classes.disableButton}
-        disableElevation
-        disable
-        >
-          Edit Text
-        </Button> :
-        <Button 
-        variant="contained" 
-        component="span"
-        className={classes.button}
-        disableElevation
-        onClick={handleEdit}
-        >
-          {isEditing ? 'Save Text' : 'Edit Text'}
-        </Button>
-        }
       </div>
-      <Collapse in={openSave}>
-        <Alert variant="outlined" severity="error">
-          Please click the 'Save Text' button before you switch to a different file.
-        </Alert>
-      </Collapse>
       <Collapse in={openInfo}>
         <Alert variant="outlined" severity="info" 
         action={
@@ -310,7 +286,7 @@ export default function FileUploader(props) {
             >
               <Close fontSize="inherit" />
             </IconButton>}>
-          Use the 'Edit Text' button in the top right to edit the file content displayed.
+          Edits will be saved automatically while switching between files.
         </Alert>
       </Collapse>
       <Card elevation={0} className={classes.dropCard}>
