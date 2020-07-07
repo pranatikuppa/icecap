@@ -111,7 +111,6 @@ export default function(props) {
         <div className='DownloadTextField' style={{ whiteSpace: 'break-spaces', lineHeight: 4.5 }}>
             <CssTextField 
             onChange={handleChange}
-            required
             id="outlined-required"
             defaultValue={props.defaultFileName}
             variant="outlined">

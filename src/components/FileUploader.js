@@ -136,6 +136,7 @@ export default function FileUploader(props) {
       if (!isEditing) {
         setIndex(event.target.value);
         props.callback(fileTextList[event.target.value]);
+        props.callbackFilename(uploadedFiles[event.target.value].name);
       } else {
         setOpenSave(true);
       }
@@ -149,9 +150,11 @@ export default function FileUploader(props) {
       var changedFileTextList = fileTextList.map(function(filetext){return (filetext === oldText ? newText : filetext)});
       setFileTextList(changedFileTextList);
       props.callback(changedFileTextList[index]);
+      props.callbackFilename(uploadedFiles[index].name);
     } else {
       setInputText(newText);
       props.callback(newText);
+      props.callback("File1.java");
     }
   };
 
@@ -162,6 +165,7 @@ export default function FileUploader(props) {
         if (fileText === fileTextList[index]) {
           setDisplay(fileText);
           props.callback(fileText);
+          props.callbackFilename(uploadedFiles[index].name)
         } else {
           setDisplay(fileTextList[index]);
         }

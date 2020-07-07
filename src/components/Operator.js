@@ -11,6 +11,7 @@ import Collapse from '@material-ui/core/Collapse';
 import Alert from '@material-ui/lab/Alert'
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import RmJavadocs from './RmJavadocs';
 import SingleLines from './SingleLines';
 import MultiLines from './MultiLines';
@@ -27,7 +28,7 @@ const CustomInput = withStyles((theme) => ({
     input: {
         minWidth: 150,
         minHeight: 35,
-        maxWidth: 410,
+        maxWidth: 700,
         scrollBehavior: 'auto',
         borderRadius: 4,
         position: 'relative',
@@ -43,6 +44,21 @@ const CustomInput = withStyles((theme) => ({
         },
     },
   })) (InputBase);
+
+const CssTextField = withStyles({
+    root: {
+        maxWidth: 140,
+        minWidth: 140,
+        maxHeight: 40,
+        minHeight: 40,
+        '& .MuiOutlinedInput-root': {
+            '&.Mui-focused fieldset': {
+                borderColor: '#6493a1',
+            },
+            color: '#6493a1',
+        },
+    },
+}) (TextField);
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -129,37 +145,36 @@ export default function Operator(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [display, setDisplay] = React.useState("");
-    const [isEditing, setIsEditing] = React.useState(true);
+    const [filename, setFilename] = React.useState("");
+    const [openField, setOpenField] = React.useState(false);
 
     const handleChange = (event) => {
         setChosenOperations(event.target.value);
     };
 
-    function getDisplayText() {
-        // if (fixedFileTexts.length === 0) {
-        //     setDisplay(fixedText);
-        //     return <TextareaAutosize 
-        //         rowsMin={550} 
-        //         className={classes.textField}
-        //         defaultValue={display}
-        //         >
-        //     </TextareaAutosize>;
-        // } else {
-        //     return <TextareaAutosize rowsMin={550}
-        //     className={classes.textField}></TextareaAutosize>
-        // }
-        if (!isEditing) {
-            return <TextareaAutosize
-            rowsMin={550}
-            className={classes.textField}
-            defaultValue={display}
-            ></TextareaAutosize>;
+    const handleTextChange = (event) => {
+        setFixedText(event.target.value);
+    }
+
+    function validateFilename(name) {
+        var otherPattern = new RegExp("\\W");
+        if (name.trim() === "" || otherPattern.exec(name)) {
+            return filename;
         } else {
-            return <TextareaAutosize 
-            rowsMin={550}
-            className={classes.textField}>
-            </TextareaAutosize>;
+            name = name.replace(" ", "_");
+            if (!name.includes(".") && !name.includes(".java")) {
+                return name + ".java";
+            } else if (name.includes(".")) {
+                var dotIndex = name.indexOf(".", 0);
+                return name.substring(0, dotIndex) + ".java";
+            } else {
+                return name;
+            }
         }
+    }
+
+    const handleFilenameChange = (event) => {
+        setFilename(validateFilename(event.target.value));
     }
 
     function handleRun() {
@@ -188,12 +203,32 @@ export default function Operator(props) {
         setFixedText(newText);
     }
 
+    function download(filename, text) {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:.java;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+      
+        element.style.display = 'none';
+        document.body.appendChild(element);
+      
+        element.click();
+      
+        document.body.removeChild(element);
+    }
+
+    function handleDownload() {
+        if (filename === "") {
+            download(props.fileName, fixedText);
+        } else {
+            download(filename, fixedText);
+        }
+    }
+
     return (
-        <div className={classes.root} style={{ whiteSpace: 'break-spaces'}}>
+        <div className={classes.root} style={{ whiteSpace: 'break-spaces', lineHeight: 8}}>
             <p>
 
             </p>
-            <div style={{ whiteSpace: 'break-spaces', flex: 1, flexDirection: 'row', display: 'flex'}}>
             <FormControl className={classes.formControl}>
                 <InputLabel shrink htmlFor='operation-selector' id="operation-label">Select Operations</InputLabel>
                 <Select
@@ -227,28 +262,44 @@ export default function Operator(props) {
                 ))}
                 </Select>
             </FormControl>
-            <span></span>
-            <div style={{ padding: 28}}>
-            {chosenOperations.length === 0 ? <Button className={classes.disableButton}>Run</Button> :
-            <Button className={classes.button} onClick={handleRun}>Run</Button>}
-            <span>   </span>
-            <Button className={classes.button}>Download File</Button>
-            </div>
-            </div>
-            <div style={{ lineHeight: 2.8 }}>
-                <span>    </span>
-            </div>
+            <p>
+
+            </p>
+            <div style={{  flexDirection: 'row', display: 'flex'}}>
             <Card elevation={0} className={classes.resultCard}>
             <div>
             <TextareaAutosize
             defaultValue={display}
             className={classes.textField}
             rowsMin={550}
+            onChange={handleTextChange}
             >
 
             </TextareaAutosize>
             </div>
             </Card>
+            <span>           </span>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {chosenOperations.length === 0 || props.originalText === "" ? <Button className={classes.disableButton}>Run</Button> :
+            <Button className={classes.button} onClick={handleRun}>Run</Button>}
+            <p>
+            </p>
+            {fixedText !== "" ? <Button className={classes.button} onClick={() => {setOpenField(!openField)}}>{openField ? 'Done' : 'Change Filename'}</Button> :
+            <Button className={classes.disableButton}>Change Filename</Button>}
+            <p>
+            </p>
+            <Collapse in={openField}>
+                <CssTextField 
+                onChange={handleFilenameChange}
+                id="outlined-required"
+                label="Enter filename"
+                variant="outlined">
+                </CssTextField>
+            </Collapse>
+            {fixedText !== "" ? <Button className={classes.button} onClick={handleDownload}>Download File</Button> :
+            <Button className={classes.disableButton}>Download File</Button>}
+            </div>
+            </div>
         </div>
     );
 }
