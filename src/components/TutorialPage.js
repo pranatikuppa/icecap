@@ -52,6 +52,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 //titles for each of the tutorial sections
+//small change
 function getSteps() {
   return [
     "Preliminary",
