@@ -133,6 +133,7 @@ export default function FileUploader(props) {
       props.callback(changedFileTextList[index]);
       props.callbackFilename(uploadedFiles[index].name);
     } else {
+      setDisplay(newText);
       setInputText(newText);
       props.callback(newText);
       props.callbackFilename("File1.java");
@@ -166,6 +167,7 @@ export default function FileUploader(props) {
       width="510px"
       height="530px"
       theme="katzenmilch"
+      value={display}
       onChange={handleTextChange}
       >
       </AceEditor>;
