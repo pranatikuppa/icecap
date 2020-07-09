@@ -278,6 +278,11 @@ export default function Operator(props) {
         setDiffVal(newVal);
     }
 
+    function applyChanges() {
+        props.callback(diffVal[0]);
+        setFixedText(diffVal[1]);
+    }
+
     return (
         <div className={classes.root} style={{ whiteSpace: 'break-spaces', lineHeight: 8}}>
             <p></p>
@@ -357,23 +362,29 @@ export default function Operator(props) {
                     >
                         <DialogTitle id="alert-dialog-title">{"View the differences in your code below:"}</DialogTitle>
                         <DialogContent>
-                            <DialogContentText>The highlighted lines show the differences between your original code (on the left) and the version fixed by ICEcap (on the right). Making changes to either of the files will not change the file content in the live editor</DialogContentText>
-                            <DiffEditor
-                            className={'codeMarker'}
-                            onChange={handleDiffChange}
-                            width="1000px"
-                            height="500px"
-                            value={diffVal}
-                            setOptions={{useWorker: false}}
-                            mode="java"
-                            theme="katzenmilch"
-                            >
-                            </DiffEditor>
+                            <DialogContentText>The highlighted lines show the differences between your original code (on the left) and the version fixed by ICEcap (on the right). 
+                            Making changes within the text editors will show live updates on the changed lines and will not directly update the files in the live editor. Use the "Apply Changes" button to apply edits to the live editor.</DialogContentText>
+                            <div style={{ display: 'flex', flex: 1, flexDirection: 'row' }}>
+                                <DiffEditor
+                                className={'codeMarker'}
+                                onChange={handleDiffChange}
+                                width="1000px"
+                                height="500px"
+                                value={diffVal}
+                                setOptions={{useWorker: false}}
+                                mode="java"
+                                theme="katzenmilch"
+                                >
+                                </DiffEditor>
+                            </div>
                         </DialogContent>
                         <DialogActions>
                         <Button onClick={handleDiffClose} className={classes.button}>
                             Close
                         </Button>
+                        {diffVal[0] !== props.originalText || diffVal[1] !== fixedText ?
+                        <Button disabled className={classes.disableButton}>Apply Changes</Button> :
+                        <Button onClickclassName={classes.button}>Apply Changes</Button>}
                         </DialogActions>
                     </Dialog>
                 </div>
