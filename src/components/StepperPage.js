@@ -70,6 +70,9 @@ const useStyles = makeStyles((theme) => ({
     step: {
         color: '#154854',
     },
+    text: {
+      fontFamily: 'Open-Sans',
+    }
 }));
 
 /**
@@ -427,17 +430,6 @@ function VerticalLinearStepper() {
     }
 
     /**
-     * StyledToggle used to create the Fix Indentations button.
-     */
-    function IndentationToggle() {
-        return (
-          <StyledToggle value="indent" selected={indentSelected} onChange={() => {setIndent(!indentSelected);}}>
-              <FormatIndentIncreaseIcon /> Fix Indentations
-          </StyledToggle>
-        );
-    }
-
-    /**
      * StyledToggle used to create the Remove Javadocs button.
      */
     function RmJavadocsToggle() {
@@ -507,7 +499,7 @@ function VerticalLinearStepper() {
      */
     function stepOne() {
       return (
-        <Typography>
+        <Typography className={classes.text}>
             Upload files (.java file) for which you would like the program to clear style check errors:
             <p></p>
             <UploadButtons onFileDropped={onFileDrop}></UploadButtons>
@@ -521,7 +513,7 @@ function VerticalLinearStepper() {
      */
     function stepTwo() {
         return (
-          <Typography>
+          <Typography className={classes.text}>
               <p> Chooose the operations you want to perform on the .java files. The software will only apply
                  the selected operations on the contents of the .java files and you can download the fixed version
                  in the next step:
@@ -532,7 +524,6 @@ function VerticalLinearStepper() {
                   <SingleToggle></SingleToggle><span>    </span>
                   <MultiToggle></MultiToggle><span>    </span>
                   <WhitespaceToggle></WhitespaceToggle><span>    </span>
-                  <IndentationToggle></IndentationToggle><span>    </span>
                   <RmJavadocsToggle></RmJavadocsToggle>
                   <p></p>
               </div>
@@ -564,7 +555,7 @@ function VerticalLinearStepper() {
      */
     function stepThree() {
       return (
-        <Typography>
+        <Typography className={classes.text}>
           Enter a name for each file (without spaces) and download the files below. If you don't provide a name we will use the original file name
           to download your file.
           <p></p>

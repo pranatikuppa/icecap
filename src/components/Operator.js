@@ -110,12 +110,8 @@ const useStyles = makeStyles((theme) => ({
     },
     disableButton: {
         backgroundColor: '#808080',
-        color: 'white',
         marginTop: theme.spacing(1),
         marginRight: theme.spacing(1),
-        '&:hover': {
-            backgroundColor: '#808080',
-        },
     },
     subText: {
         display: 'flex',
@@ -275,12 +271,12 @@ export default function Operator(props) {
     }
 
     function handleDiffChange(newVal) {
-        setDiffVal(newVal);
+        setDiffVal([props.originalText, newVal[1]]);
     }
 
     function applyChanges() {
-        props.callback(diffVal[0]);
         setFixedText(diffVal[1]);
+        setDisplay(diffVal[1]);
     }
 
     return (
@@ -325,12 +321,12 @@ export default function Operator(props) {
                 {getDisplayText()}
                 <span>           </span>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    {chosenOperations.length === 0 || props.originalText === "" ? <Button className={classes.disableButton}>Run</Button> :
+                    {chosenOperations.length === 0 || props.originalText === "" ? <Button className={classes.disableButton} disabled>Run</Button> :
                     <Button className={classes.button} onClick={handleRun}>Run</Button>}
                     <p>
                     </p>
                     {fixedText !== "" ? <Button className={classes.button} onClick={() => {setOpenField(!openField)}}>{openField ? 'Done' : 'Change Filename'}</Button> :
-                    <Button className={classes.disableButton}>Change Filename</Button>}
+                    <Button disabled className={classes.disableButton}>Change Filename</Button>}
                     <p>
                     </p>
                     <Collapse in={openField}>
@@ -342,11 +338,11 @@ export default function Operator(props) {
                         </CssTextField>
                     </Collapse>
                     {fixedText !== "" ? <Button className={classes.button} onClick={handleDownload}>Download File</Button> :
-                    <Button className={classes.disableButton}>Download File</Button>}
+                    <Button disabled className={classes.disableButton}>Download File</Button>}
                     <p>
                     </p>
                     {fixedText !== "" ? <Button className={classes.button} onClick={handleDiffOpen}>View Difference</Button> :
-                    <Button className={classes.disableButton}>View Difference</Button>}
+                    <Button disabled className={classes.disableButton}>View Difference</Button>}
                     <Dialog
                         maxWidth='lg'
                         fullWidth
@@ -360,9 +356,9 @@ export default function Operator(props) {
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
                     >
-                        <DialogTitle id="alert-dialog-title">{"View the differences in your code below:"}</DialogTitle>
+                        <DialogTitle className={classes.subText} id="alert-dialog-title">{"View the differences in your code below:"}</DialogTitle>
                         <DialogContent>
-                            <DialogContentText>The highlighted lines show the differences between your original code (on the left) and the version fixed by ICEcap (on the right). 
+                            <DialogContentText className={classes.subText}>The highlighted lines show the differences between your original code (on the left) and the version fixed by ICEcap (on the right). 
                             Making changes within the text editors will show live updates on the changed lines and will not directly update the files in the live editor. Use the "Apply Changes" button to apply edits to the live editor.</DialogContentText>
                             <div style={{ display: 'flex', flex: 1, flexDirection: 'row' }}>
                                 <DiffEditor
@@ -379,12 +375,12 @@ export default function Operator(props) {
                             </div>
                         </DialogContent>
                         <DialogActions>
+                        {diffVal[1] === display || diffVal[1] === fixedText ?
+                        <Button disabled className={classes.disableButton}>Apply Changes</Button> :
+                        <Button onClick={applyChanges} className={classes.button}>Apply Changes</Button>}
                         <Button onClick={handleDiffClose} className={classes.button}>
                             Close
                         </Button>
-                        {diffVal[0] !== props.originalText || diffVal[1] !== fixedText ?
-                        <Button disabled className={classes.disableButton}>Apply Changes</Button> :
-                        <Button onClickclassName={classes.button}>Apply Changes</Button>}
                         </DialogActions>
                     </Dialog>
                 </div>

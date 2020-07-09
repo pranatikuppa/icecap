@@ -56,7 +56,7 @@ export default function EditorPage() {
             </Typography>
                 <div className={classes.editorDiv}>
                 <FileUploader callback={inputCallback} callbackFilename={filenameCallback}></FileUploader>
-                <Operator callback={inputCallback} originalText={inputText} fileName={filename}></Operator>
+                <Operator originalText={inputText} fileName={filename}></Operator>
                 </div>
             </Paper>
         </div>

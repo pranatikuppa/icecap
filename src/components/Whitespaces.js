@@ -19,8 +19,8 @@ export default class Whitespaces {
     var fileContent = "";
     var noSpaceBeforeKeywords = ["++", "--", ";", ")"];
     var noSpaceAfterKeywords = ["(", "!", "++", "--"];
-    var spaceBeforeKeywords = ["&&", "||", "{", "*", "+", "-", "/", "=", "==", "+=","-=", "assert", "catch", "do", "else", "finally", 
-    "for", "if", "return", "synchronized", "try", "while", "?", ":"];
+    var spaceBeforeKeywords = ["&&", "||", "{", "*", "+", "-", "/", "=", "==", "+=","-=", "catch", "do", "else", "finally", 
+    "synchronized", "?", ":"];
     var spaceAfterKeywords = ["&&", "||", ";", ",", "+", "/", "-", "*", "=", "+=", "==", "-=", "assert", "catch", "do", "else", "finally", 
     "for", "if", "return", "synchronized", "try", "while", "?", ":"];
     var i;
@@ -66,23 +66,23 @@ export default class Whitespaces {
           var indices = this.allIndices(line, item, ind, itemLen);
           var j;
           for (j = 0; j < numPotentialErrs; j++) {
-                if (!this.checkJavaDocInterfere(line)) {
-                    if (toWrite === "") {
-                  if (line.charAt(indices[j] - 1) === ' ') {
+            if (!this.checkJavaDocInterfere(line)) {
+              if (toWrite === "") {
+                if (line.charAt(indices[j] - 1) === ' ') {
                   toWrite = line.substring(0, indices[j]).trimRight();
                   toWrite += line.substring(indices[j]);
                   indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
                   changed = true;
-                  }
-                } else {
-                  var temp;
-                  temp = toWrite.substring(indices[j]);
-                  toWrite = toWrite.substring(0, indices[j]).trimRight();
-                  toWrite += temp;
-                  indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
-                  changed = true;
                 }
+              } else {
+                var temp;
+                temp = toWrite.substring(indices[j]);
+                toWrite = toWrite.substring(0, indices[j]).trimRight();
+                toWrite += temp;
+                indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
+                changed = true;
               }
+            }
           }
           if (toWrite !== "") {
             fileContent += toWrite;

@@ -12,6 +12,8 @@ import { animateScroll as scroll } from "react-scroll";
 import { makeStyles, withStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import StepConnector from '@material-ui/core/StepConnector';
+import Alert from '@material-ui/lab/Alert';
+import AlertTitle from '@material-ui/lab/AlertTitle';
 
 const mainStyles = makeStyles((theme) => ({
   stepperRoot: {
@@ -56,40 +58,189 @@ const mainStyles = makeStyles((theme) => ({
   stepLabel: {
     color: '#6493a1',
     fontFamily: 'Open-Sans',
+  },
+  stepPaper: {
+    width: 1290,
+    height: 400,
+    padding: theme.spacing(3),
+    backgroundColor: '#FFFFFF',
+  },
+  headingText: {
+    fontFamily: 'Open-Sans',
+    color: '#154854',
+    fontWeight: 600,
+    fontSize: '20px',
+  },
+  normalText: {
+    fontFamily: 'Open-Sans',
+    color: '#154854',
+  },
+  code: {
+    backgroundColor: '#000000',
+    color: '#00FF00',
   }
 }));
 
 function getSteps() {
   return [
-    "Preliminary",
-    "Uploading",
+    "Using CS 61B Materials",
+    "Uploading Files",
     "Selecting Operations",
     "Downloading",
     "Final Steps"
   ];
 }
 
-function getStepContent(stepIndex) {
-  switch (stepIndex) {
-    case 0:
-      return "check errors";
-    case 1:
-      return "upload";
-    case 2:
-      return "choose stuff";
-    case 3:
-      return "you download";
-    case 4:
-      return "check before turn in";
-    default:
-      return "Unknown stepIndex";
-  }
-}
-
 function HorizontalLabelPositionBelowStepper() {
   const classes = mainStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
+
+  function stepOne() {
+    return (
+      <div>
+        {/* JUST CHECK THE TEXT AND MATCH IT UP AND REPLACE WHATEVER YOU NEED. IF YOU WANT THE COOL CODE STYLE JUST COPY THE
+        TAGS AROUND THE MAKE STYLE TEXT AND USE IT FOR WHATEVER SEGMENTS OF TEXT YOU WANT IT LIKE THAT
+
+        FOR THE HEADING STYLE TEXT VERSUS THE NORMAL TEXT REPLACE "className={classes.normalText}" with 
+        "className={classes.headingText}". IF YOU RUN INTO ISSUES WITH THIS ONE LEMME KNOW. 
+
+        TO ADD SPACES BETWEEN SECTIONS OR OBJECTS JUST ADD <p></p> LIKE I DID. IT'S CHEATING BUT THE LINE HEIGHT STUFF
+        NEVER WORKS SMH.
+
+ */}
+        <Paper elevation ={0} className={classes.stepPaper}>
+          <Alert severity="warning" variant="outlined">
+            <AlertTitle>Disclaimer:</AlertTitle>
+            ICEcap does not claim to be a be-all, end-all editing service. We <strong>highly </strong> 
+            recommend manually checking your code, and using the class provided review mechanisms (make style, make check) before
+            turning in your code. Under no circumstance should you turn in your code <strong>only</strong> after running it through ICEcap.
+          </Alert>
+          <p></p>
+          <Typography className={classes.headingText}>Some Kind of Heading</Typography>
+          <p></p>
+          <Typography className={classes.normalText}>Use  <code className={classes.code}> make style</code> to get an idea of the kinds of errors your code has to better understand
+          what operations you might want to select.</Typography>
+          <Typography className={classes.normalText}>Some other text you would like to add here. copy over the code tags around the text parts you wanna
+            make into code format.
+          </Typography>
+        </Paper>
+      </div>
+    );
+  }
+
+  function stepTwo() {
+    return(
+      <div>
+        {/* GO TO THE FILE Component.css WITHIN THE COMPONENTS FOLDER. I WROTE OUT INSTRUCTIONS TO REPLACE GIFS. 
+          TEXT SHOULD BE EASIER TO REPLACE JUST FOLLOW WHERE THE TEXTS MATCH UP FROM THE SCREEN AND THE 
+          WIDGETS. */}
+        <Paper elevation={0} className={classes.stepPaper}>
+          <div style={{display: 'flex', flexDirection: 'row', whiteSpace: 'break-spaces', lineHeight: 3}}>
+            <div style={{ lineHeight: 3, whiteSpace: 'break-spaces'}}>
+              <Typography className={classes.headingText}>Static</Typography>
+              <Typography className={classes.normalText}>add the description here!</Typography>
+              <p></p>
+              <Paper style={{ width: 625, height: 300}} className="OkGif" elevation={0}></Paper>
+            </div>
+            <span>      </span>
+            <div style={{ lineHeight: 3, whiteSpace: 'break-spaces'}}>
+              <Typography className={classes.headingText}>Live</Typography>
+              <Typography className={classes.normalText}>add the description here!</Typography>
+              <p></p>
+              <Paper style={{ width: 625, height: 300}} className="OkGif" elevation={0}></Paper>
+            </div>
+          </div>
+        </Paper>
+      </div>
+    );
+  }
+
+  function stepThree() {
+    return(
+      <div>
+        <Paper elevation={0} className={classes.stepPaper}>
+          <div style={{display: 'flex', flexDirection: 'row', whiteSpace: 'break-spaces', lineHeight: 3}}>
+            <div style={{ lineHeight: 3, whiteSpace: 'break-spaces'}}>
+              <Typography className={classes.headingText}>Static</Typography>
+              <Typography className={classes.normalText}>add the description here!</Typography>
+              <p></p>
+              <Paper style={{ width: 625, height: 300}} className="OkGif" elevation={0}></Paper>
+            </div>
+            <span>      </span>
+            <div style={{ lineHeight: 3, whiteSpace: 'break-spaces'}}>
+              <Typography className={classes.headingText}>Live</Typography>
+              <Typography className={classes.normalText}>add the description here!</Typography>
+              <p></p>
+              <Paper style={{ width: 625, height: 300}} className="OkGif" elevation={0}></Paper>
+            </div>
+          </div>
+        </Paper>
+      </div>
+    );
+  }
+
+  function stepFour() {
+    return(
+      <div>
+        <Paper elevation={0} className={classes.stepPaper}>
+          <div style={{display: 'flex', flexDirection: 'row', whiteSpace: 'break-spaces', lineHeight: 3}}>
+            <div style={{ lineHeight: 3, whiteSpace: 'break-spaces'}}>
+              <Typography className={classes.headingText}>Static</Typography>
+              <Typography className={classes.normalText}>add the description here!</Typography>
+              <p></p>
+              <Paper style={{ width: 625, height: 300}} className="OkGif" elevation={0}></Paper>
+            </div>
+            <span>      </span>
+            <div style={{ lineHeight: 3, whiteSpace: 'break-spaces'}}>
+              <Typography className={classes.headingText}>Live</Typography>
+              <Typography className={classes.normalText}>add the description here!</Typography>
+              <p></p>
+              <Paper style={{ width: 625, height: 300}} className="OkGif" elevation={0}></Paper>
+            </div>
+          </div>
+        </Paper>
+      </div>
+    );
+  }
+
+  function stepFive() {
+    return(
+      <div>
+        <Paper elevation={0} className={classes.stepPaper}>
+          <Typography className={classes.headingText}>Some Kind of Heading</Typography>
+          <p></p>
+          <Typography className={classes.normalText}>Make sure to run <code className={classes.code}>make style</code> and <code className={classes.code}>make check</code> before 
+          turning any final code that you have edited using our service, to ensure that no other issues have 
+          arisen! We’d also recommend using your manual testing (integration tests, unit tests, etc.) to confirm 
+          that your project/HW works as intended. </Typography>
+          <Typography className={classes.normalText}>
+          Good luck with your submission!
+          </Typography>
+          <Typography className={classes.normalText}>Some other text you would like to add here. copy over the code tags around the text parts you wanna
+            make into code format.
+          </Typography>
+        </Paper>
+      </div>
+    );
+  }
+
+  function getStepContent(stepIndex) {
+    switch (stepIndex) {
+      case 0:
+        return stepOne();
+      case 1:
+        return stepTwo();
+      case 2:
+        return stepThree();
+      case 3:
+        return stepFour();
+      case 4:
+        return stepFive();
+      default:
+        return "Unknown stepIndex";
+    }
+  }
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
