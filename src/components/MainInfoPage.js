@@ -90,7 +90,7 @@ export default function MainInfoPage() {
    * Handler method that controlls the page scroll to the software.
    */
   const scrollToStart = () => {
-    scroll.scrollTo(1.75 * window.screen.height);
+    scroll.scrollTo(1.73 * window.screen.height);
   };
 
   /**

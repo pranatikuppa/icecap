@@ -105,8 +105,11 @@ function HorizontalLabelPositionBelowStepper() {
         FOR THE HEADING STYLE TEXT VERSUS THE NORMAL TEXT REPLACE "className={classes.normalText}" with 
         "className={classes.headingText}". IF YOU RUN INTO ISSUES WITH THIS ONE LEMME KNOW. 
 
-        TO ADD SPACES BETWEEN SECTIONS OR OBJECTS JUST ADD <p></p> LIKE I DID. IT'S CHEATING BUT THE LINE HEIGHT STUFF
+        TO ADD LINE SPACES BETWEEN SECTIONS OR OBJECTS JUST ADD <p></p> LIKE I DID. IT'S CHEATING BUT THE LINE HEIGHT STUFF
         NEVER WORKS SMH.
+
+        ALSO SPECIFICALLY FOR THE ALERT IF YOU WANT THE USER TO BE ABLE TO CLOSE IT AFTER THEY READ IT LEMME KNOW ILL ADD
+        THAT
 
  */}
         <Paper elevation ={0} className={classes.stepPaper}>
@@ -250,9 +253,9 @@ function HorizontalLabelPositionBelowStepper() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
+  const handleScroll = () => {
+    scroll.scrollTo(1.73 * window.screen.height);
+  }
 
   const QontoConnector = withStyles({
     alternativeLabel: {
@@ -262,16 +265,16 @@ function HorizontalLabelPositionBelowStepper() {
     },
     active: {
       '& $line': {
-        borderColor: '#784af4',
+        borderColor: '#6493a1',
       },
     },
     completed: {
       '& $line': {
-        borderColor: '#784af4',
+        borderColor: '#6493a1',
       },
     },
     line: {
-      borderColor: '#eaeaf0',
+      borderColor: '#CDCDCD',
       borderTopWidth: 3,
       borderRadius: 1,
     },
@@ -328,7 +331,7 @@ function HorizontalLabelPositionBelowStepper() {
 
   return (
     <div className={classes.stepperRoot}>
-      <Stepper alternativeLabel activeStep={activeStep} style={{ width: 1250, backgroundColor: '#e3ecef'}}>
+      <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />} style={{ width: 1250, backgroundColor: '#e3ecef'}}>
         {steps.map((label) => (
           <Step key={label}>
             <StepLabel StepIconComponent={QontoStepIcon}>{label}</StepLabel>
@@ -336,28 +339,21 @@ function HorizontalLabelPositionBelowStepper() {
         ))}
       </Stepper>
       <div>
-        {activeStep === steps.length ? (
+        <div>
+          <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
           <div>
-            <Typography className={classes.instructions}>All steps completed</Typography>
-            <Button onClick={handleReset}>Reset</Button>
+            <Button
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              className={classes.backButton}
+            >
+              Back
+            </Button>
+            {activeStep === steps.length - 1 ? 
+            <Button disableElevation variant="contained" className={classes.button} onClick={handleScroll}>Start Editing</Button>:
+            <Button disableElevation variant="contained" className={classes.button} onClick={handleNext}>Next</Button>}
           </div>
-        ) : (
-          <div>
-            <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
-            <div>
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                className={classes.backButton}
-              >
-                Back
-              </Button>
-              <Button disableElevation variant="contained" className={classes.button} onClick={handleNext}>
-                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-              </Button>
-            </div>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );
