@@ -19,27 +19,38 @@ export default class Whitespaces {
     var fileContent = "";
     var noSpaceBeforeKeywords = ["++", "--", ";", ")"];
     var noSpaceAfterKeywords = ["(", "!", "++", "--"];
-    var spaceBeforeKeywords = ["&&", "||", "{", "*", "+", "-", "/", "=", "==", "+=","-=", "catch", "do", "else", "finally", 
-    "synchronized", "?", ":"];
-    var spaceAfterKeywords = ["&&", "||", ";", ",", "+", "/", "-", "*", "=", "+=", "==", "-=", "assert", "catch", "do", "else", "finally", 
-    "for", "if", "return", "synchronized", "try", "while", "?", ":"];
+    var spaceBeforeChars = ["&&", "||", "{", "*", "+", "-", "/", "=", "==", "+=","-=", "?", ":"];
+    var spaceBeforeKeywords = ["catch", "do", "else", "finally", "synchronized"];
+    var spaceAfterChars = ["&&", "||", ";", ",", "+", "/", "-", "*", "=", "+=", "==", "-=", "?", ":"];
+    var spaceAfterKeywords = ["assert", "catch", "do", "else", "finally", 
+    "for", "if", "synchronized", "try", "while"];
+    //leaving 'return' out of it for the time being
     var i;
     for (i = 0; i < noSpaceBeforeKeywords.length; i++) {
-      var item = noSpaceBeforeKeywords[i];
-      fileContent = this.noSpaceBefore(content.split("\n"), item);
+      var item5 = noSpaceBeforeKeywords[i];
+      fileContent = this.noSpaceBefore(content.split("\n"), item5);
     }
     for (i = 0; i < noSpaceAfterKeywords.length; i++) {
-      var item = noSpaceAfterKeywords[i];
-      fileContent = this.noSpaceAfter(fileContent.split("\n"), item);
+      var item6 = noSpaceAfterKeywords[i];
+      fileContent = this.noSpaceAfter(fileContent.split("\n"), item6);
     }
-    for (i = 0; i < spaceBeforeKeywords.length; i++) {
-      var item = spaceBeforeKeywords[i];
-      fileContent = this.spaceBefore(fileContent.split("\n"), item);
-    }
-    for (i = 0; i < spaceAfterKeywords.length; i++) {
-      var item = spaceAfterKeywords[i];
-      fileContent = this.spaceAfter(fileContent.split("\n"), item);
-    }
+    // for (i = 0; i < spaceBeforeChars.length; i++) {
+    //   var item = spaceBeforeChars[i];
+    //   fileContent = this.spaceBefore(fileContent.split("\n"), item);
+    // }
+    // for (i = 0; i < spaceBeforeKeywords.length; i++) {
+    //   var item2 = spaceBeforeKeywords[i];
+    //   fileContent = this.spaceBefore(fileContent.split("\n"), item2);
+    // }
+    // for (i = 0; i < spaceAfterChars.length; i++) {
+    //   var item3 = spaceAfterChars[i];
+    //   fileContent = this.spaceAfter(fileContent.split("\n"), item3);
+    // }
+    // for (i = 0; i < spaceAfterKeywords.length; i++) {
+    //   var item4 = spaceAfterKeywords[i];
+    //   fileContent = this.spaceAfter(fileContent.split("\n"), item4);
+    // }
+    
     fileContent = this.removeTrailingBlank(fileContent.split("\n"));;
     return fileContent;
   }
@@ -59,7 +70,7 @@ export default class Whitespaces {
       var lineNum = 1;
       var i;
       for (i = 0; i < lines.length; i++) {
-          var line = lines[i];
+        var line = lines[i];
         if (line.includes(item)) {
           var ind = line.indexOf(item);
           var numPotentialErrs = this.numItems(line, item, itemLen);
@@ -86,6 +97,7 @@ export default class Whitespaces {
           }
           if (toWrite !== "") {
             fileContent += toWrite;
+            //look into what lineNum is and does?
             if (lineNum < numLines) {
               fileContent += "\n";
             }
@@ -394,27 +406,29 @@ export default class Whitespaces {
   partOfWord(line, item, ind) {
     var itemLen = item.length; 
     var letters = /^[A-Za-z]+$/; 
-
-    if (ind !== 0 && ind+itemLen+1 <= line.length-1) {
-      var strBefore = line.substring(ind-1, ind);
-      var strAfter = line.substring(ind+itemLen, ind+itemLen+1); 
-      
-      if (strBefore.match(letters) || strAfter.match(letters)) {
-        return true; 
-      } 
-    } else if (ind === 0) {
-      var strAfter = line.substring(ind+itemLen, ind+itemLen+1); 
-      if (strAfter.match(letters)) {
-        return true; 
+    var keywords = ["assert", "catch", "do", "else", "finally", "for", "if", "synchronized", "try", "while"];
+    if (keywords.indexOf(item) >= 0) {
+      if (ind !== 0 && ind+itemLen+1 <= line.length-1) {
+        var strBefore = line.substring(ind-1, ind);
+        var strAfter = line.substring(ind+itemLen, ind+itemLen+1); 
+        
+        if (strBefore.match(letters) || strAfter.match(letters)) {
+          return true; 
+        } 
+      } else if (ind === 0) {
+        var strAfter2 = line.substring(ind+itemLen, ind+itemLen+1); 
+        if (strAfter2.match(letters)) {
+          return true; 
+        }
+      } else if (ind+itemLen+1 > line.length-1) {
+        var strBefore2 = line.substring(ind-1, ind);
+        if (strBefore2.match(letters)) {
+          return true; 
+        }
       }
-    } else if (ind+itemLen+1 > line.length-1) {
-      var strBefore = line.substring(ind-1, ind);
-      if (strBefore.match(letters)) {
-        return true; 
-      }
-    }
+      return false; 
+    } 
     return false; 
-    
   }
 
   /**
@@ -431,8 +445,8 @@ export default class Whitespaces {
         && (line.charAt(ind + 1) === '+' || line.charAt(ind + 1) === '-'
         || line.charAt(ind + 1) === '=')) {
         return true;
-      } else if ((item === "+" && line.charAt(ind + 1) === '=') || item === "="
-          && line.charAt(ind - 1) === '+') {
+      } else if ((item === "+" && line.charAt(ind + 1) === '=') || (item === "="
+          && line.charAt(ind - 1) === '+')) {
           return true;
       } else if (item === "/" && line.charAt(ind + 1) === '/') {
           return true;
@@ -555,7 +569,6 @@ export default class Whitespaces {
    * @param {number} itemLen the item's length.
    */
   getProperAfter(line, ind, itemLen) {
-    var proper = "";
     if (ind !== line.length - 1 && (ind + itemLen) <= line.length - 1) {
       var portion = line.substring(0, ind + itemLen);
       var end = line.substring(ind + itemLen).trim();
