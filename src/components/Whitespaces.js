@@ -7,6 +7,7 @@ export default class Whitespaces {
    * Default constructor for the Whitespaces class.
    */
   constructor() {
+    this.wordPattern = new RegExp("^[A-Za-z]*$");
   }
 
   /**
@@ -16,7 +17,7 @@ export default class Whitespaces {
    * @param {String} content the content of the original file.
    */
   fixWhitespaces(content) {
-    var fileContent = "";
+    var fileContent = content;
     var noSpaceBeforeKeywords = ["++", "--", ";", ")"];
     var noSpaceAfterKeywords = ["(", "!", "++", "--"];
     var spaceBeforeChars = ["&&", "||", "{", "*", "+", "-", "/", "=", "==", "+=","-=", "?", ":"];
@@ -24,32 +25,25 @@ export default class Whitespaces {
     var spaceAfterChars = ["&&", "||", ";", ",", "+", "/", "-", "*", "=", "+=", "==", "-=", "?", ":"];
     var spaceAfterKeywords = ["assert", "catch", "do", "else", "finally", 
     "for", "if", "synchronized", "try", "while"];
-    //leaving 'return' out of it for the time being
     var i;
     for (i = 0; i < noSpaceBeforeKeywords.length; i++) {
-      var item5 = noSpaceBeforeKeywords[i];
-      fileContent = this.noSpaceBefore(content.split("\n"), item5);
+      fileContent = this.noSpaceBefore(fileContent.split("\n"), noSpaceBeforeKeywords[i]);
     }
     for (i = 0; i < noSpaceAfterKeywords.length; i++) {
-      var item6 = noSpaceAfterKeywords[i];
-      fileContent = this.noSpaceAfter(fileContent.split("\n"), item6);
+      fileContent = this.noSpaceAfter(fileContent.split("\n"), noSpaceAfterKeywords[i]);
     }
-    // for (i = 0; i < spaceBeforeChars.length; i++) {
-    //   var item = spaceBeforeChars[i];
-    //   fileContent = this.spaceBefore(fileContent.split("\n"), item);
-    // }
-    // for (i = 0; i < spaceBeforeKeywords.length; i++) {
-    //   var item2 = spaceBeforeKeywords[i];
-    //   fileContent = this.spaceBefore(fileContent.split("\n"), item2);
-    // }
-    // for (i = 0; i < spaceAfterChars.length; i++) {
-    //   var item3 = spaceAfterChars[i];
-    //   fileContent = this.spaceAfter(fileContent.split("\n"), item3);
-    // }
-    // for (i = 0; i < spaceAfterKeywords.length; i++) {
-    //   var item4 = spaceAfterKeywords[i];
-    //   fileContent = this.spaceAfter(fileContent.split("\n"), item4);
-    // }
+    for (i = 0; i < spaceBeforeChars.length; i++) {
+      fileContent = this.spaceBefore(fileContent.split("\n"), spaceBeforeChars[i]);
+    }
+    for (i = 0; i < spaceBeforeKeywords.length; i++) {
+      fileContent = this.spaceBefore(fileContent.split("\n"), spaceBeforeKeywords[i]);
+    }
+    for (i = 0; i < spaceAfterChars.length; i++) {
+      fileContent = this.spaceAfter(fileContent.split("\n"), spaceAfterChars[i]);
+    }
+    for (i = 0; i < spaceAfterKeywords.length; i++) {
+      fileContent = this.spaceAfter(fileContent.split("\n"), spaceAfterKeywords[i]);
+    }
     
     fileContent = this.removeTrailingBlank(fileContent.split("\n"));;
     return fileContent;
@@ -68,9 +62,15 @@ export default class Whitespaces {
       var changed = false;
       var numLines = lines.length;
       var lineNum = 1;
+      var newline = "";
       var i;
       for (i = 0; i < lines.length; i++) {
         var line = lines[i];
+        if (lineNum < numLines) {
+          newline = "\n";
+        } else {
+          newline = "";
+        }
         if (line.includes(item)) {
           var ind = line.indexOf(item);
           var numPotentialErrs = this.numItems(line, item, itemLen);
@@ -96,19 +96,12 @@ export default class Whitespaces {
             }
           }
           if (toWrite !== "") {
-            fileContent += toWrite;
-            //look into what lineNum is and does?
-            if (lineNum < numLines) {
-              fileContent += "\n";
-            }
+            fileContent += toWrite + newline;
           }
           toWrite = "";
         }
         if (!changed) {
-          fileContent += line;
-          if (lineNum < numLines) {
-            fileContent += "\n";
-          }
+          fileContent += line + newline;
         }
         changed = false;
         lineNum++;
@@ -129,45 +122,45 @@ export default class Whitespaces {
     var changed = false;
     var numLines = lines.length;
     var lineNum = 1;
+    var newline = "";
     var i;
     for (i = 0; i < numLines; i++) {
-        var line = lines[i];
+      var line = lines[i];
+      if (lineNum < numLines) {
+        newline = "\n";
+      } else {
+        newline = "";
+      }
       if (line.includes(item)) {
         var ind = line.indexOf(item);
         var numPotentialErrs = this.numItems(line, item, itemLen);
         var indices = this.allIndices(line, item, ind, itemLen);
         var j;
         for (j = 0; j < numPotentialErrs; j++) {
-              if (!this.checkJavaDocInterfere(line)) {
-                  if (toWrite === "") {
-                    if (line.charAt(indices[j] + 1) ===  ' ') {
-                        toWrite = line.substring(0, indices[j] + itemLen);
-                        toWrite += line.substring(indices[j] + itemLen).trimLeft();
-                        indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
-                        changed = true;
-                    }
-                  } else {
-                        var temp = toWrite.substring(indices[j] + itemLen).trimLeft();
-                        toWrite = toWrite.substring(0, indices[j] + itemLen);
-                        toWrite += temp;
-                        indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
-                        changed = true;
-                    } 
+          if (!this.checkJavaDocInterfere(line)) {
+            if (toWrite === "") {
+              if (line.charAt(indices[j] + 1) ===  ' ') {
+                  toWrite = line.substring(0, indices[j] + itemLen);
+                  toWrite += line.substring(indices[j] + itemLen).trimLeft();
+                  indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
+                  changed = true;
               }
+          } else {
+                var temp = toWrite.substring(indices[j] + itemLen).trimLeft();
+                toWrite = toWrite.substring(0, indices[j] + itemLen);
+                toWrite += temp;
+                indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
+                changed = true;
+            } 
+          }
         }
         if (toWrite !== "") {
-          fileContent += toWrite;
-          if (lineNum < numLines) {
-            fileContent += "\n";
-          }
+          fileContent += toWrite + newline;
         }
         toWrite = "";
       }
       if (!changed) {
-        fileContent += line;
-        if (lineNum < numLines) {
-            fileContent += "\n";
-        }
+        fileContent += line + newline;
       }
       changed = false;
       lineNum++;
@@ -189,9 +182,15 @@ export default class Whitespaces {
     var proper = "";
     var numLines = lines.length;
     var lineNum = 1;
+    var newline = "";
     var i;
     for (i = 0; i < numLines; i++) {
-        var line = lines[i];
+      var line = lines[i];
+      if (lineNum < numLines) {
+        newline = "\n";
+      } else {
+        newline = "";
+      }
       if (line.includes(item)) {
         var ind = line.indexOf(item);
         var numPotentialErrs = this.numItems(line, item, itemLen);
@@ -202,7 +201,7 @@ export default class Whitespaces {
             if (toWrite === "") {
               proper = this.getProperBefore(line, ind);
               if (ind === 0 && !this.checkMult(line, item) 
-                && !this.checkMultiComment(line, item, indices[j])&& !this.partOfWord(line, item, indices[j])) {
+                && !this.checkMultiComment(line, item, indices[j]) && !this.partOfWord(line, item, indices[j])) {
                 toWrite = line.substring(0, indices[j]); 
                 toWrite += " " + line.substring(indices[j]); 
                 indices = this.allIndices(toWrite, item, toWrite.indexOf(item), itemLen);
@@ -236,18 +235,12 @@ export default class Whitespaces {
           }
         }
         if (toWrite !== "") {
-          fileContent += toWrite;
-          if (lineNum < numLines) {
-            fileContent += "\n";
-          }
+          fileContent += toWrite + newline;
         }
         toWrite = "";
       }
       if (!changed) {
-        fileContent += line;
-        if (lineNum < numLines) {
-            fileContent += "\n";
-        }
+        fileContent += line + newline;
       }
       changed = false;
       lineNum++;
@@ -269,8 +262,14 @@ export default class Whitespaces {
     var numLines = lines.length;
     var lineNum = 1;
     var i;
+    var newline = "";
     for (i = 0; i < numLines; i++) {
-        var line = lines[i];
+      var line = lines[i];
+      if (lineNum < numLines) {
+        newline = "\n";
+      } else {
+        newline = "";
+      }
       if (line.includes(item)) {
         var ind = line.indexOf(item);
         var numPotentialErrs = this.numItems(line, item, itemLen);
@@ -309,18 +308,12 @@ export default class Whitespaces {
                 }
               }
         if (toWrite !== ("")) {
-          fileContent += toWrite;
-          if (lineNum < numLines) {
-            fileContent += "\n";
-          }
+          fileContent += toWrite + newline;
         }
         toWrite = "";
       }
       if (!changed) {
-        fileContent += line;
-        if (lineNum < numLines) {
-            fileContent += "\n";
-        }
+        fileContent += line + newline;
       }
       changed = false;
       lineNum++;
@@ -350,8 +343,8 @@ export default class Whitespaces {
   numItems(line, item, itemLen) {
     var total = 0;
     var temp = line;
-    while (temp.includes(item) && !(temp.trim() === item)) {
-      total++;
+    while (temp.includes(item) && temp.trim() !== item) {
+      total += 1;
       var ind = temp.indexOf(item);
       if (itemLen === 1) {
         temp = temp.substring(ind + itemLen);
@@ -381,7 +374,7 @@ export default class Whitespaces {
       curr = ind + itemLen - 1;
     }
     var temp = line.substring(curr);
-    while (temp.includes(item) && !(temp.trim() === item)) {
+    while (temp.includes(item) && temp.trim() !== item) {
       curr += temp.indexOf(item);
       indices.push(curr);
       if (itemLen === 1) {
@@ -405,24 +398,24 @@ export default class Whitespaces {
    */
   partOfWord(line, item, ind) {
     var itemLen = item.length; 
-    var letters = /^[A-Za-z]+$/; 
+    // var letters = /^[A-Za-z]+$/; 
     var keywords = ["assert", "catch", "do", "else", "finally", "for", "if", "synchronized", "try", "while"];
-    if (keywords.indexOf(item) >= 0) {
+    if (keywords.includes(item)) {
       if (ind !== 0 && ind+itemLen+1 <= line.length-1) {
         var strBefore = line.substring(ind-1, ind);
         var strAfter = line.substring(ind+itemLen, ind+itemLen+1); 
         
-        if (strBefore.match(letters) || strAfter.match(letters)) {
+        if (this.wordPattern.exec(strBefore) || this.wordPattern.exec(strAfter)) {
           return true; 
         } 
       } else if (ind === 0) {
         var strAfter2 = line.substring(ind+itemLen, ind+itemLen+1); 
-        if (strAfter2.match(letters)) {
+        if (this.wordPattern.exec(strAfter2)) {
           return true; 
         }
       } else if (ind+itemLen+1 > line.length-1) {
         var strBefore2 = line.substring(ind-1, ind);
-        if (strBefore2.match(letters)) {
+        if (this.wordPattern.exec(strBefore2)) {
           return true; 
         }
       }
@@ -439,42 +432,44 @@ export default class Whitespaces {
    * @param {String} item the item to look for.
    */
   checkMult(line, item) {
-    var ind = line.indexOf(item);
-    if (ind !== 0 && ind !== (line.length-1)) {
-        if ((item === "+" || item === "-" || item === "=")
-        && (line.charAt(ind + 1) === '+' || line.charAt(ind + 1) === '-'
-        || line.charAt(ind + 1) === '=')) {
-        return true;
-      } else if ((item === "+" && line.charAt(ind + 1) === '=') || (item === "="
-          && line.charAt(ind - 1) === '+')) {
+    if (line.includes(item)) {
+      var ind = line.indexOf(item);
+      if (ind !== 0 && ind !== (line.length-1)) {
+          if ((item === "+" || item === "-" || item === "=")
+          && (line.charAt(ind + 1) === '+' || line.charAt(ind + 1) === '-'
+          || line.charAt(ind + 1) === '=')) {
           return true;
-      } else if (item === "/" && line.charAt(ind + 1) === '/') {
-          return true;
-      } else if (item === "/" && line.charAt(ind - 1) === '/') {
-          return true;
-      } else {
-          return false;
-      }
-    } else if (ind === 0) {
-      if ((item === "+" || item === "-" || item === "=")
-        && (line.charAt(ind + 1) === '+' || line.charAt(ind + 1) === '-'
-        || line.charAt(ind + 1) === '=')) {
-        return true;
-      } else if ((item === "+" && line.charAt(ind + 1) === '=')) {
-          return true;
-      } else if (item === "/" && line.charAt(ind + 1) === '/') {
-          return true;
-      } else {
-          return false;
-      }
-      } else if (ind !== (line.length-1)) {
-          if (item === "="
-            && line.charAt(ind - 1) === '+') {
+        } else if ((item === "+" && line.charAt(ind + 1) === '=') || (item === "="
+            && line.charAt(ind - 1) === '+')) {
             return true;
-      } else if (item === "/" && line.charAt(ind - 1) === '/') {
+        } else if (item === "/" && line.charAt(ind + 1) === '/') {
+            return true;
+        } else if (item === "/" && line.charAt(ind - 1) === '/') {
+            return true;
+        } else {
+            return false;
+        }
+      } else if (ind === 0) {
+        if ((item === "+" || item === "-" || item === "=")
+          && (line.charAt(ind + 1) === '+' || line.charAt(ind + 1) === '-'
+          || line.charAt(ind + 1) === '=')) {
           return true;
-      } else {
-          return false;
+        } else if ((item === "+" && line.charAt(ind + 1) === '=')) {
+            return true;
+        } else if (item === "/" && line.charAt(ind + 1) === '/') {
+            return true;
+        } else {
+            return false;
+        }
+        } else if (ind !== (line.length-1)) {
+            if (item === "="
+              && line.charAt(ind - 1) === '+') {
+              return true;
+        } else if (item === "/" && line.charAt(ind - 1) === '/') {
+            return true;
+        } else {
+            return false;
+        }
       }
     }
     return false;
@@ -488,14 +483,14 @@ export default class Whitespaces {
    */
   checkMultiSlash(line, ind) {
     if (line.trim() === "*/" || line.trim() === "/**" || line.trim() === "/*") {
-    return true; 
+      return true; 
     } else if (ind !== 0 && ind !== line.length-1) {
         if (line.charAt(ind + 1) === '*' || line.charAt(ind-1) === '*') {
             return true; 
         }
         return false; 
     } else if (ind !== line.length -1) {
-        if (line.charAt(ind +1) === '*') {
+        if (line.charAt(ind + 1) === '*') {
             return true; 
         }
         return false; 
@@ -519,10 +514,9 @@ export default class Whitespaces {
     if (line.trim() === "*/" || line.trim() === "/**" || line.trim() === "/*") {
     return true; 
     } else if (ind !== 0 && line.charAt(ind-1)=== '.') {
-      //likely part of an import 
       return true; 
     } 
-    else if (ind !== 0 && ind !== line.length -1) {
+    else if (ind !== 0 && ind !== line.length - 1) {
         if (line.charAt(ind + 1) === '/' || line.charAt(ind - 1) === '/') {
           return true;
         } else if (line.charAt(ind + 1) === '*' || line.charAt(ind - 1) === '*') {
@@ -569,10 +563,11 @@ export default class Whitespaces {
    * @param {number} itemLen the item's length.
    */
   getProperAfter(line, ind, itemLen) {
+    var proper = "";
     if (ind !== line.length - 1 && (ind + itemLen) <= line.length - 1) {
       var portion = line.substring(0, ind + itemLen);
       var end = line.substring(ind + itemLen).trim();
-      var proper = portion + " " + end;
+      proper = portion + " " + end;
     }
     return proper;
   }
