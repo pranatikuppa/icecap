@@ -24,88 +24,6 @@ import MultiLines from './MultiLines';
 import Whitespaces from './Whitespaces';
 import Indentations from './Indentations';
 import RmJavadocs from './RmJavadocs';
-
-/**
- * The styles that are used to customize the components below.
- */
-const mainStyles = makeStyles((theme) => ({
-    root: {
-      display: 'flex',
-      '& > *': {
-        margin: theme.spacing(4),
-        width: theme.spacing(window.screen.width),
-        height: theme.spacing(window.screen.height),
-      },
-    },
-}));
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        color: '#6493a1',
-        width: '70%',
-        height: '100%',
-        margin: 30,
-    },
-    button: {
-        backgroundColor: '#6493a1',
-        '&:hover': {
-          backgroundColor: '#537b86',
-        },
-        color: 'white',
-        marginTop: theme.spacing(1),
-        marginRight: theme.spacing(1),
-    },
-    backButton: {
-        color: '#154854',
-        marginTop: theme.spacing(1),
-        marginRight: theme.spacing(1),
-    },
-    actionsContainer: {
-        marginBottom: theme.spacing(2),
-    },
-    resetContainer: {
-        padding: theme.spacing(3),
-        backgroundColor: '#e3ecef'
-    },
-    step: {
-        color: '#154854',
-    },
-    text: {
-      fontFamily: 'Open-Sans',
-    }
-}));
-
-/**
- * The styled toggle button that is customized according to the
- * app theme.
- */
-const StyledToggle = withStyles({
-  root: {
-    color: '#white',
-    borderColor: '#white',
-    whiteSpace: 'break-spaces',
-    '&:hover': {
-      borderColor: '#6493a1',
-    },
-  },
-  selected: {
-    '&:active': {
-      backgroundColor: '#5c8794',
-    },
-    backgroundColor: '#bcf5bc',
-    color: '#154854',
-    borderColor: '#154854',
-    label: '#154854'
-  },
-  label: {
-    '&:active': {
-      color: '#154854',
-    },
-    '&:hover': {
-      color: '#6493a1',
-    },
-  }
-})(ToggleButton);
   
 /**
  * Method that returns the step headers for the main stepper.
@@ -115,28 +33,98 @@ function getSteps() {
 }
 
 /**
- * The theme that is applied to the icons of the stepper.
+ * The vertical linear stepper component.
  */
-const iconTheme = createMuiTheme({
+function VerticalLinearStepper(props) {
+
+  const useStyles = makeStyles((theme) => ({
+    root: {
+        color: props.mColor,
+        width: '70%',
+        height: '100%',
+        margin: 30,
+    },
+    button: {
+        backgroundColor: props.mColor,
+        '&:hover': {
+          backgroundColor: '#537b86',
+        },
+        color: props.bColor,
+        marginTop: theme.spacing(1),
+        marginRight: theme.spacing(1),
+    },
+    backButton: {
+        color: props.tColor,
+        marginTop: theme.spacing(1),
+        marginRight: theme.spacing(1),
+    },
+    actionsContainer: {
+        marginBottom: theme.spacing(2),
+    },
+    resetContainer: {
+        padding: theme.spacing(3),
+        backgroundColor: props.bColor
+    },
+    step: {
+        color: props.tColor,
+    },
+    text: {
+      fontFamily: 'Open-Sans',
+    },
+  }));
+
+  /**
+   * The styled toggle button that is customized according to the
+   * app theme.
+   */
+  const StyledToggle = withStyles({
+    root: {
+      color: '#154854',
+      borderColor: props.mColor,
+      whiteSpace: 'break-spaces',
+      '&:hover': {
+        borderColor: props.mColor,
+      },
+      '&:selected': {
+        color: 'white',
+        backgroundColor: 'red',
+      },
+      backgroundColor: props.mColor,
+    },
+    selected: {
+      backgroundColor: props.mColor,
+      color: props.mColor,
+      borderColor: props.mColor,
+    },
+    label: {
+      '&:hover': {
+        color: props.tColor,
+      },
+      '&:selected': {
+        color: props.mColor,
+      }
+    }
+  })(ToggleButton);
+
+  /**
+   * The theme that is applied to the icons of the stepper.
+   */
+  const iconTheme = createMuiTheme({
     props: {
         MuiStepIcon: {
             root: {
-                color: '#6493a1',
+                color: props.mColor,
             },
             active: {
-                color: '#6493a1',
+                color: props.mColor,
             },
             disabled: {
-              color: 'white',
+              color: props.mColor,
             }
         },
     },
-});
+  });
 
-/**
- * The vertical linear stepper component.
- */
-function VerticalLinearStepper() {
     /**
      * The classes and the step variables that are used to track
      * the state of the stepper.
@@ -502,7 +490,7 @@ function VerticalLinearStepper() {
         <Typography className={classes.text}>
             Upload files (.java file) for which you would like the program to clear style check errors:
             <p></p>
-            <UploadButtons onFileDropped={onFileDrop}></UploadButtons>
+            <UploadButtons bColor={props.bColor} mColor={props.mColor} onFileDropped={onFileDrop}></UploadButtons>
             <p></p>
         </Typography>
       );
@@ -589,7 +577,7 @@ function VerticalLinearStepper() {
      */
     return (
       <div className={classes.root}>
-        <Stepper activeStep={activeStep} orientation="vertical" style={{ backgroundColor: '#e3ecef'}}>
+        <Stepper activeStep={activeStep} orientation="vertical" style={{ backgroundColor: props.bColor}}>
           {steps.map((label, index) => (
             <Step key={label} className={classes.step}>
                 <ThemeProvider theme={iconTheme}>
@@ -655,13 +643,33 @@ function VerticalLinearStepper() {
    * The stepper page itself, which is a paper that surrounds the 
    * stepper and contains the vertical linear stepper widget.
    */
-export default function StepperPage() {
+export default function StepperPage(props) {
+
+    /**
+     * The styles that are used to customize the components below.
+     */
+    const mainStyles = makeStyles((theme) => ({
+      root: {
+        display: 'flex',
+        '& > *': {
+          margin: theme.spacing(3),
+          width: theme.spacing(window.screen.width),
+          height: theme.spacing(window.screen.height),
+        },
+      },
+      paper: {
+        '& > *': {
+          margin: theme.spacing(3),
+        },
+      }
+    }));
+
     const classes = mainStyles();
   
     return(
       <div className={classes.root}>
-        <Paper elevation={0} style={{ backgroundColor: '#e3ecef', height: 8*window.screen.height/9, width: window.screen.width}}>
-            <VerticalLinearStepper>
+        <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: window.screen.height, width: window.screen.width}}>
+            <VerticalLinearStepper bColor={props.bColor} mColor={props.mColor} tColor={props.tColor}>
             </VerticalLinearStepper>
         </Paper>
       </div>

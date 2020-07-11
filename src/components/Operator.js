@@ -25,104 +25,6 @@ import "ace-builds/src-noconflict/theme-katzenmilch";
 import { diff as DiffEditor } from "react-ace";
 import { DialogContentText } from '@material-ui/core';
 
-const CustomInput = withStyles((theme) => ({
-    root: {
-        'label + &': {
-        color: '#154854',
-        marginTop: theme.spacing(2),
-        },
-    },
-    input: {
-        minWidth: 150,
-        minHeight: 35,
-        maxWidth: 700,
-        scrollBehavior: 'auto',
-        borderRadius: 4,
-        position: 'relative',
-        backgroundColor: '#e3ecef',
-        border: '1px solid #6493a1',
-        fontSize: 16,
-        padding: '10px 26px 10px 12px',
-        transition: theme.transitions.create(['border-color', 'box-shadow']),
-        '&:focus': {
-            borderRadius: 4,
-            borderColor: '#6493a1',
-            color: '#6493a1',
-        },
-    },
-  })) (InputBase);
-
-const CssTextField = withStyles({
-    root: {
-        maxWidth: 140,
-        minWidth: 140,
-        maxHeight: 40,
-        minHeight: 40,
-        '& .MuiOutlinedInput-root': {
-            '&.Mui-focused fieldset': {
-                borderColor: '#6493a1',
-            },
-            color: '#6493a1',
-        },
-    },
-}) (TextField);
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        margin: theme.spacing(1),
-    },
-    chips: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    chip: {
-        margin: 2,
-        color: '#e3ecef',
-        backgroundColor: '#6493a1',
-    },
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 170,
-    },
-    resultCard: {
-        width: '500px',
-        height: '520px',
-        paddingTop: '20px',
-        paddingLeft: '20px',
-        paddingRight: '15px',
-        paddingBottom: '15px',
-    },
-    textField: {
-        maxWidth: 490,
-        minWidth: 490,
-        minHeight: 510,
-        maxHeight: 510,
-        borderColor: '#6493a1',
-    },
-    button: {
-        backgroundColor: '#6493a1',
-        color: 'white',
-        marginTop: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        '&:hover': {
-          backgroundColor: '#537b86',
-        },
-    },
-    disableButton: {
-        backgroundColor: '#808080',
-        marginTop: theme.spacing(1),
-        marginRight: theme.spacing(1),
-    },
-    subText: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        color: '#154854',
-        fontSize: '17px',
-        fontWeight: 400,
-        fontFamily: 'Open-Sans',
-      },
-}));
-
 function getStyles(operation, operationNames, theme) {
     return {
         color:
@@ -149,7 +51,123 @@ const operations = [
     'Remove /* Comments', 'Add Javadocs', 'Fix Whitespaces'
 ];
 
+const CssTextField = withStyles({
+    root: {
+        maxWidth: 140,
+        minWidth: 140,
+        maxHeight: 40,
+        minHeight: 40,
+        '& label.Mui-focused': {
+            color: '#6493a1',
+        },
+        '& label': {
+            color: '#6493a1',
+        },
+        borderColor: '6493a1',
+        '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: '#6493a1',
+              color: '#6493a1',
+            },
+            '&:hover fieldset': {
+              borderColor: '#6493a1',
+              color: '#6493a1',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#6493a1',
+              color: '#6493a1',
+            },
+            color: '#6493a1',
+        },
+    },
+
+}) (TextField);
+
 export default function Operator(props) {
+
+    const CustomInput = withStyles((theme) => ({
+        root: {
+            'label + &': {
+            color: props.tColor,
+            marginTop: theme.spacing(2),
+            },
+        },
+        input: {
+            minWidth: 150,
+            minHeight: 35,
+            maxWidth: 700,
+            scrollBehavior: 'auto',
+            borderRadius: 4,
+            position: 'relative',
+            backgroundColor: props.bColor,
+            border: '1px solid',
+            borderColor: props.mColor,
+            fontSize: 16,
+            padding: '10px 26px 10px 12px',
+            transition: theme.transitions.create(['border-color', 'box-shadow']),
+            '&:focus': {
+                borderRadius: 4,
+                borderColor: props.mColor,
+                color: props.tColor,
+            },
+        },
+    })) (InputBase);
+
+    const useStyles = makeStyles((theme) => ({
+        root: {
+            margin: theme.spacing(1),
+        },
+        chips: {
+            display: 'flex',
+            flexWrap: 'wrap',
+        },
+        chip: {
+            margin: 2,
+            color: '#e3ecef',
+            backgroundColor: '#6493a1',
+        },
+        formControl: {
+            margin: theme.spacing(1),
+            minWidth: 170,
+        },
+        resultCard: {
+            width: '500px',
+            height: '520px',
+            paddingTop: '20px',
+            paddingLeft: '20px',
+            paddingRight: '15px',
+            paddingBottom: '15px',
+        },
+        textField: {
+            maxWidth: 490,
+            minWidth: 490,
+            minHeight: 510,
+            maxHeight: 510,
+            borderColor: '#6493a1',
+        },
+        button: {
+            backgroundColor: props.mColor,
+            color: props.bColor,
+            marginTop: theme.spacing(1),
+            marginRight: theme.spacing(1),
+            '&:hover': {
+              backgroundColor: '#537b86',
+            },
+        },
+        disableButton: {
+            backgroundColor: '#808080',
+            marginTop: theme.spacing(1),
+            marginRight: theme.spacing(1),
+        },
+        subText: {
+            display: 'flex',
+            flexWrap: 'wrap',
+            color: props.tColor,
+            fontSize: '17px',
+            fontWeight: 400,
+            fontFamily: 'Open-Sans',
+          },
+    }));
 
     const [chosenOperations, setChosenOperations] = React.useState([]);
     const [fixedText, setFixedText] = React.useState("");
@@ -244,13 +262,13 @@ export default function Operator(props) {
             mode="java"
             width="510px"
             height="530px"
-            theme="katzenmilch"
+            theme={props.eTheme}
             onChange={handleTextChange}
             >
             </AceEditor>;
         } else {
             return <AceEditor
-            theme="katzenmilch"
+            theme={props.eTheme}
             mode="java"
             width="510px"
             height="530px"
@@ -283,7 +301,7 @@ export default function Operator(props) {
         <div className={classes.root} style={{ whiteSpace: 'break-spaces', lineHeight: 8}}>
             <p></p>
             <FormControl className={classes.formControl}>
-                <InputLabel shrink htmlFor='operation-selector' id="operation-label">Select Operations</InputLabel>
+                <InputLabel style={{ color: props.tColor }} shrink htmlFor='operation-selector' id="operation-label">Select Operations</InputLabel>
                 <Select
                 autoWidth
                 defaultValue="Select Operations"
@@ -349,6 +367,7 @@ export default function Operator(props) {
                         PaperProps={{
                             style: {
                                 height: 1000,
+                                backgroundColor: props.bColor,
                             }
                         }}
                         open={openDiff}
@@ -369,7 +388,7 @@ export default function Operator(props) {
                                 value={diffVal}
                                 setOptions={{useWorker: false}}
                                 mode="java"
-                                theme="katzenmilch"
+                                theme={props.eTheme}
                                 >
                                 </DiffEditor>
                             </div>

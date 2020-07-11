@@ -4,10 +4,16 @@
     color: #6493a1;
 }
 
-.Logo {
+.DarkLogo {
     background-image: url(./assets/mountain_image.jpeg);
     background-size: cover;
     background-position: bottom;
+}
+
+.LightLogo {
+    background-image: url(./assets/light_mountain_image.jpg);
+    background-size: cover;
+    background-position: top;
 }
 
 .OkGif {

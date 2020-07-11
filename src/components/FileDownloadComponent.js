@@ -9,15 +9,31 @@ import { withStyles } from '@material-ui/core/styles';
  */
 const CssTextField = withStyles({
     root: {
+        '& label.Mui-focused': {
+            color: '#6493a1',
+        },
+        '& label': {
+            color: '#6493a1',
+        },
+        borderColor: '6493a1',
         '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: '#6493a1',
+              color: '#6493a1',
+            },
+            '&:hover fieldset': {
+              borderColor: '#6493a1',
+              color: '#6493a1',
+            },
             '&.Mui-focused fieldset': {
-                borderColor: '#6493a1',
+              borderColor: '#6493a1',
+              color: '#6493a1',
             },
             color: '#6493a1',
         },
     },
-}) (TextField);
 
+}) (TextField);
 /**
  * The styles that are used to customize other components.
  */

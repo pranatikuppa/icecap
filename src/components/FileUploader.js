@@ -14,86 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import AceEditor from 'react-ace';
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-katzenmilch";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& > *': {
-      margin: theme.spacing(3),
-    },
-  },
-  input: {
-    display: 'none',
-  },
-  button: {
-    backgroundColor: '#6493a1',
-    color: 'white',
-    marginTop: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    '&:hover': {
-      backgroundColor: '#537b86',
-    },
-  },
-  disableButton: {
-    backgroundColor: '#808080',
-    color: 'white',
-    marginTop: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    '&:hover': {
-      backgroundColor: '#808080',
-    },
-  },
-  dropCard: {
-    backgroundColor: '#e3ecef',
-    width: '520px',
-    height: '530px',
-    paddingTop: '20px',
-    paddingLeft: '20px',
-    paddingRight: '15px',
-    paddingBottom: '15px',
-  },
-  dropCardBorder: {
-    border: 'dashed',
-    borderColor: '#6493a1',
-    borderWidth: '2px',
-    width: '510px',
-    height: '530px',
-  },
-  defaultCardBorder: {
-    border: 'dashed',
-    borderColor: '#e3ecef',
-    borderWidth: '2px',
-    width: '510px',
-    height: '530px',
-  },
-  icon: {
-    color: '#6493a1'
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-}));
-
-const CustomInput = withStyles((theme) => ({
-  root: {
-    'label + &': {
-      color: '#154854',
-      marginTop: theme.spacing(2),
-    },
-  },
-  input: {
-    borderRadius: 4,
-    backgroundColor: '#e3ecef',
-    border: '1px solid #6493a1',
-    fontSize: 16,
-    padding: '10px 26px 10px 12px',
-    '&:focus': {
-      borderRadius: 4,
-      borderColor: '#6493a1',
-      color: '#154854',
-    },
-  },
-})) (InputBase);
+import "ace-builds/src-noconflict/theme-nord_dark";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -108,6 +29,87 @@ const MenuProps = {
 };
 
 export default function FileUploader(props) {
+
+  const CustomInput = withStyles((theme) => ({
+    root: {
+      'label + &': {
+        color: props.tColor,
+        marginTop: theme.spacing(2),
+      },
+    },
+    input: {
+      borderRadius: 4,
+      backgroundColor: props.bColor,
+      border: '1px solid',
+      borderColor: props.mColor, 
+      fontSize: 16,
+      padding: '10px 26px 10px 12px',
+      '&:focus': {
+        borderRadius: 4,
+        borderColor: props.mColor,
+        color: props.tColor,
+      },
+    },
+  })) (InputBase);
+
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      '& > *': {
+        margin: theme.spacing(3),
+      },
+    },
+    input: {
+      display: 'none',
+    },
+    button: {
+      backgroundColor: props.mColor,
+      color: props.bColor,
+      marginTop: theme.spacing(1),
+      marginRight: theme.spacing(1),
+      '&:hover': {
+        backgroundColor: '#537b86',
+      },
+    },
+    disableButton: {
+      backgroundColor: '#808080',
+      color: 'white',
+      marginTop: theme.spacing(1),
+      marginRight: theme.spacing(1),
+      '&:hover': {
+        backgroundColor: '#808080',
+      },
+    },
+    dropCard: {
+      backgroundColor: props.bColor,
+      width: '520px',
+      height: '530px',
+      paddingTop: '20px',
+      paddingLeft: '20px',
+      paddingRight: '15px',
+      paddingBottom: '15px',
+    },
+    dropCardBorder: {
+      border: 'dashed',
+      borderColor: '#6493a1',
+      borderWidth: '2px',
+      width: '510px',
+      height: '530px',
+    },
+    defaultCardBorder: {
+      border: 'dashed',
+      borderColor: props.bColor,
+      borderWidth: '2px',
+      width: '510px',
+      height: '530px',
+    },
+    icon: {
+      color: '#6493a1',
+    },
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120,
+    },
+  }));
 
   const classes = useStyles();
   const [index, setIndex] = React.useState(0);
@@ -153,7 +155,7 @@ export default function FileUploader(props) {
         }
       });
       return <AceEditor
-      theme="katzenmilch"
+      theme={props.eTheme}
       width="510px"
       height="530px"
       value={display}
@@ -166,7 +168,7 @@ export default function FileUploader(props) {
       mode="java"
       width="510px"
       height="530px"
-      theme="katzenmilch"
+      theme={props.eTheme}
       value={display}
       onChange={handleTextChange}
       >
@@ -247,7 +249,7 @@ export default function FileUploader(props) {
           <span>           </span>
           <div style={{ lineHeight: 6.2, whiteSpace: 'break-spaces'}}>
             <FormControl className={classes.formControl}>
-              <InputLabel shrink htmlFor="file-selector">Select a file</InputLabel>
+              <InputLabel style={{ color: props.tColor }} shrink htmlFor="file-selector">Select a file</InputLabel>
               <Select
                 value={index}
                 onChange={handleChange}

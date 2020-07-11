@@ -15,72 +15,6 @@ import StepConnector from '@material-ui/core/StepConnector';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 
-const mainStyles = makeStyles((theme) => ({
-  stepperRoot: {
-    width: "100%"
-  },
-  root: {
-    display: 'flex',
-    '& > *': {
-      margin: theme.spacing(3),
-      width: theme.spacing(window.screen.width),
-      height: theme.spacing(window.screen.height),
-    },
-  },
-  backButton: {
-    marginRight: theme.spacing(1)
-  },
-  instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  },
-  paper: {
-    '& > *': {
-        margin: theme.spacing(3),
-    },
-  },
-  button: {
-    backgroundColor: '#6493a1',
-    color: 'white',
-    marginTop: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    '&:hover': {
-      backgroundColor: '#537b86',
-    },
-  },
-  backButton: {
-    marginRight: theme.spacing(1)
-  },
-  instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  },
-  stepLabel: {
-    color: '#6493a1',
-    fontFamily: 'Open-Sans',
-  },
-  stepPaper: {
-    width: 1290,
-    height: 400,
-    padding: theme.spacing(3),
-    backgroundColor: '#FFFFFF',
-  },
-  headingText: {
-    fontFamily: 'Open-Sans',
-    color: '#154854',
-    fontWeight: 600,
-    fontSize: '20px',
-  },
-  normalText: {
-    fontFamily: 'Open-Sans',
-    color: '#154854',
-  },
-  code: {
-    backgroundColor: '#000000',
-    color: '#00FF00',
-  }
-}));
-
 function getSteps() {
   return [
     "Using CS 61B Materials",
@@ -91,7 +25,58 @@ function getSteps() {
   ];
 }
 
-function HorizontalLabelPositionBelowStepper() {
+function HorizontalLabelPositionBelowStepper(props) {
+
+  const mainStyles = makeStyles((theme) => ({
+    stepperRoot: {
+      width: "100%"
+    },
+    backButton: {
+      marginRight: theme.spacing(1),
+      color: props.tColor,
+    },
+    instructions: {
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(1)
+    },
+    button: {
+      backgroundColor: props.mColor,
+      color: props.bColor,
+      marginTop: theme.spacing(1),
+      marginRight: theme.spacing(1),
+      '&:hover': {
+        backgroundColor: '#537b86',
+      },
+    },
+    instructions: {
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(1)
+    },
+    stepLabel: {
+      color: props.mColor,
+    },
+    stepPaper: {
+      width: 1290,
+      height: 400,
+      padding: theme.spacing(3),
+      backgroundColor: props.pColor,
+    },
+    headingText: {
+      fontFamily: 'Open-Sans',
+      color: props.tColor,
+      fontWeight: 600,
+      fontSize: '20px',
+    },
+    normalText: {
+      fontFamily: 'Open-Sans',
+      color: props.tColor,
+    },
+    code: {
+      backgroundColor: '#000000',
+      color: '#00FF00',
+    }
+  }));
+
   const classes = mainStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
@@ -113,7 +98,7 @@ function HorizontalLabelPositionBelowStepper() {
 
  */}
         <Paper elevation ={0} className={classes.stepPaper}>
-          <Alert severity="warning" variant="outlined">
+          <Alert severity="warning" variant="standard">
             <AlertTitle>Disclaimer:</AlertTitle>
             ICEcap does not claim to be a be-all, end-all editing service. We <strong>highly </strong> 
             recommend manually checking your code, and using the class provided review mechanisms (make style, make check) before
@@ -265,12 +250,12 @@ function HorizontalLabelPositionBelowStepper() {
     },
     active: {
       '& $line': {
-        borderColor: '#6493a1',
+        borderColor: props.mColor,
       },
     },
     completed: {
       '& $line': {
-        borderColor: '#6493a1',
+        borderColor: props.mColor,
       },
     },
     line: {
@@ -282,22 +267,22 @@ function HorizontalLabelPositionBelowStepper() {
 
   const useQontoStepIconStyles = makeStyles({
     root: {
-      color: '#6493a1',
+      color: props.mColor,
       display: 'flex',
       height: 22,
       alignItems: 'center',
     },
     active: {
-      color: '#6493a1',
+      color: props.mColor,
     },
     circle: {
       width: 8,
       height: 8,
       borderRadius: '50%',
-      backgroundColor: '#6493a1',
+      backgroundColor: props.mColor,
     },
     completed: {
-      color: '#6493a1',
+      color: props.mColor,
       zIndex: 1,
       fontSize: 18,
     },
@@ -331,10 +316,12 @@ function HorizontalLabelPositionBelowStepper() {
 
   return (
     <div className={classes.stepperRoot}>
-      <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />} style={{ width: 1250, backgroundColor: '#e3ecef'}}>
+      <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />} style={{ width: 1250, backgroundColor: props.bColor}}>
         {steps.map((label) => (
           <Step key={label}>
-            <StepLabel StepIconComponent={QontoStepIcon}>{label}</StepLabel>
+            <StepLabel StepIconComponent={QontoStepIcon}>
+            <Typography className={classes.stepLabel}>{label}</Typography>
+            </StepLabel>
           </Step>
         ))}
       </Stepper>
@@ -359,14 +346,30 @@ function HorizontalLabelPositionBelowStepper() {
   );
 }
 
-export default function TutorialPage() {
+export default function TutorialPage(props) {
+
+  const mainStyles = makeStyles((theme) => ({
+    root: {
+      display: 'flex',
+      '& > *': {
+        margin: theme.spacing(3),
+        width: theme.spacing(window.screen.width),
+        height: theme.spacing(window.screen.height),
+      },
+    },
+    paper: {
+      '& > *': {
+          margin: theme.spacing(3),
+      },
+    },
+  }));
 
     const classes = mainStyles();
 
     return(
         <div className={classes.root}>
-            <Paper className={classes.paper} elevation={0} style={{ backgroundColor: '#e3ecef', height: 4*window.screen.height/5, width: window.screen.width }}>
-                <HorizontalLabelPositionBelowStepper></HorizontalLabelPositionBelowStepper>
+            <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: 4*window.screen.height/5, width: window.screen.width }}>
+                <HorizontalLabelPositionBelowStepper pColor={props.pColor} tColor={props.tColor} bColor={props.bColor} mColor={props.mColor}></HorizontalLabelPositionBelowStepper>
             </Paper>
         </div>
     );

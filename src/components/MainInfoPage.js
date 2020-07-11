@@ -5,12 +5,17 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { animateScroll as scroll } from "react-scroll";
-
+  
 /**
- * Styles used to customize text and other components within the
- * MainInfoPage.
+ * The MainInfoPage component.
  */
-const mainStyles = makeStyles((theme) => ({
+export default function MainInfoPage(props) {
+
+  /**
+   * Styles used to customize text and other components within the
+   * MainInfoPage.
+   */
+  const mainStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
       '& > *': {
@@ -22,18 +27,18 @@ const mainStyles = makeStyles((theme) => ({
     mainText: {
       display: 'flex',
       flexWrap: 'wrap',
-      color: 'white',
+      color: props.tColor,
       fontWeight: 600,
       fontSize: '150px',
       fontFamily: 'Open-Sans',
       marginLeft: theme.spacing(10),
-      marginTop: theme.spacing(20),
+      marginTop: theme.spacing(15),
       marginRight: theme.spacing(1),
     },
     subMainText: {
       display: 'flex',
       flexWrap: 'wrap',
-      color: 'white',
+      color: props.tColor,
       fontSize: '35px',
       fontWeight: 600,
       fontFamily: 'Open-Sans',
@@ -43,7 +48,7 @@ const mainStyles = makeStyles((theme) => ({
     subText: {
       display: 'flex',
       flexWrap: 'wrap',
-      color: 'white',
+      color: props.tColor,
       fontSize: '18px',
       fontWeight: 600,
       fontFamily: 'Open-Sans',
@@ -54,8 +59,8 @@ const mainStyles = makeStyles((theme) => ({
     button: {
       display: 'flex',
       flexWrap: 'wrap',
-      backgroundColor: 'white',
-      color: '#154854',
+      backgroundColor: props.tColor,
+      color: props.bColor,
       marginTop: theme.spacing(5),
       marginRight: theme.spacing(1),
       marginLeft: theme.spacing(11),
@@ -63,8 +68,8 @@ const mainStyles = makeStyles((theme) => ({
     button2: {
       display: 'flex',
       flexWrap: 'wrap',
-      backgroundColor: 'white',
-      color: '#154854',
+      backgroundColor: props.tColor,
+      color: props.bColor,
       marginRight: theme.spacing(1),
       marginLeft: theme.spacing(11),
       marginBotton: theme.spacing(5),
@@ -75,12 +80,8 @@ const mainStyles = makeStyles((theme) => ({
       flexDirection: 'row',
       flex: 1,
     }
-}));
-  
-/**
- * The MainInfoPage component.
- */
-export default function MainInfoPage() {
+  }));
+
   /**
    * The styles used in the components below.
    */
@@ -105,7 +106,7 @@ export default function MainInfoPage() {
    */
   return (
     <div className={classes.root}>
-      <Paper elevation={0} className='Logo' style={{ height: 3*window.screen.height/4, width: window.screen.width }}>
+      <Paper elevation={0} className={props.logoStyle} style={{ height: 3*window.screen.height/4, width: window.screen.width }}>
         <div>  
           <Typography className={classes.mainText}>ICEcΔp</Typography>
           <Typography className={classes.subMainText}>
