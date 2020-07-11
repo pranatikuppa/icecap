@@ -69,11 +69,11 @@ don't change any other css style block. just add new ones. and after you're done
     flex-direction: row;
 }
 
-.codeMarker  {
-    background: #FFC6C6;
+.codeMarker {
+    background: rgba(165, 61, 61, 0.192);
     position: absolute;
     z-index: 20;
-  }
+}
   
 @font-face {
     font-family: 'Open-Sans';

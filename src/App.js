@@ -9,6 +9,7 @@ import EditorPage from './components/EditorPage';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
 const CustomSwitch = withStyles({
   switchBase: {
@@ -26,6 +27,7 @@ const CustomSwitch = withStyles({
 
 function MainApp() {
 
+  const [isDarkMode, setIsDarkMode] = React.useState(true);
   const [backColor, setBackColor] = React.useState('#e3ecef');
   const [textColor, setTextColor] = React.useState('#154854');
   const [middleColor, setMiddleColor] = React.useState('#6493a1');
@@ -33,6 +35,7 @@ function MainApp() {
   const [mainColor, setMainColor] = React.useState('#FFFFFF');
   const [tutorialColor, setTutorialColor] = React.useState('#FFFFFF');
   const [logo, setLogo] = React.useState('LightLogo');
+  const [diffHighlight, setDiffHighlight] = React.useState('codeMarkerLight');
 
   const [isStep, setIsStep] = React.useState(true);
 
@@ -44,7 +47,14 @@ function MainApp() {
     },
     paper: {
       margin: theme.spacing(3),
+      padding: theme.spacing(1),
     },
+    text: {
+      fontFamily: 'Open-Sans',
+      color: textColor,
+      margin: theme.spacing(3),
+      marginLeft: theme.spacing(window.screen.width/22),
+    }
   }));
 
   function handleSwitch() {
@@ -54,7 +64,8 @@ function MainApp() {
   const classes = mainStyles();
   
   function switchDark() {
-    if (backColor === '#e3ecef') {
+    setIsDarkMode(!isDarkMode);
+    if (isDarkMode) {
       setBackColor('#444d56');
       setTextColor('#e3ecef');
       setMiddleColor('#e3ecef');
@@ -62,6 +73,7 @@ function MainApp() {
       setTutorialColor('#282C35');
       setLogo('DarkLogo');
       setEditorTheme("nord_dark");
+      setDiffHighlight('codeMarkerDark');
     } else {
       setBackColor('#e3ecef');
       setTextColor('#154854');
@@ -70,6 +82,7 @@ function MainApp() {
       setTutorialColor('#FFFFFF');
       setLogo('LightLogo');
       setEditorTheme("katzenmilch");
+      setDiffHighlight('codeMarkerLight');
     }
   }
 
@@ -101,8 +114,9 @@ function MainApp() {
       </Paper>
       {!isStep ? 
       <StepperPage mColor={middleColor} tColor={textColor} bColor={backColor}></StepperPage> :
-      <EditorPage eTheme={editorTheme} mColor={middleColor} tColor={textColor} bColor={backColor}></EditorPage>
+      <EditorPage diffHighlight={diffHighlight} eTheme={editorTheme} mColor={middleColor} tColor={textColor} bColor={backColor}></EditorPage>
       }
+      <Typography className={classes.text}>Created by two fellow 61B'ers: Pranati and Khushi</Typography>
     </div>
   );
 }

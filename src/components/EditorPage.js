@@ -56,7 +56,7 @@ export default function EditorPage(props) {
             </Typography>
                 <div className={classes.editorDiv}>
                 <FileUploader eTheme={props.eTheme} mColor={props.mColor} tColor={props.tColor} bColor={props.bColor} callback={inputCallback} callbackFilename={filenameCallback}></FileUploader>
-                <Operator eTheme={props.eTheme} mColor={props.mColor} tColor={props.tColor} bColor={props.bColor} originalText={inputText} fileName={filename}></Operator>
+                <Operator diffHighlight={props.diffHighlight} eTheme={props.eTheme} mColor={props.mColor} tColor={props.tColor} bColor={props.bColor} originalText={inputText} fileName={filename}></Operator>
                 </div>
             </Paper>
         </div>

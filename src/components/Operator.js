@@ -381,7 +381,7 @@ export default function Operator(props) {
                             Making changes within the text editors will show live updates on the changed lines and will not directly update the files in the live editor. Use the "Apply Changes" button to apply edits to the live editor.</DialogContentText>
                             <div style={{ display: 'flex', flex: 1, flexDirection: 'row' }}>
                                 <DiffEditor
-                                className={'codeMarker'}
+                                className={"codeMarker"}
                                 onChange={handleDiffChange}
                                 width="1000px"
                                 height="500px"
