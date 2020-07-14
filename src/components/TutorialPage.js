@@ -61,6 +61,12 @@ function HorizontalLabelPositionBelowStepper(props) {
       padding: theme.spacing(3),
       backgroundColor: props.pColor,
     },
+    step4Paper: {
+      width: 1290,
+      height: 480,
+      padding: theme.spacing(3),
+      backgroundColor: props.pColor,
+    },
     headingText: {
       fontFamily: 'Open-Sans',
       color: props.tColor,
@@ -112,7 +118,8 @@ function HorizontalLabelPositionBelowStepper(props) {
           what operations you might want to select. If you are confused about the errors that come up after running make style, be sure to 
           access the 61B style guide, and reference the guidelines posted there. These are also the same guidelines we are basing our 
           automated corrections on. </Typography>
-          <Typography className={classes.normalText}> We're here to help with the objective errors - namely working with comments (Javadocs, Multiline, Single Line)
+          <p></p>
+          <Typography className={classes.normalText}> We're here to help with the <strong>objective</strong> errors - namely working with comments (Javadocs, Multiline, Single Line)
           and whitespace issues. Please plan accordingly so you know what you'll need to manually fix after using ICEcΔp!
           </Typography>
         </Paper>
@@ -178,13 +185,13 @@ function HorizontalLabelPositionBelowStepper(props) {
   function stepFour() {
     return(
       <div>
-        <Paper elevation={0} className={classes.stepPaper}>
-        <Alert severity="warning" variant="standard">
-            <AlertTitle>Note:</AlertTitle>
-            None of your original files are edited. Once you are done, if you download your files be sure to make the necessary replacements
+        <Paper elevation={0} className={classes.step4Paper}>
+          <Alert severity="warning">
+            <strong>Note:</strong> None of your original files are edited. Once you are done, if you download your files be sure to make the necessary replacements
             so that your original files contain the edited, style-corrected content. Be sure to always save copies of your original files, by committing them 
             to prevent any unintended data loss, or allow yourself to revert to a prior version. 
           </Alert>
+          <p></p>
           <div style={{display: 'flex', flexDirection: 'row', whiteSpace: 'break-spaces', lineHeight: 3}}>
             <div style={{ lineHeight: 3, whiteSpace: 'break-spaces'}}>
               <Typography className={classes.headingText}>Static</Typography>
@@ -384,7 +391,7 @@ export default function TutorialPage(props) {
 
     return(
         <div className={classes.root}>
-            <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: 4*window.screen.height/5, width: window.screen.width }}>
+            <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: 5*window.screen.height/6, width: window.screen.width }}>
                 <HorizontalLabelPositionBelowStepper pColor={props.pColor} tColor={props.tColor} bColor={props.bColor} mColor={props.mColor}></HorizontalLabelPositionBelowStepper>
             </Paper>
         </div>

@@ -91,14 +91,14 @@ export default function MainInfoPage(props) {
    * Handler method that controlls the page scroll to the software.
    */
   const scrollToStart = () => {
-    scroll.scrollTo(1.73 * window.screen.height);
+    scroll.scrollTo(1.78 * window.screen.height);
   };
 
   /**
    * Handler method that controlls the page scroll to the tutorial.
    */
   const scrollToTutorial = () => {
-    scroll.scrollTo(0.875 * window.screen.height);
+    scroll.scrollTo(0.885 * window.screen.height);
   };
 
   /**
