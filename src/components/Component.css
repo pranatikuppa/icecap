@@ -40,6 +40,24 @@
     background-position: center; 
 }
 
+.liveUpload {
+    background-image: url(./assets/live_upload.gif);
+    background-size: cover; 
+    background-position: cover;
+}
+
+.liveChooseOps {
+    background-image: url(./assets/live_chooseops.gif);
+    background-size: cover; 
+    background-position: cover;
+}
+
+.liveDownload {
+    background-image: url(./assets/live_download.gif);
+    background-size: cover; 
+    background-position: cover;
+}
+
 
 /* Copy the .OKGif CSS above and rename it to something like .YourGifName" and replace the inside url's gif with the name of the 
 gif you wanna add. In order for it to work tho you need to make sure the gif is inside the folder 

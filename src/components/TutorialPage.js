@@ -148,7 +148,7 @@ function HorizontalLabelPositionBelowStepper(props) {
               <Typography className={classes.normalText}>Using our live editor, you can edit your files after uploading them. 
               With multiple files, you can select different ones from the drop-down menu and make your necessary changes!</Typography>
               <p></p>
-              <Paper style={{ width: 625, height: 300}} className="OkGif" elevation={0}></Paper>
+              <Paper style={{ width: 625, height: 300}} className="liveUpload" elevation={0}></Paper>
             </div>
           </div>
         </Paper>
@@ -174,7 +174,7 @@ function HorizontalLabelPositionBelowStepper(props) {
               <Typography className={classes.normalText}>Select one or more operations from the dropdown menu. Each time you make a selection, you'll see it added to
               the dropdown header. </Typography>
               <p></p>
-              <Paper style={{ width: 625, height: 300}} className="OkGif" elevation={0}></Paper>
+              <Paper style={{ width: 625, height: 300}} className="liveChooseOps" elevation={0}></Paper>
             </div>
           </div>
         </Paper>
@@ -205,7 +205,7 @@ function HorizontalLabelPositionBelowStepper(props) {
               <Typography className={classes.normalText}>Edit the names of your files before downloading as you desire. Or, feel free to simply copy-paste 
                 the edited content from the rightmost textbox directly into the desired file.</Typography>
               <p></p>
-              <Paper style={{ width: 625, height: 300}} className="OkGif" elevation={0}></Paper>
+              <Paper style={{ width: 625, height: 300}} className="liveDownload" elevation={0}></Paper>
             </div>
           </div>
         </Paper>
