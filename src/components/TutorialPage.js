@@ -243,7 +243,7 @@ function HorizontalLabelPositionBelowStepper(props) {
   };
 
   const handleScroll = () => {
-    scroll.scrollTo(1.73 * window.screen.height);
+    scroll.scrollTo(1.78 * window.screen.height);
   }
 
   const QontoConnector = withStyles({

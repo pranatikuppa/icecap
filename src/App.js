@@ -51,10 +51,10 @@ function MainApp() {
     },
     text: {
       fontFamily: 'Open-Sans',
-      color: textColor,
+      color: '#154854',
       margin: theme.spacing(3),
       marginLeft: theme.spacing(window.screen.width/22),
-    }
+    },
   }));
 
   function handleSwitch() {
@@ -87,36 +87,41 @@ function MainApp() {
   }
 
   return(
-    <div style={{ backgroundColor: mainColor }} className='App-body'>
-      <PageHeader mColor={middleColor} bColor={backColor} tColor={textColor}></PageHeader>
-      <MainInfoPage tColor={textColor} logoStyle={logo} bColor={backColor} mColor={middleColor}></MainInfoPage>
-      <TutorialPage pColor={tutorialColor} mColor={middleColor} bColor={backColor} tColor={textColor}></TutorialPage>
-      <Paper elevation={0} className={classes.paper} style={{ backgroundColor: backColor }}>
-        <Grid component="label" container alignItems="center" style={{ whiteSpace: 'break-spaces' }} className={classes.root}>
-          <Grid item>View Settings: </Grid>
-          <span>        </span>
-          <Grid item>Live</Grid>
-          <Grid item>
-            <CustomSwitch
-            onChange={handleSwitch}
-            ></CustomSwitch>
+    <div>
+      <div style={{ backgroundColor: mainColor, whiteSpace: 'break-spaces'}} className='App-body'>
+        <PageHeader mColor={middleColor} bColor={backColor} tColor={textColor}></PageHeader>
+        <MainInfoPage tColor={textColor} logoStyle={logo} bColor={backColor} mColor={middleColor}></MainInfoPage>
+        <TutorialPage pColor={tutorialColor} mColor={middleColor} bColor={backColor} tColor={textColor}></TutorialPage>
+        <Paper elevation={0} className={classes.paper} style={{ backgroundColor: backColor }}>
+          <Grid component="label" container alignItems="center" style={{ whiteSpace: 'break-spaces' }} className={classes.root}>
+            <Grid item>View Settings: </Grid>
+            <span>        </span>
+            <Grid item>Live</Grid>
+            <Grid item>
+              <CustomSwitch
+              onChange={handleSwitch}
+              ></CustomSwitch>
+            </Grid>
+            <Grid item>Static</Grid>
+            <span>                </span>
+            <Grid item>Default</Grid>
+            <Grid item>
+              <CustomSwitch
+              onChange={switchDark}
+              ></CustomSwitch>
+            </Grid>
+            <Grid item>Dark Mode</Grid>
           </Grid>
-          <Grid item>Static</Grid>
-          <span>                </span>
-          <Grid item>Default</Grid>
-          <Grid item>
-            <CustomSwitch
-            onChange={switchDark}
-            ></CustomSwitch>
-          </Grid>
-          <Grid item>Dark Mode</Grid>
-        </Grid>
-      </Paper>
-      {!isStep ? 
-      <StepperPage mColor={middleColor} tColor={textColor} bColor={backColor}></StepperPage> :
-      <EditorPage diffHighlight={diffHighlight} eTheme={editorTheme} mColor={middleColor} tColor={textColor} bColor={backColor}></EditorPage>
-      }
+        </Paper>
+        {!isStep ? 
+        <StepperPage mColor={middleColor} tColor={textColor} bColor={backColor}></StepperPage> :
+        <EditorPage diffHighlight={diffHighlight} eTheme={editorTheme} mColor={middleColor} tColor={textColor} bColor={backColor}></EditorPage>
+        }
+      </div>
+      <div style={{ backgroundColor: 'FFFFFF', whiteSpace: 'break-spaces', lineHeight: 2}}>
       <Typography className={classes.text}>Created by two fellow 61B'ers: Pranati and Khushi</Typography>
+      <p></p>
+      </div>
     </div>
   );
 }
