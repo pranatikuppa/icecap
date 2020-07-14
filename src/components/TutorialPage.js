@@ -116,7 +116,7 @@ function HorizontalLabelPositionBelowStepper(props) {
           <p></p>
           <Typography className={classes.normalText}>Use  <code className={classes.code}> make style</code> to get an idea of the kinds of errors your code has to better understand
           what operations you might want to select. If you are confused about the errors that come up after running make style, be sure to 
-          access the 61B style guide, and reference the guidelines posted there. These are also the same guidelines we are basing our 
+          access the <a target="_blank" href="https://inst.eecs.berkeley.edu/~cs61b/sp20/docs/style-guide.html">61B style guide</a>, and reference the guidelines posted there. These are also the same guidelines we are basing our 
           automated corrections on. </Typography>
           <p></p>
           <Typography className={classes.normalText}> We're here to help with the <strong>objective</strong> errors - namely working with comments (Javadocs, Multiline, Single Line)
@@ -217,7 +217,7 @@ function HorizontalLabelPositionBelowStepper(props) {
     return(
       <div>
         <Paper elevation={0} className={classes.stepPaper}>
-          <Typography className={classes.headingText}>Some Kind of Heading</Typography>
+          <Typography className={classes.headingText}>Final Steps</Typography>
           <p></p>
           <Typography className={classes.normalText}> That's about it! If you'd like to know what errors were made and how we corrected them, 
           click on 'View Difference', which can be found in the live editor. We highly encourage doing this to help you understand your errors!
@@ -225,6 +225,7 @@ function HorizontalLabelPositionBelowStepper(props) {
           turning any final code that you have edited using our service, to ensure that no other issues have 
           arisen! We’d also recommend using your manual testing (integration tests, unit tests, etc.) to confirm 
           that your project/HW works as intended. </Typography>
+          <p></p>
           <Typography className={classes.normalText}>
           Good luck with your submission!
           </Typography>
