@@ -87,23 +87,9 @@ function HorizontalLabelPositionBelowStepper(props) {
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
 
-  //for stepOne: can we hyperlink the 61b style guide into the words '61B style guide'?
   function stepOne() {
     return (
       <div>
-        {/* JUST CHECK THE TEXT AND MATCH IT UP AND REPLACE WHATEVER YOU NEED. IF YOU WANT THE COOL CODE STYLE JUST COPY THE
-        TAGS AROUND THE MAKE STYLE TEXT AND USE IT FOR WHATEVER SEGMENTS OF TEXT YOU WANT IT LIKE THAT
-
-        FOR THE HEADING STYLE TEXT VERSUS THE NORMAL TEXT REPLACE "className={classes.normalText}" with 
-        "className={classes.headingText}". IF YOU RUN INTO ISSUES WITH THIS ONE LEMME KNOW. 
-
-        TO ADD LINE SPACES BETWEEN SECTIONS OR OBJECTS JUST ADD <p></p> LIKE I DID. IT'S CHEATING BUT THE LINE HEIGHT STUFF
-        NEVER WORKS SMH.
-
-        ALSO SPECIFICALLY FOR THE ALERT IF YOU WANT THE USER TO BE ABLE TO CLOSE IT AFTER THEY READ IT LEMME KNOW ILL ADD
-        THAT
-
- */}
         <Paper elevation ={0} className={classes.stepPaper}>
           <Alert severity="warning" variant="standard">
             <AlertTitle>Disclaimer:</AlertTitle>
@@ -130,9 +116,6 @@ function HorizontalLabelPositionBelowStepper(props) {
   function stepTwo() {
     return(
       <div>
-        {/* GO TO THE FILE Component.css WITHIN THE COMPONENTS FOLDER. I WROTE OUT INSTRUCTIONS TO REPLACE GIFS. 
-          TEXT SHOULD BE EASIER TO REPLACE JUST FOLLOW WHERE THE TEXTS MATCH UP FROM THE SCREEN AND THE 
-          WIDGETS. */}
         <Paper elevation={0} className={classes.stepPaper}>
           <div style={{display: 'flex', flexDirection: 'row', whiteSpace: 'break-spaces', lineHeight: 3}}>
             <div style={{ lineHeight: 3, whiteSpace: 'break-spaces'}}>
@@ -228,9 +211,6 @@ function HorizontalLabelPositionBelowStepper(props) {
           <p></p>
           <Typography className={classes.normalText}>
           Good luck with your submission!
-          </Typography>
-          <Typography className={classes.normalText}>Some other text you would like to add here. copy over the code tags around the text parts you wanna
-            make into code format.
           </Typography>
         </Paper>
       </div>
