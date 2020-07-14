@@ -81,6 +81,7 @@ function HorizontalLabelPositionBelowStepper(props) {
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
 
+  //for stepOne: can we hyperlink the 61b style guide into the words '61B style guide'?
   function stepOne() {
     return (
       <div>
@@ -105,12 +106,14 @@ function HorizontalLabelPositionBelowStepper(props) {
             turning in your code. Under no circumstance should you turn in your code <strong>only</strong> after running it through ICEcap.
           </Alert>
           <p></p>
-          <Typography className={classes.headingText}>Some Kind of Heading</Typography>
+          <Typography className={classes.headingText}>Getting Started</Typography>
           <p></p>
           <Typography className={classes.normalText}>Use  <code className={classes.code}> make style</code> to get an idea of the kinds of errors your code has to better understand
-          what operations you might want to select.</Typography>
-          <Typography className={classes.normalText}>Some other text you would like to add here. copy over the code tags around the text parts you wanna
-            make into code format.
+          what operations you might want to select. If you are confused about the errors that come up after running make style, be sure to 
+          access the 61B style guide, and reference the guidelines posted there. These are also the same guidelines we are basing our 
+          automated corrections on. </Typography>
+          <Typography className={classes.normalText}> We're here to help with the objective errors - namely working with comments (Javadocs, Multiline, Single Line)
+          and whitespace issues. Please plan accordingly so you know what you'll need to manually fix after using ICEcΔp!
           </Typography>
         </Paper>
       </div>
@@ -127,14 +130,16 @@ function HorizontalLabelPositionBelowStepper(props) {
           <div style={{display: 'flex', flexDirection: 'row', whiteSpace: 'break-spaces', lineHeight: 3}}>
             <div style={{ lineHeight: 3, whiteSpace: 'break-spaces'}}>
               <Typography className={classes.headingText}>Static</Typography>
-              <Typography className={classes.normalText}>add the description here!</Typography>
+              <Typography className={classes.normalText}>Using our static editor, you can either drag and drop or selectively upload our files. 
+              Keep in mind that using the static editor won't allow you to edit the files onsite.</Typography>
               <p></p>
-              <Paper style={{ width: 625, height: 300}} className="OkGif" elevation={0}></Paper>
+              <Paper style={{ width: 625, height: 300}} className="staticUpload" elevation={0}></Paper>
             </div>
             <span>      </span>
             <div style={{ lineHeight: 3, whiteSpace: 'break-spaces'}}>
               <Typography className={classes.headingText}>Live</Typography>
-              <Typography className={classes.normalText}>add the description here!</Typography>
+              <Typography className={classes.normalText}>Using our live editor, you can edit your files after uploading them. 
+              With multiple files, you can select different ones from the drop-down menu and make your necessary changes!</Typography>
               <p></p>
               <Paper style={{ width: 625, height: 300}} className="OkGif" elevation={0}></Paper>
             </div>
@@ -151,14 +156,16 @@ function HorizontalLabelPositionBelowStepper(props) {
           <div style={{display: 'flex', flexDirection: 'row', whiteSpace: 'break-spaces', lineHeight: 3}}>
             <div style={{ lineHeight: 3, whiteSpace: 'break-spaces'}}>
               <Typography className={classes.headingText}>Static</Typography>
-              <Typography className={classes.normalText}>add the description here!</Typography>
+              <Typography className={classes.normalText}>Select the buttons for as many operations as you'd like to apply. Each time you make a selection, 
+              you'll see the button color change. </Typography>
               <p></p>
-              <Paper style={{ width: 625, height: 300}} className="OkGif" elevation={0}></Paper>
+              <Paper style={{ width: 625, height: 300}} className="staticChooseOps" elevation={0}></Paper>
             </div>
             <span>      </span>
             <div style={{ lineHeight: 3, whiteSpace: 'break-spaces'}}>
               <Typography className={classes.headingText}>Live</Typography>
-              <Typography className={classes.normalText}>add the description here!</Typography>
+              <Typography className={classes.normalText}>Select one or more operations from the dropdown menu. Each time you make a selection, you'll see it added to
+              the dropdown header. </Typography>
               <p></p>
               <Paper style={{ width: 625, height: 300}} className="OkGif" elevation={0}></Paper>
             </div>
@@ -172,17 +179,24 @@ function HorizontalLabelPositionBelowStepper(props) {
     return(
       <div>
         <Paper elevation={0} className={classes.stepPaper}>
+        <Alert severity="warning" variant="standard">
+            <AlertTitle>Note:</AlertTitle>
+            None of your original files are edited. Once you are done, if you download your files be sure to make the necessary replacements
+            so that your original files contain the edited, style-corrected content. Be sure to always save copies of your original files, by committing them 
+            to prevent any unintended data loss, or allow yourself to revert to a prior version. 
+          </Alert>
           <div style={{display: 'flex', flexDirection: 'row', whiteSpace: 'break-spaces', lineHeight: 3}}>
             <div style={{ lineHeight: 3, whiteSpace: 'break-spaces'}}>
               <Typography className={classes.headingText}>Static</Typography>
-              <Typography className={classes.normalText}>add the description here!</Typography>
+              <Typography className={classes.normalText}>Edit the names of your files before downloading as desired. You can download them individually, or all together. </Typography>
               <p></p>
-              <Paper style={{ width: 625, height: 300}} className="OkGif" elevation={0}></Paper>
+              <Paper style={{ width: 625, height: 300}} className="staticDownload" elevation={0}></Paper>
             </div>
             <span>      </span>
             <div style={{ lineHeight: 3, whiteSpace: 'break-spaces'}}>
               <Typography className={classes.headingText}>Live</Typography>
-              <Typography className={classes.normalText}>add the description here!</Typography>
+              <Typography className={classes.normalText}>Edit the names of your files before downloading as you desire. Or, feel free to simply copy-paste 
+                the edited content from the rightmost textbox directly into the desired file.</Typography>
               <p></p>
               <Paper style={{ width: 625, height: 300}} className="OkGif" elevation={0}></Paper>
             </div>
@@ -198,7 +212,9 @@ function HorizontalLabelPositionBelowStepper(props) {
         <Paper elevation={0} className={classes.stepPaper}>
           <Typography className={classes.headingText}>Some Kind of Heading</Typography>
           <p></p>
-          <Typography className={classes.normalText}>Make sure to run <code className={classes.code}>make style</code> and <code className={classes.code}>make check</code> before 
+          <Typography className={classes.normalText}> That's about it! If you'd like to know what errors were made and how we corrected them, 
+          click on 'View Difference', which can be found in the live editor. We highly encourage doing this to help you understand your errors!
+          Make sure to run <code className={classes.code}>make style</code> and <code className={classes.code}>make check</code> before 
           turning any final code that you have edited using our service, to ensure that no other issues have 
           arisen! We’d also recommend using your manual testing (integration tests, unit tests, etc.) to confirm 
           that your project/HW works as intended. </Typography>

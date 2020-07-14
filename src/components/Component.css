@@ -22,6 +22,25 @@
     background-position: center;
 }
 
+.staticUpload {
+    background-image: url(./assets/upload.gif);
+    background-size: cover;
+    background-position: center;
+}
+
+.staticChooseOps {
+    background-image: url(./assets/chooseops.gif);
+    background-size: cover;
+    background-position: center;
+}
+
+.staticDownload {
+    background-image: url(./assets/downloads.gif);
+    background-size: cover; 
+    background-position: center; 
+}
+
+
 /* Copy the .OKGif CSS above and rename it to something like .YourGifName" and replace the inside url's gif with the name of the 
 gif you wanna add. In order for it to work tho you need to make sure the gif is inside the folder 
 /icecap/src/components/assets it should be the same folder that contains the mountain_image.jpeg and the ok.gif rn. 
