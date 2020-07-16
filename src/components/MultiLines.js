@@ -63,8 +63,14 @@
                 openReached = false;
                 closeReached = false;
             }
+
+            if (toWrite != "") {
+                fileContent += toWrite + newline;
+                // fileContent += "tst";
+            }
             oneLine = false;
-            fileContent += toWrite + newline;
+            
+            
         }
         return fileContent;
     }

@@ -58,6 +58,11 @@
     background-position: cover;
 }
 
+.seeDiff {
+    background-image: url(./assets/see_dif.gif);
+    background-size: cover; 
+    background-position: cover;
+}
 
 /* Copy the .OKGif CSS above and rename it to something like .YourGifName" and replace the inside url's gif with the name of the 
 gif you wanna add. In order for it to work tho you need to make sure the gif is inside the folder 

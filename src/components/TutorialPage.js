@@ -212,6 +212,7 @@ function HorizontalLabelPositionBelowStepper(props) {
           <Typography className={classes.normalText}>
           Good luck with your submission!
           </Typography>
+          <Paper style={{ width: 625, height: 300}} className="seeDiff" elevation={0}></Paper>
         </Paper>
       </div>
     );
