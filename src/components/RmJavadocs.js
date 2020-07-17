@@ -47,6 +47,7 @@ export default class RmJavadocs {
             toWrite = line;
             if ((openReached && !closeReached) || oneLine || (openReached && closeReached)) {
                 toWrite = "";
+                newline = "";
             }
             if (closeReached) {
                 openReached = false;

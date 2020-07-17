@@ -32,10 +32,10 @@ export default class SingleLines {
             if (line.includes("//")) {
                 var commentIndex = line.indexOf("//", 0);
                 if (commentIndex !== 0) {
-                var subString = line.substring(0, commentIndex);
-                if (subString.trim() === "") {
-                    fileContent += subString + newline;
-                }
+                    var subString = line.substring(0, commentIndex);
+                    if (subString.trim() !== "") {
+                        fileContent += subString + newline;
+                    }
                 }
             } else {
                 fileContent += line + newline;

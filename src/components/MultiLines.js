@@ -51,26 +51,26 @@
                     closeReached = true;
                 }
             }
-            toWrite = line;
-            var open = toWrite.indexOf("/*");
-            var close = toWrite.indexOf("*/") + 2;
-            if (oneLine) {
-                toWrite = line.replace(line.substring(open, close), "");
-            } else if (openReached && !closeReached) {
-                toWrite = "";
-            } else if (closeReached) {
-                toWrite = line.substring(close);
-                openReached = false;
-                closeReached = false;
+            if (line.trim() !== "") {
+                toWrite = line;
+                var open = toWrite.indexOf("/*");
+                var close = toWrite.indexOf("*/") + 2;
+                if (oneLine) {
+                    toWrite = line.replace(line.substring(open, close), "");
+                } else if (openReached && !closeReached) {
+                    toWrite = "";
+                } else if (closeReached) {
+                    toWrite = line.substring(close);
+                    openReached = false;
+                    closeReached = false;
+                }
+                if (toWrite.trim() !== "") {
+                    fileContent += toWrite + newline;
+                }
+            } else {
+                fileContent += line + newline;
             }
-
-            if (toWrite != "") {
-                fileContent += toWrite + newline;
-                // fileContent += "tst";
-            }
-            oneLine = false;
-            
-            
+            oneLine = false; 
         }
         return fileContent;
     }
