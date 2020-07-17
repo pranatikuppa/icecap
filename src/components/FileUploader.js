@@ -130,12 +130,10 @@ export default function FileUploader(props) {
     if (fileTextList.length > 0) {
       var oldText = fileTextList[index];
       var changedFileTextList = fileTextList.map(function(filetext){return (filetext === oldText ? newText : filetext)});
-      setDisplay(newText);
       setFileTextList(changedFileTextList);
       props.callback(changedFileTextList[index]);
       props.callbackFilename(uploadedFiles[index].name);
     } else {
-      setDisplay(newText);
       setInputText(newText);
       props.callback(newText);
       props.callbackFilename("File1.java");
