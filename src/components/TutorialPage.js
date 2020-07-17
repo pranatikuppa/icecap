@@ -73,6 +73,11 @@ function HorizontalLabelPositionBelowStepper(props) {
       fontWeight: 600,
       fontSize: '20px',
     },
+    subHeadingText: {
+      fontFamily: 'Open-Sans',
+      color: props.tColor,
+      fontWeight: 600,
+    },
     normalText: {
       fontFamily: 'Open-Sans',
       color: props.tColor,
@@ -199,19 +204,20 @@ function HorizontalLabelPositionBelowStepper(props) {
   function stepFive() {
     return(
       <div>
-        <Paper elevation={0} className={classes.stepPaper}>
+        <Paper elevation={0} className={classes.step4Paper}>
           <Typography className={classes.headingText}>Final Steps</Typography>
-          <p></p>
-          <Typography className={classes.normalText}> That's about it! If you'd like to know what errors were made and how we corrected them, 
+          <Typography className={classes.normalText}>That's about it! If you'd like to know what errors were made and how we corrected them, 
           click on 'View Difference', which can be found in the live editor. We highly encourage doing this to help you understand your errors!
           Make sure to run <code className={classes.code}>make style</code> and <code className={classes.code}>make check</code> before 
           turning any final code that you have edited using our service, to ensure that no other issues have 
           arisen! We’d also recommend using your manual testing (integration tests, unit tests, etc.) to confirm 
           that your project/HW works as intended. </Typography>
-          <p></p>
           <Typography className={classes.normalText}>
           Good luck with your submission!
           </Typography>
+          <p></p>
+
+          <Typography className={classes.subHeadingText}>The subheading</Typography>
           <Paper style={{ width: 625, height: 300}} className="seeDiff" elevation={0}></Paper>
         </Paper>
       </div>
