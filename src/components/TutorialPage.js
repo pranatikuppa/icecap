@@ -217,7 +217,7 @@ function HorizontalLabelPositionBelowStepper(props) {
           </Typography>
           <p></p>
 
-          <Typography className={classes.subHeadingText}>The subheading</Typography>
+          <Typography className={classes.subHeadingText}>Viewing Differences</Typography>
           <Paper style={{ width: 625, height: 300}} className="seeDiff" elevation={0}></Paper>
         </Paper>
       </div>
