@@ -125,9 +125,11 @@ export default function FileUploader(props) {
   const [fileTextList, setFileTextList] = React.useState([]);
   const [display, setDisplay] = React.useState("");
   const [inputText, setInputText] = React.useState("");
+  const [isEditing, setIsEditing] = React.useState(false);
 
   const handleChange = (event) => {
     if (uploadedFiles.length !== 0) {
+      setIsEditing(false);
       setIndex(event.target.value);
       props.callback(fileTextList[event.target.value]);
       props.callbackFilename(uploadedFiles[event.target.value].name);
@@ -135,11 +137,11 @@ export default function FileUploader(props) {
   };
 
   function handleTextChange(newText) {
+    setIsEditing(true);
     if (fileTextList.length > 0) {
       var oldText = fileTextList[index];
-      var changedFileTextList = fileTextList.map(function(filetext){return (filetext === oldText ? newText : filetext)});
-      setFileTextList(changedFileTextList);
-      props.callback(changedFileTextList[index]);
+      setFileTextList(fileTextList.map(function(filetext){return (filetext === oldText ? newText : filetext)}));
+      props.callback(newText);
       props.callbackFilename(uploadedFiles[index].name);
     } else {
       setInputText(newText);
@@ -149,37 +151,41 @@ export default function FileUploader(props) {
   };
 
   function getDisplayText() {
-    if (uploadedFiles.length !== 0) {
-      var inputFile = uploadedFiles[index];
-      fileAccessMethod(inputFile).then(function(fileText) {
-        if (fileText === fileTextList[index]) {
-          setDisplay(fileText);
-          props.callback(fileText);
-          props.callbackFilename(uploadedFiles[index].name)
-        } else {
-          setDisplay(fileTextList[index]);
-        }
-      });
-      return <AceEditor
-      theme={props.eTheme}
-      width="510px"
-      height="530px"
-      value={display}
-      onChange={handleTextChange}
-      mode="java"
-      >
-      </AceEditor>;
-    } else {
-      return <AceEditor
-      mode="java"
-      width="510px"
-      height="530px"
-      theme={props.eTheme}
-      value={display}
-      onChange={handleTextChange}
-      >
-      </AceEditor>;
+    if (!isEditing) {
+      if (uploadedFiles.length !== 0) {
+        var inputFile = uploadedFiles[index];
+        fileAccessMethod(inputFile).then(function(fileText) {
+          if (fileText === fileTextList[index]) {
+            setDisplay(fileText);
+            props.callback(fileText);
+            props.callbackFilename(uploadedFiles[index].name)
+          } else {
+            setDisplay(fileTextList[index]);
+          }
+        });
+      }
+      return display;
     }
+      // return <AceEditor
+      // theme={props.eTheme}
+      // width="510px"
+      // height="530px"
+      // value={display}
+      // onChange={handleTextChange}
+      // mode="java"
+      // >
+      // </AceEditor>;
+    // } else {
+      // return display;
+      // return <AceEditor
+      // mode="java"
+      // width="510px"
+      // height="530px"
+      // theme={props.eTheme}
+      // onChange={handleTextChange}
+      // >
+      // </AceEditor>;
+    // }
   }
 
   function fileAccessMethod(inputFile){
@@ -286,7 +292,15 @@ export default function FileUploader(props) {
                   {!isDragActive ? 
                     <div className={classes.defaultCardBorder}>
                       <div className='Dropzone2'>
-                        {getDisplayText()}
+                        <AceEditor
+                        value={getDisplayText()}
+                        mode="java"
+                        onChange={handleTextChange}
+                        theme={props.eTheme}
+                        width="510px"
+                        height="530px"
+                        >
+                        </AceEditor>
                       </div>
                     </div>:
                     <div className={classes.dropCardBorder}>
