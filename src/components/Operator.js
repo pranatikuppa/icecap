@@ -13,7 +13,6 @@ import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
-import Typography from '@material-ui/core/Typography';
 import RmJavadocs from './RmJavadocs';
 import SingleLines from './SingleLines';
 import MultiLines from './MultiLines';
@@ -37,11 +36,19 @@ function getStyles(operation, operationNames, theme) {
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
+    anchorOrigin: {
+        vertical: "bottom",
+        horizontal: "left"
+    },
+    transformOrigin: {
+        vertical: "top",
+        horizontal: "left"
+    },
+    getContentAnchorEl: null,
     PaperProps: {
         style: {
-        elevation: 0,
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
         },
     },
 };
