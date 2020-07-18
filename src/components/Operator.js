@@ -346,12 +346,12 @@ export default function Operator(props) {
                 {getDisplayText()}
                 <span>           </span>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    {chosenOperations.length === 0 || props.originalText === "" ? <Button className={classes.disableButton} disabled>Run</Button> :
+                    {chosenOperations.length === 0 || props.originalText === "" ? <Button variant="contained" component="span" className={classes.disableButton} disabled>Run</Button> :
                     <Button className={classes.button} onClick={handleRun}>Run</Button>}
                     <p>
                     </p>
                     {fixedText !== "" ? <Button className={classes.button} onClick={() => {setOpenField(!openField)}}>{openField ? 'Done' : 'Change Filename'}</Button> :
-                    <Button disabled className={classes.disableButton}>Change Filename</Button>}
+                    <Button variant="contained" disabled className={classes.disableButton}>Change Filename</Button>}
                     <p>
                     </p>
                     <Collapse in={openField}>
@@ -363,11 +363,11 @@ export default function Operator(props) {
                         </CssTextField>
                     </Collapse>
                     {fixedText !== "" ? <Button className={classes.button} onClick={handleDownload}>Download File</Button> :
-                    <Button disabled className={classes.disableButton}>Download File</Button>}
+                    <Button component="span" variant="contained" disabled className={classes.disableButton}>Download File</Button>}
                     <p>
                     </p>
                     {fixedText !== "" ? <Button className={classes.button} onClick={handleDiffOpen}>View Difference</Button> :
-                    <Button disabled className={classes.disableButton}>View Difference</Button>}
+                    <Button disabled variant="contained" className={classes.disableButton}>View Difference</Button>}
                     <Dialog
                         maxWidth='lg'
                         fullWidth

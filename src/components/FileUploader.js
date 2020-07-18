@@ -202,12 +202,16 @@ export default function FileUploader(props) {
     for(i = 0; i < acceptedFiles.length; i++) {
       var inputFile = acceptedFiles[i];
       fileAccessMethod(inputFile).then(function(fileText){
+        if (i === 0) {
+          setInputText(fileText);
+        }
+        props.callback(fileText);
         texts.push(fileText);
       });
     }
     setFileTextList(texts);
     setUploadedFiles(Array.from(acceptedFiles));
-    setInputText("");
+    props.callbackFilename(acceptedFiles[0].name);
   }
 
   function getOptions() {
@@ -251,8 +255,9 @@ export default function FileUploader(props) {
                 Upload Files
               </Button>
             </label>
+            <span>           </span>
           </div>
-          <span>           </span>
+          <span>      </span>
           <div style={{ lineHeight: 6.2, whiteSpace: 'break-spaces'}}>
             <FormControl className={classes.formControl}>
               <InputLabel style={{ color: props.tColor }} shrink htmlFor="file-selector">Select a file</InputLabel>
