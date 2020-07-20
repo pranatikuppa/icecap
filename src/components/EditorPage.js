@@ -11,7 +11,7 @@ export default function EditorPage(props) {
         root: {
           display: 'flex',
           '& > *': {
-            margin: theme.spacing(3),
+            margin: theme.spacing(2),
             width: theme.spacing(window.screen.width),
             height: theme.spacing(window.screen.height),
           },

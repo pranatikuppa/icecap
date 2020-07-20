@@ -11,6 +11,9 @@ import { animateScroll as scroll } from "react-scroll";
  */
 export default function MainInfoPage(props) {
 
+  const LIVE = 1;
+  const TUTORIAL = 3;
+
   /**
    * Styles used to customize text and other components within the
    * MainInfoPage.
@@ -19,7 +22,7 @@ export default function MainInfoPage(props) {
     root: {
       display: 'flex',
       '& > *': {
-        margin: theme.spacing(4),
+        margin: theme.spacing(2),
         width: window.screen.width,
         height: window.screen.height,
       },
@@ -101,6 +104,14 @@ export default function MainInfoPage(props) {
     scroll.scrollTo(0.885 * window.screen.height);
   };
 
+  const goToEditor = () => {
+    props.screenChangeCallback(LIVE);
+  }
+
+  const goToTutorial = () => {
+    props.screenChangeCallback(TUTORIAL);
+  }
+
   /**
    * The components that make up the MainInfoPage.
    */
@@ -121,7 +132,7 @@ export default function MainInfoPage(props) {
                   className={classes.button}
                   disableElevation
                   variant='contained'
-                  onClick={scrollToStart}
+                  onClick={goToEditor}
                 >
                   Start Editing
               </Button>
@@ -129,7 +140,7 @@ export default function MainInfoPage(props) {
                 className={classes.button2}
                 disableElevation
                 variant='contained'
-                onClick={scrollToTutorial}
+                onClick={goToTutorial}
               >
                 Mini Tutorial
               </Button>

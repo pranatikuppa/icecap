@@ -166,26 +166,6 @@ export default function FileUploader(props) {
       }
       return display;
     }
-      // return <AceEditor
-      // theme={props.eTheme}
-      // width="510px"
-      // height="530px"
-      // value={display}
-      // onChange={handleTextChange}
-      // mode="java"
-      // >
-      // </AceEditor>;
-    // } else {
-      // return display;
-      // return <AceEditor
-      // mode="java"
-      // width="510px"
-      // height="530px"
-      // theme={props.eTheme}
-      // onChange={handleTextChange}
-      // >
-      // </AceEditor>;
-    // }
   }
 
   function fileAccessMethod(inputFile){

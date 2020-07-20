@@ -15,6 +15,8 @@ import StepConnector from '@material-ui/core/StepConnector';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 
+const LIVE = 1;
+
 function getSteps() {
   return [
     "Using CS 61B Materials",
@@ -249,8 +251,8 @@ function HorizontalLabelPositionBelowStepper(props) {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleScroll = () => {
-    scroll.scrollTo(1.78 * window.screen.height);
+  const goToEditor = () => {
+    props.screenChangeCallback(LIVE);
   }
 
   const QontoConnector = withStyles({
@@ -315,13 +317,7 @@ function HorizontalLabelPositionBelowStepper(props) {
   }
 
   QontoStepIcon.propTypes = {
-    /**
-     * Whether this step is active.
-     */
     active: PropTypes.bool,
-    /**
-     * Mark the step as completed. Is passed to child components.
-     */
     completed: PropTypes.bool,
   };
 
@@ -348,7 +344,7 @@ function HorizontalLabelPositionBelowStepper(props) {
               Back
             </Button>
             {activeStep === steps.length - 1 ? 
-            <Button disableElevation variant="contained" className={classes.button} onClick={handleScroll}>Start Editing</Button>:
+            <Button disableElevation variant="contained" className={classes.button} onClick={goToEditor}>Start Editing</Button>:
             <Button disableElevation variant="contained" className={classes.button} onClick={handleNext}>Next</Button>}
           </div>
         </div>
@@ -363,7 +359,7 @@ export default function TutorialPage(props) {
     root: {
       display: 'flex',
       '& > *': {
-        margin: theme.spacing(3),
+        margin: theme.spacing(2),
         width: theme.spacing(window.screen.width),
         height: theme.spacing(window.screen.height),
       },
@@ -380,7 +376,7 @@ export default function TutorialPage(props) {
     return(
         <div className={classes.root}>
             <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: 5*window.screen.height/6, width: window.screen.width }}>
-                <HorizontalLabelPositionBelowStepper pColor={props.pColor} tColor={props.tColor} bColor={props.bColor} mColor={props.mColor}></HorizontalLabelPositionBelowStepper>
+                <HorizontalLabelPositionBelowStepper screenChangeCallback={props.screenChangeCallback} pColor={props.pColor} tColor={props.tColor} bColor={props.bColor} mColor={props.mColor}></HorizontalLabelPositionBelowStepper>
             </Paper>
         </div>
     );
