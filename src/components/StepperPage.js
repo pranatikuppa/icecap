@@ -653,6 +653,7 @@ export default function StepperPage(props) {
         display: 'flex',
         '& > *': {
           margin: theme.spacing(2),
+          marginTop: theme.spacing(9),
           width: theme.spacing(window.screen.width),
           height: theme.spacing(window.screen.height),
         },

@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import ContactButton from './ContactButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import './Component.css';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -13,8 +12,10 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuList from '@material-ui/core/MenuList';
 import Switch from '@material-ui/core/Switch';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { useLovelySwitchStyles } from '@mui-treasury/styles/switch/lovely';
+import Brightness2Icon from '@material-ui/icons/Brightness2';
+import { useN02SwitchStyles } from '@mui-treasury/styles/switch/n02';
+import CodeIcon from '@material-ui/icons/Code';
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
   
 /**
  * The PageHeader component.
@@ -30,12 +31,12 @@ export default function PageHeader(props) {
   const TUTORIAL = 3;
   const RESOURCES = 4;
 
-  const [liveToggle, setLiveToggle] = React.useState(true);
   const [darkToggle, setDarkToggle] = React.useState(false);
   const [settingsOpen, setSettingsOpen] = React.useState(false);
   const [editorOpen, setEditorOpen] = React.useState(false);
   const settingsAnchorRef = React.useRef(null);
   const editorAnchorRef = React.useRef(null);
+  const switchStyles = useN02SwitchStyles();
 
   /**
    * The styles that are used to customize the page header.
@@ -43,6 +44,9 @@ export default function PageHeader(props) {
   const appBarStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
+    },
+    bar: {
+      backgroundColor: props.hColor
     },
     menuText: {
       fontFamily: 'Open-Sans',
@@ -150,7 +154,7 @@ export default function PageHeader(props) {
    */
   return (
       <div className={classes.root}>
-      <AppBar elevation={0} position="static" color='transparent'>
+      <AppBar elevation={0} position="fixed" className={classes.bar}>
           <Toolbar>
           <Typography variant="App-header" className={classes.title}>
               ICEcΔp v1.0
@@ -167,12 +171,16 @@ export default function PageHeader(props) {
                 <Paper style={{backgroundColor: props.hColor}}>
                   <ClickAwayListener onClickAway={handleEditorClose}>
                     <MenuList autoFocusItem={editorOpen} id="menu-list-grow">
-                      <MenuItem onClick={goToLive}>
+                      <MenuItem style={{whiteSpace: 'break-spaces'}} onClick={goToLive}>
+                      <CodeIcon style={{ backgroundColor: props.iColor, color: props.tColor, borderRadius: 20, padding: 5}}></CodeIcon>
+                      <span>     </span>
                       <Typography className={classes.menuText}>
                         Live Editor
                       </Typography>
                       </MenuItem>
-                      <MenuItem onClick={goToStatic}>
+                      <MenuItem style={{whiteSpace: 'break-spaces'}} onClick={goToStatic}>
+                      <InsertDriveFileIcon style={{ backgroundColor: props.iColor, color: props.tColor, borderRadius: 20, padding: 5}}></InsertDriveFileIcon>
+                      <span>     </span>
                       <Typography className={classes.menuText}>
                         Static Editor
                       </Typography>
@@ -195,19 +203,19 @@ export default function PageHeader(props) {
                 <Paper style={{backgroundColor: props.hColor}}>
                   <ClickAwayListener onClickAway={handleSettingsClose}>
                     <MenuList autoFocusItem={settingsOpen} id="menu-list-grow">
-                      <MenuItem>
+                      <MenuItem style={{whiteSpace: 'break-spaces'}}>
+                      <Brightness2Icon style={{ backgroundColor: props.iColor, color: props.tColor, borderRadius: 20, padding: 5}}></Brightness2Icon>
+                      <span>     </span>
                       <Typography className={classes.menuText}>
                         Dark Mode
                       </Typography>
-                      <span>   </span>
+                      <span>        </span>
                         <Switch
-                          className={classes.switch}
+                          color="primary"
+                          classes={switchStyles}
                           checked={darkToggle}
                           onChange={handleDarkToggle}
                         />
-                      <span>   </span>
-                      <Typography className={classes.menuText}>
-                      </Typography>
                       </MenuItem>
                     </MenuList>
                   </ClickAwayListener>

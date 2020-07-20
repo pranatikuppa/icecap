@@ -23,6 +23,7 @@ export default function MainInfoPage(props) {
       display: 'flex',
       '& > *': {
         margin: theme.spacing(2),
+        marginTop: theme.spacing(9),
         width: window.screen.width,
         height: window.screen.height,
       },
@@ -89,20 +90,6 @@ export default function MainInfoPage(props) {
    * The styles used in the components below.
    */
   const classes = mainStyles();
-
-  /**
-   * Handler method that controlls the page scroll to the software.
-   */
-  const scrollToStart = () => {
-    scroll.scrollTo(1.78 * window.screen.height);
-  };
-
-  /**
-   * Handler method that controlls the page scroll to the tutorial.
-   */
-  const scrollToTutorial = () => {
-    scroll.scrollTo(0.885 * window.screen.height);
-  };
 
   const goToEditor = () => {
     props.screenChangeCallback(LIVE);

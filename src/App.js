@@ -40,9 +40,9 @@ function MainApp() {
   const [tutorialColor, setTutorialColor] = React.useState('#FFFFFF');
   const [logo, setLogo] = React.useState('LightLogo');
   const [diffHighlight, setDiffHighlight] = React.useState('codeMarkerLight');
+  const [iconHighlight, setIconHighlight] = React.useState('#D3D3D3');
 
   const [screenNum, setScreenNum] = React.useState(HOME);
-  const [isStep, setIsStep] = React.useState(true);
 
   const mainStyles = makeStyles((theme) => ({
     root: {
@@ -62,10 +62,6 @@ function MainApp() {
     },
   }));
 
-  function handleSwitch() {
-    setIsStep(!isStep);
-  }
-
   function changeScreen(sNum) {
     setScreenNum(sNum);
   }
@@ -74,6 +70,7 @@ function MainApp() {
   
   function switchDark(isDarkMode) {
     if (isDarkMode) {
+      setIconHighlight('#696969');
       setBackColor('#444d56');
       setTextColor('#e3ecef');
       setMiddleColor('#e3ecef');
@@ -83,6 +80,7 @@ function MainApp() {
       setEditorTheme("nord_dark");
       setDiffHighlight('codeMarkerDark');
     } else {
+      setIconHighlight('#D3D3D3');
       setBackColor('#e3ecef');
       setTextColor('#154854');
       setMiddleColor('#6493a1');
@@ -112,42 +110,12 @@ function MainApp() {
   }
 
   return(
-    <div>
+    <div style={{ minHeight: window.screen.height, backgroundColor: mainColor}} className="App-body">
       <div style={{ backgroundColor: mainColor, whiteSpace: 'break-spaces'}} className='App-body'>
-        <PageHeader currentScreen={screenNum} darkModeCallback={switchDark} screenChangeCallback={changeScreen} hColor={mainColor} mColor={middleColor} bColor={backColor} tColor={textColor}></PageHeader>
+        <PageHeader iColor={iconHighlight} currentScreen={screenNum} darkModeCallback={switchDark} screenChangeCallback={changeScreen} hColor={mainColor} mColor={middleColor} bColor={backColor} tColor={textColor}></PageHeader>
         {getScreen()}
-        {/* <MainInfoPage tColor={textColor} logoStyle={logo} bColor={backColor} mColor={middleColor}></MainInfoPage>
-        <TutorialPage pColor={tutorialColor} mColor={middleColor} bColor={backColor} tColor={textColor}></TutorialPage>
-        <Paper elevation={0} className={classes.paper} style={{ backgroundColor: backColor }}>
-          <Grid component="label" container alignItems="center" style={{ whiteSpace: 'break-spaces' }} className={classes.root}>
-            <Grid item>View Settings: </Grid>
-            <span>        </span>
-            <Grid item>Live</Grid>
-            <Grid item>
-              <CustomSwitch
-              onChange={handleSwitch}
-              ></CustomSwitch>
-            </Grid>
-            <Grid item>Static</Grid>
-            <span>                </span>
-            <Grid item>Default</Grid>
-            <Grid item>
-              <CustomSwitch
-              onChange={switchDark}
-              ></CustomSwitch>
-            </Grid>
-            <Grid item>Dark Mode</Grid>
-          </Grid>
-        </Paper>
-        {!isStep ? 
-        <StepperPage mColor={middleColor} tColor={textColor} bColor={backColor}></StepperPage> :
-        <EditorPage diffHighlight={diffHighlight} eTheme={editorTheme} mColor={middleColor} tColor={textColor} bColor={backColor}></EditorPage>
-        } */}
       </div>
-      <div style={{ backgroundColor: '#ffffff', whiteSpace: 'break-spaces', lineHeight: 2}}>
       <Typography className={classes.text}>created by two fellow 61b'ers: pranati and khushi</Typography>
-      <p></p>
-      </div>
     </div>
   );
 }
