@@ -6,7 +6,7 @@ import GridList from '@material-ui/core/GridList';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import React from 'react';
-import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Select from 'react-select';
 import RmJavadocs from './RmJavadocs';
 import SingleLines from './SingleLines';
@@ -120,6 +120,10 @@ export default function EditorPage(props) {
             fontFamily: 'Open-Sans',
             fontWeight: 600,
         },
+        clearButton: {
+            color: props.mColor,
+            borderColor: props.mColor,
+        },
         input: {
             display: 'none',
         },
@@ -142,6 +146,28 @@ export default function EditorPage(props) {
         },
     }));
 
+    var myColor = {
+        50: '#b1ced0',
+        100: '#a2c4c6',
+        200: '#92bbbd',
+        300: '#83b1b3',
+        400: '#73a7aa',
+        500: '#6493a1',
+        600: '#5a8e90',
+        700: '#507e80',
+        800: '#466e70',
+        900: '#3c5e60',
+        A100: '#a2c4c6',
+        A200: '#92bbbd',
+        A400: '#83b1b3',
+    }
+
+    const textTheme = createMuiTheme({
+        palette: {
+          primary: myColor,
+        },
+    });
+
     const animatedComponents = makeAnimated();
 
     const classes = mainStyles();
@@ -161,6 +187,23 @@ export default function EditorPage(props) {
     const [fixedText, setFixedText] = React.useState("");
     const [openDiff, setOpenDiff] = React.useState(false);
     const [diffVal, setDiffVal] = React.useState([]);
+
+    // function handleClear() {
+    //     setInputText("");
+    //     setFileTextList([]);
+    //     setUploadedFiles([]);
+    //     setFileName("");
+    //     setNewFileName("");
+    //     setIndex(0);
+    //     setIsEditing(false);
+    //     setChosenOperations([]);
+    //     setFirstDisplay("");
+    //     setSecondDisplay("");
+    //     setOpenField(false);
+    //     setFixedText("");
+    //     setOpenDiff(false);
+    //     setDiffVal([]);
+    // }
 
     const operations = [
         { value: 0, label: 'Remove Javadocs' },
@@ -382,15 +425,6 @@ export default function EditorPage(props) {
         setFixedText(newText);
     }
 
-    function handleClear() {
-        setFixedText("");
-        setSecondDisplay("");
-        setFirstDisplay("");
-        setIndex(0);
-        setChosenOperations([]);
-        setFileName("");
-    }
-
     function getChangeFileNameButton() {
         if (openField) {
             return <Button className={itemClasses.button} onClick={() => {setOpenField(!openField)}}>Done</Button>;
@@ -518,7 +552,7 @@ export default function EditorPage(props) {
                                 </Typography>
                                 <Collapse in={openField}>
                                     <p></p>
-                                    <ThemeProvider></ThemeProvider>
+                                    <ThemeProvider theme={textTheme}>
                                     <TextField 
                                     InputProps={{ classes: inputBaseStyles, disableUnderline: true }}
                                     placeholder={'filename'}
@@ -526,6 +560,7 @@ export default function EditorPage(props) {
                                     onChange={handleFileNameChange}
                                     variant="outlined"
                                     />
+                                    </ThemeProvider>
                                     <p></p>
                                 </Collapse>
                                 <p></p>
@@ -579,6 +614,11 @@ export default function EditorPage(props) {
                                     </Button>
                                     </DialogActions>
                                 </Dialog>
+                                <p></p>
+                                <div style={{ whiteSpace: 'break-spaces', minHeight: 40 }}>
+                                    <p></p>
+                                </div>
+                                {/* <Button className={itemClasses.clearButton} onClick={handleClear} disableElevation variant="outlined">Clear All</Button> */}
                             </div>
                         </GridList>
                     </Card>
