@@ -478,7 +478,7 @@ export default function EditorPage(props) {
             <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: window.screen.height, width: window.screen.width}}>
                 <div style={{ flex: 1, flexDirection: 'row', display: 'flex' }}>
                     <Card className={classes.operationCard} elevation={0} style={{ backgroundColor: props.hColor, width: window.screen.width/6, height: window.screen.height - (window.screen.height/28) }}>
-                        <GridList cellHeight={window.screen.height/1.5} cellWidth={window.screen.width/7} cols={1}>
+                        <GridList cellHeight={window.screen.height - (window.screen.height/28)} cellWidth={window.screen.width/7} cols={1}>
                             <div style={{ whiteSpace: 'break-spaces' }}>
                                 <Typography className={itemClasses.smallHeading}>
                                     FILES
@@ -510,9 +510,9 @@ export default function EditorPage(props) {
                                 </Button>
                                 </label>
                                 <p></p>
-                                <div style={{ whiteSpace: 'break-spaces', minHeight: 40 }}>
+                                <div style={{ whiteSpace: 'break-spaces', minHeight: window.screen.height/20 }}>
                                     <p></p>
-                                </div>
+                                </div>  
                                 <Typography className={itemClasses.smallHeading}>
                                     OPERATIONS
                                 </Typography>
@@ -544,7 +544,7 @@ export default function EditorPage(props) {
                                 <p></p>
                                 {chosenOperations.length === 0 || firstDisplay === "" ? <Button variant="contained" disableElevation disableRipple className={itemClasses.disableButton}>Run</Button> :
                                 <Button disableElevation variant="contained" className={itemClasses.button} onClick={handleRun}>Run</Button>}
-                                <div style={{ whiteSpace: 'break-spaces', minHeight: 40 }}>
+                                <div style={{ whiteSpace: 'break-spaces', minHeight: window.screen.height/20 }}>
                                     <p></p>
                                 </div>
                                 <Typography className={itemClasses.smallHeading}>
@@ -596,7 +596,7 @@ export default function EditorPage(props) {
                                             className={"codeMarker"}
                                             onChange={handleDiffChange}
                                             width={window.screen.width/1.65}
-                                            height={window.screen.height/1.6}
+                                            height={window.screen.height/1.7}
                                             value={diffVal}
                                             setOptions={{useWorker: false}}
                                             mode="java"
