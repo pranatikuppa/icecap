@@ -88,8 +88,6 @@ don't change any other css style block. just add new ones. and after you're done
 }
   
 .Dropzone {
-    width: 780px;
-    height: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -97,8 +95,6 @@ don't change any other css style block. just add new ones. and after you're done
 }
 
 .Dropzone2 {
-    width: 510px;
-    height: 530px;
     display: flex;
     align-items: center;
     justify-content: center;

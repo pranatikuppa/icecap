@@ -22,7 +22,7 @@ import AceEditor from 'react-ace';
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-katzenmilch";
 import { diff as DiffEditor } from "react-ace";
-import { DialogContentText } from '@material-ui/core';
+import DialogContentText from '@material-ui/core/DialogContentText';
 
 function getStyles(operation, operationNames, theme) {
     return {

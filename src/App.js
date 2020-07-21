@@ -41,7 +41,6 @@ function MainApp() {
   const [logo, setLogo] = React.useState('LightLogo');
   const [diffHighlight, setDiffHighlight] = React.useState('codeMarkerLight');
   const [iconHighlight, setIconHighlight] = React.useState('#D3D3D3');
-
   const [screenNum, setScreenNum] = React.useState(HOME);
 
   const mainStyles = makeStyles((theme) => ({
@@ -97,7 +96,7 @@ function MainApp() {
       case HOME:
         return <MainInfoPage screenChangeCallback={changeScreen} tColor={textColor} logoStyle={logo} bColor={backColor} mColor={middleColor}></MainInfoPage>;
       case LIVE:
-        return <EditorPage screenChangeCallback={changeScreen} diffHighlight={diffHighlight} eTheme={editorTheme} mColor={middleColor} tColor={textColor} bColor={backColor}></EditorPage>;
+        return <EditorPage screenChangeCallback={changeScreen} diffHighlight={diffHighlight} eTheme={editorTheme} hColor={mainColor} mColor={middleColor} tColor={textColor} bColor={backColor}></EditorPage>;
       case STATIC:
         return <StepperPage screenChangeCallback={changeScreen} mColor={middleColor} tColor={textColor} bColor={backColor}></StepperPage>;
       case TUTORIAL:
