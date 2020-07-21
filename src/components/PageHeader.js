@@ -192,7 +192,7 @@ export default function PageHeader(props) {
             )}
           </Popper>
           
-          <Button onClick={goToResources} className={classes.button} variant="App-header" color="inherit">Resources</Button>
+          {/* <Button onClick={goToResources} className={classes.button} variant="App-header" color="inherit">Resources</Button> */}
           <Button ref={settingsAnchorRef} onClick={handleSettingsToggle} className={classes.button} variant="App-header" color="inherit">Settings</Button>
           <Popper open={settingsOpen} aria-haspopup="true" aria-controls={settingsOpen ? 'menu-list-grow' : undefined} anchorEl={settingsAnchorRef.current} role={undefined} transition disablePortal>
             {({ TransitionProps, placement }) => (

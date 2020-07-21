@@ -101,8 +101,8 @@ function MainApp() {
         return <StepperPage screenChangeCallback={changeScreen} mColor={middleColor} tColor={textColor} bColor={backColor}></StepperPage>;
       case TUTORIAL:
         return <TutorialPage screenChangeCallback={changeScreen} pColor={tutorialColor} mColor={middleColor} bColor={backColor} tColor={textColor}></TutorialPage>;
-      case RESOURCES:
-        return <ResourcesPage screenChangeCallback={changeScreen} tColor={textColor} logoStyle={logo} bColor={backColor} mColor={middleColor}></ResourcesPage>;
+      // case RESOURCES:
+      //   return <ResourcesPage screenChangeCallback={changeScreen} tColor={textColor} logoStyle={logo} bColor={backColor} mColor={middleColor}></ResourcesPage>;
       default:
         return <MainInfoPage screenChangeCallback={changeScreen} tColor={textColor} logoStyle={logo} bColor={backColor} mColor={middleColor}></MainInfoPage>;
     }
