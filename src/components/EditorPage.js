@@ -6,7 +6,7 @@ import GridList from '@material-ui/core/GridList';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Select from 'react-select';
 import RmJavadocs from './RmJavadocs';
 import SingleLines from './SingleLines';
@@ -518,6 +518,7 @@ export default function EditorPage(props) {
                                 </Typography>
                                 <Collapse in={openField}>
                                     <p></p>
+                                    <ThemeProvider></ThemeProvider>
                                     <TextField 
                                     InputProps={{ classes: inputBaseStyles, disableUnderline: true }}
                                     placeholder={'filename'}
