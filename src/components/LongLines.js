@@ -26,7 +26,7 @@ export default class LongLines {
         for (i = 0; i < numLines; i++) {
             var line = lines[i];
             if (line.length > 80) {
-                toWrite = "-- EXCEEDED LENGTH --" + line;
+                toWrite = "EXCEEDED LENGTH:" + line;
             } else {
                 toWrite = line;
             }

@@ -27,6 +27,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import { diff as DiffEditor } from "react-ace";
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { borderedTextFieldStylesHook } from '@mui-treasury/styles/textField/bordered';
+import { bannerCheckboxStylesHook } from '@mui-treasury/styles/checkbox/banner';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import { useNeonCheckboxStyles } from '@mui-treasury/styles/checkbox/neon';
+import LongLines from './LongLines';
 
 /**
  * The EditorPage component.
@@ -129,6 +134,11 @@ export default function EditorPage(props) {
                 backgroundColor: '#D3D3D3',
             },
         },
+        linesCard: {
+            '&:hover' : {
+                backgroundColor: '#D3D3D3',
+            }
+        },
     }));
 
     /**
@@ -165,6 +175,9 @@ export default function EditorPage(props) {
      * keep track of and display elements in the 
      * editor page.
      */
+    const formControlLabelStyles = bannerCheckboxStylesHook.useFormControlLabel();
+    const checkboxStyles = bannerCheckboxStylesHook.useCheckbox();
+    const neonStyles = useNeonCheckboxStyles();
     const animatedComponents = makeAnimated();
     const classes = mainStyles();
     const itemClasses = useStyles();
@@ -183,6 +196,7 @@ export default function EditorPage(props) {
     const [fixedText, setFixedText] = React.useState("");
     const [openDiff, setOpenDiff] = React.useState(false);
     const [diffVal, setDiffVal] = React.useState([]);
+    const [markLongLinesToggle, setMarkLongLinesToggle] = React.useState(false);
     const operations = [
         { value: 0, label: 'Remove Javadocs' },
         { value: 1, label: 'Remove // Comments' },
@@ -418,7 +432,7 @@ export default function EditorPage(props) {
      * file content and updates the fixed text accordingly.
      */
     function handleRun() {
-        var newText = firstDisplay;
+        var newText = fileTextList[index];
         var selected = chosenOperations.map((op) =>  {return op.value});
         if (selected.includes(0)) {
             var rmJava = new RmJavadocs();
@@ -439,6 +453,10 @@ export default function EditorPage(props) {
         if (selected.includes(4)) {
             var whitespace = new Whitespaces();
             newText = whitespace.fixWhitespaces(newText);
+        }
+        if (markLongLinesToggle) {
+            var longLines = new LongLines();
+            newText = longLines.markLongLines(newText);
         }
         setSecondDisplay(newText);
         setFixedText(newText);
@@ -559,6 +577,13 @@ export default function EditorPage(props) {
         setSecondDisplay(diffVal[1]);
     }
 
+    /**
+     * Handles the selection of the long lines option.
+     */
+    const handleLongLinesCheck = (event) => {
+        setMarkLongLinesToggle(event.target.checked);
+    };
+
     return(
         <div className={classes.root}>
             <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: window.screen.height, width: window.screen.width}}>
@@ -628,7 +653,37 @@ export default function EditorPage(props) {
                                 >
                                 </Select>
                                 <p></p>
-                                {chosenOperations.length === 0 || firstDisplay === "" ? <Button variant="contained" disableElevation disableRipple className={itemClasses.disableButton}>Run</Button> :
+                                <ThemeProvider theme={textTheme}>
+                                    <FormControlLabel
+                                        style={{ width: window.screen.width/6.6 }}
+                                        classes={formControlLabelStyles}
+                                        control={
+                                            <ThemeProvider theme={textTheme}>
+                                                <Checkbox
+                                                    checked={markLongLinesToggle}
+                                                    style={{ borderColor: myColor, color: myColor, alignSelf: 'flex-start', marginTop: -3 }}
+                                                    disableRipple
+                                                    classes={neonStyles}
+                                                    checkedIcon={<span />}
+                                                    icon={<span />}
+                                                    onChange={handleLongLinesCheck}
+                                                />
+                                            </ThemeProvider>
+                                        }
+                                        label={
+                                        <>
+                                            <Typography style={{ color: props.tColor }}>
+                                                Mark long lines
+                                            </Typography>
+                                            <Typography component="span" style={{ color: props.iColor }}>
+                                                Marks lines exceeding 80 chars
+                                            </Typography>
+                                        </>
+                                        }
+                                    />
+                                </ThemeProvider>
+                                <p></p>
+                                {(chosenOperations.length === 0 && !markLongLinesToggle) || firstDisplay === ""  ? <Button variant="contained" disableElevation disableRipple className={itemClasses.disableButton}>Run</Button> :
                                 <Button disableElevation variant="contained" className={itemClasses.button} onClick={handleRun}>Run</Button>}
                                 <div style={{ whiteSpace: 'break-spaces', minHeight: window.screen.height/20 }}>
                                     <p></p>
@@ -639,13 +694,13 @@ export default function EditorPage(props) {
                                 <Collapse in={openField}>
                                     <p></p>
                                     <ThemeProvider theme={textTheme}>
-                                    <TextField 
-                                    InputProps={{ classes: inputBaseStyles, disableUnderline: true }}
-                                    placeholder={'filename'}
-                                    value={newFileName}
-                                    onChange={handleFileNameChange}
-                                    variant="outlined"
-                                    />
+                                        <TextField 
+                                        InputProps={{ classes: inputBaseStyles, disableUnderline: true }}
+                                        placeholder={'filename'}
+                                        value={newFileName}
+                                        onChange={handleFileNameChange}
+                                        variant="outlined"
+                                        />
                                     </ThemeProvider>
                                     <p></p>
                                 </Collapse>

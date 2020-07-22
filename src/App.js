@@ -96,7 +96,7 @@ function MainApp() {
       case HOME:
         return <MainInfoPage screenChangeCallback={changeScreen} tColor={textColor} logoStyle={logo} bColor={backColor} mColor={middleColor}></MainInfoPage>;
       case LIVE:
-        return <EditorPage screenChangeCallback={changeScreen} diffHighlight={diffHighlight} eTheme={editorTheme} hColor={mainColor} mColor={middleColor} tColor={textColor} bColor={backColor}></EditorPage>;
+        return <EditorPage iColor={iconHighlight} screenChangeCallback={changeScreen} diffHighlight={diffHighlight} eTheme={editorTheme} hColor={mainColor} mColor={middleColor} tColor={textColor} bColor={backColor}></EditorPage>;
       case STATIC:
         return <StepperPage screenChangeCallback={changeScreen} mColor={middleColor} tColor={textColor} bColor={backColor}></StepperPage>;
       case TUTORIAL:

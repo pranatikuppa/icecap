@@ -250,12 +250,12 @@ export default function PageHeader(props) {
                   <ClickAwayListener onClickAway={handleSettingsClose}>
                     <MenuList autoFocusItem={settingsOpen} id="menu-list-grow">
                       <MenuItem style={{whiteSpace: 'break-spaces'}}>
-                      <Brightness2Icon style={{ backgroundColor: props.iColor, color: props.tColor, borderRadius: 20, padding: 5}}></Brightness2Icon>
-                      <span>     </span>
-                      <Typography className={classes.menuText}>
-                        Dark Mode
-                      </Typography>
-                      <span>        </span>
+                        <Brightness2Icon style={{ backgroundColor: props.iColor, color: props.tColor, borderRadius: 20, padding: 5}}></Brightness2Icon>
+                        <span>     </span>
+                        <Typography className={classes.menuText}>
+                          Dark Mode
+                        </Typography>
+                        <span>        </span>
                         <Switch
                           color="primary"
                           classes={switchStyles}
