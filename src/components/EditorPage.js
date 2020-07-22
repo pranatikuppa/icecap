@@ -267,12 +267,13 @@ export default function EditorPage(props) {
      * @param {String} name the filename.
      */
     function validateFilename(name) {
-        var otherPattern = new RegExp("\\W");
-        if (name.trim() === "" || otherPattern.exec(name)) {
+        if (name.trim() === "") {
             return fileName;
         } else {
             name = name.replace(" ", "_");
-            if (!name.includes(".") && !name.includes(".java")) {
+            if (name.endsWith(".java")) {
+                return name;
+            } else if (!name.includes(".") && !name.includes(".java")) {
                 return name + ".java";
             } else if (name.includes(".")) {
                 var dotIndex = name.indexOf(".", 0);
@@ -432,7 +433,12 @@ export default function EditorPage(props) {
      * file content and updates the fixed text accordingly.
      */
     function handleRun() {
-        var newText = fileTextList[index];
+        var newText = "";
+        if (uploadedFiles.length === 0) {
+            newText = firstDisplay;
+        } else {
+            newText = fileTextList[index];
+        }
         var selected = chosenOperations.map((op) =>  {return op.value});
         if (selected.includes(0)) {
             var rmJava = new RmJavadocs();
