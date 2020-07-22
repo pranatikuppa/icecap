@@ -31,6 +31,10 @@ export default function PageHeader(props) {
   const TUTORIAL = 3;
   const RESOURCES = 4;
 
+  /**
+   * The state variables, anchors and styles used by the header 
+   * components.
+   */
   const [darkToggle, setDarkToggle] = React.useState(false);
   const [settingsOpen, setSettingsOpen] = React.useState(false);
   const [editorOpen, setEditorOpen] = React.useState(false);
@@ -82,35 +86,63 @@ export default function PageHeader(props) {
    */
   const classes = appBarStyles();
 
+  /**
+   * Handles the state change when the dark mode toggle
+   * is changed.
+   * @param {any} event the event.
+   */
   const handleDarkToggle = (event) => {
     setDarkToggle(event.target.checked);
     props.darkModeCallback(event.target.checked);
   }
 
+  /**
+   * Nagivates to the home page.
+   */
   const goToHome = () => {
     props.screenChangeCallback(HOME);
   };
 
+  /**
+   * Navigates to the tutorial page.
+   */
   const goToTutorial = () => {
     props.screenChangeCallback(TUTORIAL);
   };
 
+  /**
+   * Navigates to the static page.
+   */
   const goToStatic = () => {
     props.screenChangeCallback(STATIC);
   };
   
+  /**
+   * Navigates to the live page.
+   */
   const goToLive = () => {
     props.screenChangeCallback(LIVE);
   };
 
+  /**
+   * Navigates to the resources page.
+   */
   const goToResources = () => {
     props.screenChangeCallback(RESOURCES);
   };
 
+  /**
+   * Handles the state changes and opens the 
+   * settings menu.
+   */
   const handleSettingsToggle = () => {
     setSettingsOpen((prevSettingsOpen) => !prevSettingsOpen);
   };
 
+  /**
+   * Handles the state changes and closes the settings menu.
+   * @param {any} event the event.
+   */
   const handleSettingsClose = (event) => {
     if (settingsAnchorRef.current && settingsAnchorRef.current.contains(event.target)) {
       return;
@@ -119,10 +151,18 @@ export default function PageHeader(props) {
     setSettingsOpen(false);
   };
 
+  /**
+   * Handles the state changes and opens the editor 
+   * menu.
+   */
   const handleEditorToggle = () => {
     setEditorOpen((prevEditorOpen) => !prevEditorOpen);
   };
 
+  /**
+   * Handles the state changes and closes the editor menu.
+   * @param {event} event the event.
+   */
   const handleEditorClose = (event) => {
     if (editorAnchorRef.current && editorAnchorRef.current.contains(event.target)) {
       return;
@@ -131,6 +171,9 @@ export default function PageHeader(props) {
     setEditorOpen(false);
   };
 
+  /**
+   * The previous state of the settings menu.
+   */
   const prevSettingsOpen = React.useRef(settingsOpen);
   React.useEffect(() => {
     if (prevSettingsOpen.current === true && settingsOpen === false) {
@@ -140,6 +183,9 @@ export default function PageHeader(props) {
     prevSettingsOpen.current = settingsOpen;
   }, [settingsOpen]);
 
+  /**
+   * The previous state of the editor menu.
+   */
   const prevEditorOpen = React.useRef(editorOpen);
   React.useEffect(() => {
     if (prevEditorOpen.current === true && editorOpen === false) {

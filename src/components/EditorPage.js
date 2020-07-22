@@ -28,29 +28,15 @@ import { diff as DiffEditor } from "react-ace";
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { borderedTextFieldStylesHook } from '@mui-treasury/styles/textField/bordered';
 
-
+/**
+ * The EditorPage component.
+ */
 export default function EditorPage(props) {
 
-    const ITEM_HEIGHT = 48;
-    const ITEM_PADDING_TOP = 8;
-    const MenuProps = {
-    anchorOrigin: {
-        vertical: "bottom",
-        horizontal: "left"
-    },
-    transformOrigin: {
-        vertical: "top",
-        horizontal: "left"
-    },
-    getContentAnchorEl: null,
-        PaperProps: {
-            style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-            },
-        },
-    };
-
+    /**
+     * The styles that are used to customize elements in the 
+     * editor page.
+     */
     const mainStyles = makeStyles((theme) => ({
         margin: {
             margin: theme.spacing(1),
@@ -107,7 +93,6 @@ export default function EditorPage(props) {
             padding: theme.spacing(1),
         },
     }));
-
     const useStyles = makeStyles((theme) => ({
         button: {
             backgroundColor: props.mColor,
@@ -146,6 +131,9 @@ export default function EditorPage(props) {
         },
     }));
 
+    /**
+     * The color scheme for this app.
+     */
     var myColor = {
         50: '#b1ced0',
         100: '#a2c4c6',
@@ -162,14 +150,22 @@ export default function EditorPage(props) {
         A400: '#83b1b3',
     }
 
+    /**
+     * The theme that overrides the primary color
+     * with the color scheme.
+     */
     const textTheme = createMuiTheme({
         palette: {
           primary: myColor,
         },
     });
 
+    /**
+     * State variables and styles that are used to 
+     * keep track of and display elements in the 
+     * editor page.
+     */
     const animatedComponents = makeAnimated();
-
     const classes = mainStyles();
     const itemClasses = useStyles();
     const inputBaseStyles = borderedTextFieldStylesHook.useInputBase();
@@ -187,6 +183,13 @@ export default function EditorPage(props) {
     const [fixedText, setFixedText] = React.useState("");
     const [openDiff, setOpenDiff] = React.useState(false);
     const [diffVal, setDiffVal] = React.useState([]);
+    const operations = [
+        { value: 0, label: 'Remove Javadocs' },
+        { value: 1, label: 'Remove // Comments' },
+        { value: 2, label: 'Remove /* Comments' },
+        { value: 3, label: 'Add Javadocs' },
+        { value: 4, label: 'Fix Whitespaces' },
+    ];
 
     // function handleClear() {
     //     setInputText("");
@@ -205,14 +208,11 @@ export default function EditorPage(props) {
     //     setDiffVal([]);
     // }
 
-    const operations = [
-        { value: 0, label: 'Remove Javadocs' },
-        { value: 1, label: 'Remove // Comments' },
-        { value: 2, label: 'Remove /* Comments' },
-        { value: 3, label: 'Add Javadocs' },
-        { value: 4, label: 'Fix Whitespaces' },
-    ];
-
+    /**
+     * Takes in a new text and updates the states and display
+     * for the first display (first editor box).
+     * @param {String} newText the new text. 
+     */
     function handleTextChange(newText) {
         setIsEditing(true);
         if (fileTextList.length > 0) {
@@ -225,6 +225,10 @@ export default function EditorPage(props) {
         }
     }
 
+    /**
+     * Updates and returns the display text for 
+     * the first editor box.
+     */
     function getFirstDisplayText() {
         if (!isEditing) {
           if (uploadedFiles.length !== 0) {
@@ -243,6 +247,11 @@ export default function EditorPage(props) {
         }
     }
 
+    /**
+     * Takes in a filename and validates it, returning the 
+     * new updated filename.
+     * @param {String} name the filename.
+     */
     function validateFilename(name) {
         var otherPattern = new RegExp("\\W");
         if (name.trim() === "" || otherPattern.exec(name)) {
@@ -260,10 +269,19 @@ export default function EditorPage(props) {
         }
     }
 
+    /**
+     * Handles the input typed into the textbox that
+     * sets the new file name to download. 
+     * @param {any} event the event.
+     */
     const handleFileNameChange = (event) => {
         setNewFileName(event.target.value);
     };
 
+    /**
+     * Returns a set of options for the file selector
+     * depending on the uploaded files.
+     */
     function getOptions() {
         if (uploadedFiles.length === 0) {
             return [];
@@ -277,6 +295,10 @@ export default function EditorPage(props) {
         }
     }
 
+    /**
+     * Returns the file selector based on the options/the
+     * uploaded files.
+     */
     function getSelector() {
         var fileOptions = getOptions();
         if (fileOptions.length === 0) {
@@ -318,6 +340,11 @@ export default function EditorPage(props) {
         }
     }
 
+    /**
+     * Handles the change in the file selector and updates
+     * the display of the first text box accordingly.
+     * @param {any} event the event.
+     */
     const handleChange = (event) => {
         if (uploadedFiles.length !== 0) {
           setIsEditing(false);
@@ -327,6 +354,11 @@ export default function EditorPage(props) {
         }
     };
 
+    /**
+     * Handles the state changes that are made in order to display the 
+     * uploaded files by the user. 
+     * @param {Array} acceptedFiles the files accepted by the uploader. 
+     */
     function handleDrop(acceptedFiles) {
         if (acceptedFiles.length !== 0) {
             var i;
@@ -343,6 +375,11 @@ export default function EditorPage(props) {
         }
     }
 
+    /**
+     * Function that takes in an input file and provides 
+     * access to the contents of the input file.
+     * @param {File} inputFile the input file.
+     */
     function fileAccessMethod(inputFile){
         return new Promise(
         function(resolve) {
@@ -357,6 +394,12 @@ export default function EditorPage(props) {
         });
     }
 
+    /**
+     * The handler that takes in the action performed by the selector and the
+     * array of options selected and updates the states accordingly.
+     * @param {Array} value the array of selected values.
+     * @param {Action} action the action that the selector received.
+     */
     function handleOperationSelect(value, action) {
         if (value === null) {
             setChosenOperations([]);
@@ -370,6 +413,10 @@ export default function EditorPage(props) {
         setChosenOperations(value);
     }
 
+    /**
+     * Handles the execution of the operations on the input
+     * file content and updates the fixed text accordingly.
+     */
     function handleRun() {
         var newText = firstDisplay;
         var selected = chosenOperations.map((op) =>  {return op.value});
@@ -397,6 +444,9 @@ export default function EditorPage(props) {
         setFixedText(newText);
     }
 
+    /**
+     * Returns the display text for the second text box.
+     */
     function getSecondDisplayText() {
         if (secondDisplay === "") {
             return <AceEditor
@@ -420,11 +470,22 @@ export default function EditorPage(props) {
         }
     }
 
+    /**
+     * Handles the text changes in the second display 
+     * box and updates the state variables accordingly.
+     * @param {String} newText the new text.
+     */
     function handleSecondTextChange(newText) {
         setSecondDisplay(newText);
         setFixedText(newText);
     }
 
+    /**
+     * Returns the button that needs to be displayed when
+     * the user is changing the file name. If the textbox is shown
+     * the button displayed is "Done" otherwise it is displayed as 
+     * "Change Filename"
+     */
     function getChangeFileNameButton() {
         if (openField) {
             return <Button className={itemClasses.button} onClick={() => {setOpenField(!openField)}}>Done</Button>;
@@ -433,6 +494,12 @@ export default function EditorPage(props) {
         }
     }
 
+    /**
+     * Takes in the name and content of the file and performs
+     * a download to the user's device.
+     * @param {String} filename the name of the file.
+     * @param {String} text the content of the file.
+     */
     function download(filename, text) {
         var element = document.createElement('a');
         element.setAttribute('href', 'data:.java;charset=utf-8,' + encodeURIComponent(text));
@@ -446,6 +513,10 @@ export default function EditorPage(props) {
         document.body.removeChild(element);
     }
 
+    /**
+     * Performs the donwload of the fixed file using the 
+     * correct state variables.
+     */
     function handleDownload() {
         if (newFileName !== "") {
             var validated = validateFilename(newFileName);
@@ -455,19 +526,34 @@ export default function EditorPage(props) {
         }
     }
 
+    /**
+     * Opens the diff editor dialog display.
+     */
     function handleDiffOpen() {
         setDiffVal([firstDisplay, fixedText]);
         setOpenDiff(true);
     }
 
+    /**
+     * Closes the diff editor dialog display.
+     */
     function handleDiffClose() {
         setOpenDiff(false);
     }
 
+    /**
+     * Updates the diff editor with the new value upon changing 
+     * the content of the second display editor.
+     * @param {Array} newVal the new value.
+     */
     function handleDiffChange(newVal) {
         setDiffVal([firstDisplay, newVal[1]]);
     }
 
+    /**
+     * Applies the changes made to the diff editor to the 
+     * original display.
+     */
     function applyChanges() {
         setFixedText(diffVal[1]);
         setSecondDisplay(diffVal[1]);
@@ -658,14 +744,6 @@ export default function EditorPage(props) {
                     <span>       </span>
                     {getSecondDisplayText()}
                 </div>
-            {/* <Typography className={classes.subText}>Upload files with the button or by dragging and dropping, or directly copy and paste your code in the textbox below. 
-            Choose 1 or more operations using the selector and click run. You can change the file name and edit the fixed code before downloading. Using the "View Difference" button
-             you can see highlighted differences between your original file and the fixed file.
-            </Typography>
-                <div className={classes.editorDiv}>
-                <FileUploader eTheme={props.eTheme} mColor={props.mColor} tColor={props.tColor} bColor={props.bColor} callback={inputCallback} callbackFilename={filenameCallback}></FileUploader>
-                <Operator diffHighlight={props.diffHighlight} eTheme={props.eTheme} mColor={props.mColor} tColor={props.tColor} bColor={props.bColor} originalText={inputText} fileName={filename}></Operator>
-                </div> */}
             </Paper>
         </div>
     );

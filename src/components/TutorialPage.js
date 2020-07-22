@@ -15,8 +15,14 @@ import StepConnector from '@material-ui/core/StepConnector';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
 
+/**
+ * The variables used to nagivate to pages.
+ */
 const LIVE = 1;
 
+/**
+ * Returns the step titles of the tutorial stepper.
+ */
 function getSteps() {
   return [
     "Using CS 61B Materials",
@@ -27,8 +33,14 @@ function getSteps() {
   ];
 }
 
-function HorizontalLabelPositionBelowStepper(props) {
+/**
+ * The HorizontalStepper component 
+ */
+function HorizontalStepper(props) {
 
+  /**
+   * The styles used for the HorizontalStepper component.
+   */
   const mainStyles = makeStyles((theme) => ({
     stepperRoot: {
       width: "100%"
@@ -90,10 +102,16 @@ function HorizontalLabelPositionBelowStepper(props) {
     }
   }));
 
+  /**
+   * The styles, variables and states that are used by the elements.
+   */
   const classes = mainStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
 
+  /**
+   * The first step content of the stepper.
+   */
   function stepOne() {
     return (
       <div>
@@ -120,6 +138,9 @@ function HorizontalLabelPositionBelowStepper(props) {
     );
   }
 
+  /**
+   * The second step content of the stepper.
+   */
   function stepTwo() {
     return(
       <div>
@@ -146,6 +167,9 @@ function HorizontalLabelPositionBelowStepper(props) {
     );
   }
 
+  /**
+   * The third step content of the stepper.
+   */
   function stepThree() {
     return(
       <div>
@@ -172,6 +196,9 @@ function HorizontalLabelPositionBelowStepper(props) {
     );
   }
 
+  /**
+   * The fourth step content of the stepper.
+   */
   function stepFour() {
     return(
       <div>
@@ -203,6 +230,9 @@ function HorizontalLabelPositionBelowStepper(props) {
     );
   }
 
+  /**
+   * The fifth step content of the stepper.
+   */
   function stepFive() {
     return(
       <div>
@@ -226,6 +256,11 @@ function HorizontalLabelPositionBelowStepper(props) {
     );
   }
 
+  /**
+   * Returns the step content depending on the index
+   * of the step.
+   * @param {int} stepIndex the index of the step.
+   */
   function getStepContent(stepIndex) {
     switch (stepIndex) {
       case 0:
@@ -243,18 +278,31 @@ function HorizontalLabelPositionBelowStepper(props) {
     }
   }
 
+  /**
+   * Handles the click of the next button in the stepper.
+   */
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
+  /**
+   * Handles the click of the back button in the stepper.
+   */
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  /**
+   * Navigates to the live editor.
+   */
   const goToEditor = () => {
     props.screenChangeCallback(LIVE);
   }
 
+  /**
+   * The styles for the QontoConnector used in
+   * the stepper.
+   */
   const QontoConnector = withStyles({
     alternativeLabel: {
       top: 10,
@@ -278,6 +326,10 @@ function HorizontalLabelPositionBelowStepper(props) {
     },
   })(StepConnector);
 
+  /**
+   * The styles for the QontoStepIcon used in
+   * the stepper.
+   */
   const useQontoStepIconStyles = makeStyles({
     root: {
       color: props.mColor,
@@ -301,6 +353,9 @@ function HorizontalLabelPositionBelowStepper(props) {
     },
   });
 
+  /**
+   * The QontoStepIcon component.
+   */
   function QontoStepIcon(props) {
     const classes = useQontoStepIconStyles();
     const { active, completed } = props;
@@ -316,6 +371,9 @@ function HorizontalLabelPositionBelowStepper(props) {
     );
   }
 
+  /**
+   * The QontoStepIcon prop types.
+   */
   QontoStepIcon.propTypes = {
     active: PropTypes.bool,
     completed: PropTypes.bool,
@@ -355,6 +413,9 @@ function HorizontalLabelPositionBelowStepper(props) {
 
 export default function TutorialPage(props) {
 
+  /**
+   * The styles used for the tutorial page components.
+   */
   const mainStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
@@ -371,14 +432,14 @@ export default function TutorialPage(props) {
       },
     },
   }));
+  
+  const classes = mainStyles();
 
-    const classes = mainStyles();
-
-    return(
-        <div className={classes.root}>
-            <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: 5*window.screen.height/6, width: window.screen.width }}>
-                <HorizontalLabelPositionBelowStepper screenChangeCallback={props.screenChangeCallback} pColor={props.pColor} tColor={props.tColor} bColor={props.bColor} mColor={props.mColor}></HorizontalLabelPositionBelowStepper>
-            </Paper>
-        </div>
-    );
+  return(
+      <div className={classes.root}>
+          <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: 5*window.screen.height/6, width: window.screen.width }}>
+              <HorizontalStepper screenChangeCallback={props.screenChangeCallback} pColor={props.pColor} tColor={props.tColor} bColor={props.bColor} mColor={props.mColor}></HorizontalStepper>
+          </Paper>
+      </div>
+  );
 }
