@@ -679,7 +679,7 @@ export default function EditorPage(props) {
                                         label={
                                         <>
                                             <Typography style={{ color: props.tColor }}>
-                                                Mark long lines
+                                                Mark lines &#8827; 80
                                             </Typography>
                                             <Typography component="span" style={{ color: props.iColor }}>
                                                 Marks lines exceeding 80 chars
