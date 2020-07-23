@@ -112,7 +112,7 @@ export default function MainInfoPage(props) {
           </Typography>
           <Typography className={classes.subText}>
             We all have faced issues with the 200+ style check errors that appear right when we are ready to submit our CS 61B
-            projects. In three easy steps below, you can get rid of many style check errors from your project.
+            projects. In a few easy steps, you can get rid of many style check errors from your project.
           </Typography>
           <div className={classes.buttonDiv}>
               <Button
