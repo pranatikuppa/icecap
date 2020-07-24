@@ -90,6 +90,11 @@ export default class LongMethods {
         return fileContent;
     }
 
+    /**
+     * Takes in a line and returns the net brace value within
+     * the line.
+     * @param {string} line the line of code.
+     */
     getLineNetBrace(line) {
         var net = 0;
         var i;
