@@ -718,10 +718,10 @@ export default function EditorPage(props) {
                                         label={
                                         <>
                                             <Typography style={{ color: props.tColor }}>
-                                                Mark methods &#8827; 80
+                                                Mark methods &#8827; 60
                                             </Typography>
                                             <Typography component="span" style={{ color: props.iColor }}>
-                                                Marks methods exceeding 80 lines
+                                                Marks methods exceeding 60 lines
                                             </Typography>
                                         </>
                                         }
