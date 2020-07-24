@@ -197,14 +197,18 @@ export default class Javadocs {
         var open = header.indexOf('(');
         var close = header.indexOf(')');
         var paramString = header.substring(open + 1, close);
-        var segments = paramString.split(",");
-        var names = [];
-        var i;
-        for (i in segments) {
-            var paramSplit = segments[i].split(" ");
-            names.push(paramSplit[paramSplit.length - 1]);
+        if (paramString.trim() === "") {
+            return [];
+        } else {
+            var segments = paramString.split(",");
+            var names = [];
+            var i;
+            for (i in segments) {
+                var paramSplit = segments[i].split(" ");
+                names.push(paramSplit[paramSplit.length - 1]);
+            }
+            return names;
         }
-        return names;
     }
 
     /**
