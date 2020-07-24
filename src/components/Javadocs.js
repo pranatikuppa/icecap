@@ -12,8 +12,8 @@ export default class Javadocs {
     constructor() {
         this.classJavadoc =
             "/**\n" + 
-            " * \n" + 
-            " * @author\n" + 
+            " * {CLASS DESCRIPTION}\n" + 
+            " * @author {YOUR NAME}\n" + 
             " */\n";
         this.methodPattern = new RegExp(
             "(\\p{Space})*(public |protected |private )?" +
@@ -176,12 +176,12 @@ export default class Javadocs {
         for (i = 0; i < indentation; i++) {
             indent += "\t";
         }
-        var comment = indent + "/**\n" + indent + " *\n";
+        var comment = indent + "/**\n" + indent + " * {METHOD DESCRIPTION}\n";
         for (i = 0; i < params; i++) {
-            comment = comment + indent + " * @param " + paramNames[i] + "\n";
+            comment = comment + indent + " * @param " + paramNames[i] + " {PARAM DESCRIPTION}\n";
         }
         if (returnVal) {
-            comment = comment + indent + " * @return\n";
+            comment = comment + indent + " * @return {RETURN DESCRIPTION}\n";
         }
         comment = comment + indent + " */\n";
         return comment;
