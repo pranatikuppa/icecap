@@ -44,42 +44,62 @@ export default class LongMethods {
         var i;
         for (i = 0; i < numLines; i++) {
             var line = lines[i];
-            if (this.classPattern.exec(line) !== line) {
-                if (this.methodPattern.exec(line) === line) {
-                    methodLength += 1;
-                    netIndent = 1;
+            if (!this.classPattern.exec(line)) {
+                if (this.methodPattern.exec(line)) {
+                    methodLength = 1;
+                    netBrace = 1;
                     methodStart = true;
                 } else {
                     netBrace += this.getLineNetBrace(line);
                     if (netBrace === 0) {
                         methodStart = false;
                     }
-                    if (methodLength <= 80 && methodStart) {
+                    if (methodLength < 60 && methodStart) {
                         methodLength += 1;
-                        fileContent += line;
+                        toWrite += line;
                         if (lineNum < numLines) {
-                            fileContent += "\n";
+                            toWrite += "\n";
                         }
-                    }
-                    if (methodLength > 80 && methodStart) {
+                    } else if (methodLength >= 60 && methodStart) {
                         methodLength = 0;
                         methodStart = false;
                         exceededLength = true;
-                        toWrite += "------------METHOD EXCEEDS 80 LINES HERE------------\n";
-                        toWrite += line;
+                        toWrite += "------------METHOD EXCEEDS 60 LINES HERE------------\n";
                     }
                     if (exceededLength && methodStart) {
                         toWrite += line;
-                    }
-                    if (!methodStart) {
-                        toWrite += line;
+                        if (lineNum < numLines) {
+                            toWrite += "\n";
+                        }
                     }
                 } 
             }
+            if (toWrite === "") {
+                fileContent += line;
+                if (lineNum < numLines) {
+                    fileContent += "\n";
+                }
+                toWrite = "";
+            } else {
+                fileContent += toWrite;
+                toWrite = "";
+            }
+            lineNum++;
         }
+        return fileContent;
     }
 
     getLineNetBrace(line) {
-
+        var net = 0;
+        var i;
+        for (i = 0; i < line.length; i++) {
+            if (line.charAt(i) === "{") {
+                net += 1;
+            }
+            if (line.charAt(i) === "}") {
+                net -= 1;
+            }
+        }
+        return net;
     }
 }

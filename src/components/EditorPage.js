@@ -32,6 +32,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { useNeonCheckboxStyles } from '@mui-treasury/styles/checkbox/neon';
 import LongLines from './LongLines';
+import LongMethods from './LongMethods';
 
 /**
  * The EditorPage component.
@@ -197,6 +198,7 @@ export default function EditorPage(props) {
     const [openDiff, setOpenDiff] = React.useState(false);
     const [diffVal, setDiffVal] = React.useState([]);
     const [markLongLinesToggle, setMarkLongLinesToggle] = React.useState(false);
+    const [markLongMethodsToggle, setMarkLongMethodsToggle] = React.useState(false);
     const operations = [
         { value: 0, label: 'Remove Javadocs' },
         { value: 1, label: 'Remove // Comments' },
@@ -464,6 +466,10 @@ export default function EditorPage(props) {
             var longLines = new LongLines();
             newText = longLines.markLongLines(newText);
         }
+        if (markLongMethodsToggle) {
+            var longMethods = new LongMethods();
+            newText = longMethods.markLongMethods(newText);
+        }
         setSecondDisplay(newText);
         setFixedText(newText);
     }
@@ -590,12 +596,16 @@ export default function EditorPage(props) {
         setMarkLongLinesToggle(event.target.checked);
     };
 
+    const handleLongMethodsCheck = (event) => {
+        setMarkLongMethodsToggle(event.target.checked);
+    }
+
     return(
         <div className={classes.root}>
             <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: window.screen.height, width: window.screen.width}}>
                 <div style={{ flex: 1, flexDirection: 'row', display: 'flex' }}>
                     <Card className={classes.operationCard} elevation={0} style={{ backgroundColor: props.hColor, width: window.screen.width/6, height: window.screen.height - (window.screen.height/28) }}>
-                        <GridList cellHeight={window.screen.height - (window.screen.height/28)} cellWidth={window.screen.width/7} cols={1}>
+                        <GridList cellHeight={window.screen.height - (window.screen.height/28)} cellWidth={window.screen.width/4} cols={1}>
                             <div style={{ whiteSpace: 'break-spaces' }}>
                                 <Typography className={itemClasses.smallHeading}>
                                     FILES
@@ -688,6 +698,35 @@ export default function EditorPage(props) {
                                         }
                                     />
                                 </ThemeProvider>
+                                <ThemeProvider theme={textTheme}>
+                                    <FormControlLabel
+                                        style={{ width: window.screen.width/6.6 }}
+                                        classes={formControlLabelStyles}
+                                        control={
+                                            <ThemeProvider theme={textTheme}>
+                                                <Checkbox
+                                                    checked={markLongMethodsToggle}
+                                                    style={{ borderColor: myColor, color: myColor, alignSelf: 'flex-start', marginTop: -3 }}
+                                                    disableRipple
+                                                    classes={neonStyles}
+                                                    checkedIcon={<span />}
+                                                    icon={<span />}
+                                                    onChange={handleLongMethodsCheck}
+                                                />
+                                            </ThemeProvider>
+                                        }
+                                        label={
+                                        <>
+                                            <Typography style={{ color: props.tColor }}>
+                                                Mark methods &#8827; 80
+                                            </Typography>
+                                            <Typography component="span" style={{ color: props.iColor }}>
+                                                Marks methods exceeding 80 lines
+                                            </Typography>
+                                        </>
+                                        }
+                                    />
+                                </ThemeProvider>
                                 <p></p>
                                 {(chosenOperations.length === 0 && !markLongLinesToggle) || firstDisplay === ""  ? <Button variant="contained" disableElevation disableRipple className={itemClasses.disableButton}>Run</Button> :
                                 <Button disableElevation variant="contained" className={itemClasses.button} onClick={handleRun}>Run</Button>}
@@ -769,7 +808,7 @@ export default function EditorPage(props) {
                             </div>
                         </GridList>
                     </Card>
-                    <span>   </span>
+                    <span>  </span>
                     <Dropzone className={classes.dropCard} onDrop={handleDrop} accept='.java'>
                         {({getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept, acceptedFiles, rejectedFiles}) => (
                         <section style={{ width: window.screen.width/2.6, height: window.screen.height - (window.screen.height/40)}}>
@@ -802,7 +841,7 @@ export default function EditorPage(props) {
                         </section>
                         )}
                     </Dropzone>
-                    <span>       </span>
+                    <span> </span>
                     {getSecondDisplayText()}
                 </div>
             </Paper>
