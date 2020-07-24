@@ -48,6 +48,7 @@ export default class Javadocs {
         var javadoc = "";
         var lines = content.split("\n");
         var numLines = lines.length;
+        var overrideFound = false;
         var i;
         for (i = 0; i < lines.length; i++) {
             var line = lines[i];
@@ -56,7 +57,10 @@ export default class Javadocs {
                 newline = "\n";
             }
             var lineTrim = line.trim();
-            if (!lineTrim.startsWith("/**") && lineTrim.startsWith("/*")) {
+            if (line.trim() === "@Override") {
+                overrideFound = true;
+                fileContent += line + newline;
+            } else if (!lineTrim.startsWith("/**") && lineTrim.startsWith("/*")) {
                 fileContent += line + newline;
             } else if (lineTrim.startsWith("/**") && lineTrim.endsWith("*/")) {
                 javadocFound = false;
@@ -76,19 +80,23 @@ export default class Javadocs {
             } else if (line === "" || lineTrim === "") {
                 fileContent += line + newline;
             } else if (this.methodPattern.exec(lineTrim)) {
-                if (javadoc !== "") {
-                    if (this.validateJavadocComment(line, javadoc)) {
-                        fileContent += javadoc;
+                if (!overrideFound) {
+                    if (javadoc !== "") {
+                        if (this.validateJavadocComment(line, javadoc)) {
+                            fileContent += javadoc;
+                        } else {
+                            fileContent += "------- INCORRECT JAVADOC FORMAT -------\n";
+                            fileContent += javadoc;
+                            fileContent += "----------------------------------------\n";
+                        }
+                        fileContent += line + newline;
+                        javadoc = "";
                     } else {
-                        fileContent += "------- INCORRECT JAVADOC FORMAT -------\n";
-                        fileContent += javadoc;
-                        fileContent += "----------------------------------------\n";
+                        var comment = this.generateMethodJavadoc(line);
+                        fileContent += comment;
+                        fileContent += line + newline;
                     }
-                    fileContent += line + newline;
-                    javadoc = "";
                 } else {
-                    var comment = this.generateMethodJavadoc(line);
-                    fileContent += comment;
                     fileContent += line + newline;
                 }
             } else if (this.classPattern.exec(line)) {

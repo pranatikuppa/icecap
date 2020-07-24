@@ -37,14 +37,49 @@ export default class LongMethods {
         var numLines = lines.length;
         var lineNum = 1;
         var methodStart = false;
-        var methodEnd = false;
         var methodLength = 0;
+        var exceededLength = false;
+        var toWrite = "";
+        var netBrace = 0;
         var i;
         for (i = 0; i < numLines; i++) {
             var line = lines[i];
-            if (methodStart) {
-
+            if (this.classPattern.exec(line) !== line) {
+                if (this.methodPattern.exec(line) === line) {
+                    methodLength += 1;
+                    netIndent = 1;
+                    methodStart = true;
+                } else {
+                    netBrace += this.getLineNetBrace(line);
+                    if (netBrace === 0) {
+                        methodStart = false;
+                    }
+                    if (methodLength <= 80 && methodStart) {
+                        methodLength += 1;
+                        fileContent += line;
+                        if (lineNum < numLines) {
+                            fileContent += "\n";
+                        }
+                    }
+                    if (methodLength > 80 && methodStart) {
+                        methodLength = 0;
+                        methodStart = false;
+                        exceededLength = true;
+                        toWrite += "------------METHOD EXCEEDS 80 LINES HERE------------\n";
+                        toWrite += line;
+                    }
+                    if (exceededLength && methodStart) {
+                        toWrite += line;
+                    }
+                    if (!methodStart) {
+                        toWrite += line;
+                    }
+                } 
             }
         }
+    }
+
+    getLineNetBrace(line) {
+
     }
 }
