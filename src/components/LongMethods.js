@@ -53,6 +53,7 @@ export default class LongMethods {
                     netBrace += this.getLineNetBrace(line);
                     if (netBrace === 0) {
                         methodStart = false;
+                        exceededLength = false;
                     }
                     if (methodLength < 60 && methodStart) {
                         methodLength += 1;
