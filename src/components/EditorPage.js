@@ -49,22 +49,22 @@ export default function EditorPage(props) {
         },
         dropCard: {
             backgroundColor: props.bColor,
-            width: window.screen.width/2.6,
-            height: window.screen.height - (window.screen.height/40),
+            width: window.innerWidth/2.6,
+            height: window.innerHeight - (window.innerHeight/40),
         },
         dropCardBorder: {
             border: 'dashed',
             borderColor: '#6493a1',
             borderWidth: '2px',
-            width: (window.screen.width/2.6) - 10,
-            height: window.screen.height - (window.screen.height/40),
+            width: (window.innerWidth/2.6) - 10,
+            height: window.innerHeight - (window.innerHeight/40),
         },
         defaultCardBorder: {
             border: 'dashed',
             borderColor: props.bColor,
             borderWidth: '2px',
-            width: (window.screen.width/2.6) - 10,
-            height: window.screen.height - (window.screen.height/40),
+            width: (window.innerWidth/2.6) - 10,
+            height: window.innerHeight - (window.innerHeight/40),
         },
         icon: {
             color: '#6493a1',
@@ -74,8 +74,8 @@ export default function EditorPage(props) {
           '& > *': {
             margin: theme.spacing(2),
             marginTop: theme.spacing(9),
-            width: theme.spacing(window.screen.width),
-            height: theme.spacing(window.screen.height),
+            width: theme.spacing(window.innerWidth),
+            height: theme.spacing(window.innerHeight),
           },
         },
         editorDiv: {
@@ -481,8 +481,8 @@ export default function EditorPage(props) {
         if (secondDisplay === "") {
             return <AceEditor
             mode="java"
-            width={(window.screen.width/2.6)}
-            height={window.screen.height - (window.screen.height/40)}
+            width={(window.innerWidth/2.6)}
+            height={window.innerHeight - (window.innerHeight/40)}
             theme={props.eTheme}
             onChange={handleSecondTextChange}
             >
@@ -491,8 +491,8 @@ export default function EditorPage(props) {
             return <AceEditor
             theme={props.eTheme}
             mode="java"
-            width={(window.screen.width/2.6)}
-            height={window.screen.height - (window.screen.height/40)}
+            width={(window.innerWidth/2.6)}
+            height={window.innerHeight - (window.innerHeight/40)}
             onChange={handleSecondTextChange}
             value={secondDisplay}
             >
@@ -602,10 +602,10 @@ export default function EditorPage(props) {
 
     return(
         <div className={classes.root}>
-            <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: window.screen.height, width: window.screen.width}}>
+            <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: window.innerHeight, width: window.innerWidth}}>
                 <div style={{ flex: 1, flexDirection: 'row', display: 'flex' }}>
-                    <Card className={classes.operationCard} elevation={0} style={{ backgroundColor: props.hColor, width: window.screen.width/6, height: window.screen.height - (window.screen.height/28) }}>
-                        <GridList cellHeight={window.screen.height - (window.screen.height/28)} cellWidth={window.screen.width/4} cols={1}>
+                    <Card className={classes.operationCard} elevation={0} style={{ backgroundColor: props.hColor, width: window.innerWidth/6, height: window.innerHeight - (window.innerHeight/28) }}>
+                        <GridList cellHeight={window.screen.innerHeight - (window.innerHeight/28)} cellWidth={window.innerWidth/4} cols={1}>
                             <div style={{ whiteSpace: 'break-spaces' }}>
                                 <Typography className={itemClasses.smallHeading}>
                                     FILES
@@ -637,7 +637,7 @@ export default function EditorPage(props) {
                                 </Button>
                                 </label>
                                 <p></p>
-                                <div style={{ whiteSpace: 'break-spaces', minHeight: window.screen.height/20 }}>
+                                <div style={{ whiteSpace: 'break-spaces', minHeight: window.innerHeight/20 }}>
                                     <p></p>
                                 </div>  
                                 <Typography className={itemClasses.smallHeading}>
@@ -671,7 +671,7 @@ export default function EditorPage(props) {
                                 <p></p>
                                 <ThemeProvider theme={textTheme}>
                                     <FormControlLabel
-                                        style={{ width: window.screen.width/6.6 }}
+                                        style={{ width: window.innerWidth/6.6 }}
                                         classes={formControlLabelStyles}
                                         control={
                                             <ThemeProvider theme={textTheme}>
@@ -700,7 +700,7 @@ export default function EditorPage(props) {
                                 </ThemeProvider>
                                 <ThemeProvider theme={textTheme}>
                                     <FormControlLabel
-                                        style={{ width: window.screen.width/6.6 }}
+                                        style={{ width: window.innerWidth/6.6 }}
                                         classes={formControlLabelStyles}
                                         control={
                                             <ThemeProvider theme={textTheme}>
@@ -730,7 +730,7 @@ export default function EditorPage(props) {
                                 <p></p>
                                 {(chosenOperations.length === 0 && !markLongLinesToggle) || firstDisplay === ""  ? <Button variant="contained" disableElevation disableRipple className={itemClasses.disableButton}>Run</Button> :
                                 <Button disableElevation variant="contained" className={itemClasses.button} onClick={handleRun}>Run</Button>}
-                                <div style={{ whiteSpace: 'break-spaces', minHeight: window.screen.height/20 }}>
+                                <div style={{ whiteSpace: 'break-spaces', minHeight: window.innerHeight/20 }}>
                                     <p></p>
                                 </div>
                                 <Typography className={itemClasses.smallHeading}>
@@ -764,7 +764,7 @@ export default function EditorPage(props) {
                                     fullWidth
                                     PaperProps={{
                                         style: {
-                                            height: window.screen.height/1.2,
+                                            height: window.innerHeight/1.2,
                                             backgroundColor: props.bColor,
                                         }
                                     }}
@@ -781,8 +781,8 @@ export default function EditorPage(props) {
                                             <DiffEditor
                                             className={"codeMarker"}
                                             onChange={handleDiffChange}
-                                            width={window.screen.width/1.65}
-                                            height={window.screen.height/1.7}
+                                            width={window.innerWidth/1.65}
+                                            height={window.innerHeight/1.7}
                                             value={diffVal}
                                             setOptions={{useWorker: false}}
                                             mode="java"
@@ -811,7 +811,7 @@ export default function EditorPage(props) {
                     <span>  </span>
                     <Dropzone className={classes.dropCard} onDrop={handleDrop} accept='.java'>
                         {({getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept, acceptedFiles, rejectedFiles}) => (
-                        <section style={{ width: window.screen.width/2.6, height: window.screen.height - (window.screen.height/40)}}>
+                        <section style={{ width: window.innerWidth/2.6, height: window.innerHeight - (window.innerHeight/40)}}>
                             <div {...getRootProps({onClick: event => event.stopPropagation()})}>
                             <input {...getInputProps()} />
                             {!isDragActive ? 
@@ -822,14 +822,14 @@ export default function EditorPage(props) {
                                     mode="java"
                                     onChange={handleTextChange}
                                     theme={props.eTheme}
-                                    width={(window.screen.width/2.6)}
-                                    height={window.screen.height - (window.screen.height/40)}
+                                    width={(window.innerWidth/2.6)}
+                                    height={window.innerHeight - (window.innerHeight/40)}
                                     >
                                     </AceEditor>
                                 </div>
                                 </div>:
                                 <div className={classes.dropCardBorder}>
-                                <div className='Dropzone2' style={{ width: window.screen.width/2.6, height: window.screen.height - (window.screen.height/40) }}>
+                                <div className='Dropzone2' style={{ width: window.innerWidth/2.6, height: window.innerHeight - (window.innerHeight/40) }}>
                                     <p></p>
                                     <CloudUploadIcon className={classes.icon} fontSize='large'></CloudUploadIcon>
                                     <p style={{ color: '#6493a1', whiteSpace: 'break-spaces' }}>Drop it here!</p>

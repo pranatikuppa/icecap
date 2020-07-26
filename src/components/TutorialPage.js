@@ -70,14 +70,14 @@ function HorizontalStepper(props) {
       color: props.mColor,
     },
     stepPaper: {
-      width: 1290,
-      height: 400,
+      width: window.innerWidth/1.1,
+      height: window.innerHeight/2,
       padding: theme.spacing(3),
       backgroundColor: props.pColor,
     },
     step4Paper: {
-      width: 1290,
-      height: 480,
+      width: window.innerWidth/1.1,
+      height: window.innerHeight/2,
       padding: theme.spacing(3),
       backgroundColor: props.pColor,
     },
@@ -372,7 +372,7 @@ function HorizontalStepper(props) {
   }
 
   /**
-   * The QontoStepIcon prop types.
+   * The QontoStepIcon prop types. 
    */
   QontoStepIcon.propTypes = {
     active: PropTypes.bool,
@@ -381,7 +381,7 @@ function HorizontalStepper(props) {
 
   return (
     <div className={classes.stepperRoot}>
-      <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />} style={{ width: 1250, backgroundColor: props.bColor}}>
+      <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />} style={{ width: window.innerWidth/1.1, backgroundColor: props.bColor}}>
         {steps.map((label) => (
           <Step key={label}>
             <StepLabel StepIconComponent={QontoStepIcon}>
@@ -422,8 +422,8 @@ export default function TutorialPage(props) {
       '& > *': {
         margin: theme.spacing(2),
         marginTop: theme.spacing(9),
-        width: theme.spacing(window.screen.width),
-        height: theme.spacing(window.screen.height),
+        width: theme.spacing(window.innerWidth),
+        height: theme.spacing(window.innerHeight),
       },
     },
     paper: {
@@ -437,7 +437,7 @@ export default function TutorialPage(props) {
 
   return(
       <div className={classes.root}>
-          <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: 5*window.screen.height/6, width: window.screen.width }}>
+          <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: 5*window.innerHeight/6, width: window.innerWidth }}>
               <HorizontalStepper screenChangeCallback={props.screenChangeCallback} pColor={props.pColor} tColor={props.tColor} bColor={props.bColor} mColor={props.mColor}></HorizontalStepper>
           </Paper>
       </div>

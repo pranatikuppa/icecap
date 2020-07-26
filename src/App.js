@@ -57,7 +57,7 @@ function MainApp() {
       fontFamily: 'Open-Sans',
       color: '#7E7E7E',
       margin: theme.spacing(3),
-      marginLeft: theme.spacing(window.screen.width/22),
+      marginLeft: theme.spacing(window.innerWidth/22),
     },
   }));
 
@@ -109,7 +109,7 @@ function MainApp() {
   }
 
   return(
-    <div style={{ minHeight: window.screen.height, backgroundColor: mainColor}} className="App-body">
+    <div style={{ minHeight: window.innerHeight, backgroundColor: mainColor}} className="App-body">
       <div style={{ backgroundColor: mainColor, whiteSpace: 'break-spaces'}} className='App-body'>
         <PageHeader iColor={iconHighlight} currentScreen={screenNum} darkModeCallback={switchDark} screenChangeCallback={changeScreen} hColor={mainColor} mColor={middleColor} bColor={backColor} tColor={textColor}></PageHeader>
         {getScreen()}

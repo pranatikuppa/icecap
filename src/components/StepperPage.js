@@ -654,8 +654,8 @@ export default function StepperPage(props) {
         '& > *': {
           margin: theme.spacing(2),
           marginTop: theme.spacing(9),
-          width: theme.spacing(window.screen.width),
-          height: theme.spacing(window.screen.height),
+          width: theme.spacing(window.innerWidth),
+          height: theme.spacing(window.innerHeight),
         },
       },
       paper: {
@@ -669,7 +669,7 @@ export default function StepperPage(props) {
   
     return(
       <div className={classes.root}>
-        <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: window.screen.height, width: window.screen.width}}>
+        <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: window.innerHeight, width: window.innerWidth}}>
             <VerticalLinearStepper bColor={props.bColor} mColor={props.mColor} tColor={props.tColor}>
             </VerticalLinearStepper>
         </Paper>
