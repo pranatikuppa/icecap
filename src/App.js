@@ -10,26 +10,6 @@ import { Switch, Typography } from '@material-ui/core';
 import { HashRouter as Router, Switch as RouterSwitch, Route} from 'react-router-dom';
 import './App.css';
 
-const CustomSwitch = withStyles({
-  switchBase: {
-    color: '#6493a1',
-    '&$checked': {
-      color: '#6493a1',
-    },
-    '&$checked + $track': {
-      backgroundColor: '#6493a1',
-    },
-  },
-  checked: {},
-  track: {},
-}) (Switch);
-
-const HOME = 0;
-const LIVE = 1;
-const STATIC = 2;
-const TUTORIAL = 3;
-const RESOURCES = 4;
-
 function MainApp() {
 
   const [backColor, setBackColor] = React.useState('#e3ecef');
@@ -41,7 +21,6 @@ function MainApp() {
   const [logo, setLogo] = React.useState('LightLogo');
   const [diffHighlight, setDiffHighlight] = React.useState('codeMarkerLight');
   const [iconHighlight, setIconHighlight] = React.useState('#D3D3D3');
-  const [screenNum, setScreenNum] = React.useState(HOME);
 
   const mainStyles = makeStyles((theme) => ({
     root: {
@@ -60,10 +39,6 @@ function MainApp() {
       marginLeft: theme.spacing(window.innerWidth/22),
     },
   }));
-
-  function changeScreen(sNum) {
-    setScreenNum(sNum);
-  }
 
   const classes = mainStyles();
   
@@ -91,28 +66,11 @@ function MainApp() {
     }
   }
 
-  // function getScreen() {
-  //   switch(screenNum) {
-  //     case HOME:
-  //       return <MainInfoPage screenChangeCallback={changeScreen} tColor={textColor} logoStyle={logo} bColor={backColor} mColor={middleColor}></MainInfoPage>;
-  //     case LIVE:
-  //       return <EditorPage iColor={iconHighlight} diffHighlight={diffHighlight} eTheme={editorTheme} hColor={mainColor} mColor={middleColor} tColor={textColor} bColor={backColor}></EditorPage>;
-  //     case STATIC:
-  //       return <StepperPage screenChangeCallback={changeScreen} mColor={middleColor} tColor={textColor} bColor={backColor}></StepperPage>;
-  //     case TUTORIAL:
-  //       return <TutorialPage screenChangeCallback={changeScreen} pColor={tutorialColor} mColor={middleColor} bColor={backColor} tColor={textColor}></TutorialPage>;
-  //     // case RESOURCES:
-  //     //   return <ResourcesPage screenChangeCallback={changeScreen} tColor={textColor} logoStyle={logo} bColor={backColor} mColor={middleColor}></ResourcesPage>;
-  //     default:
-  //       return <MainInfoPage screenChangeCallback={changeScreen} tColor={textColor} logoStyle={logo} bColor={backColor} mColor={middleColor}></MainInfoPage>;
-  //   }
-  // }
-
   return(
     <Router>
       <div style={{ minHeight: window.innerHeight, backgroundColor: mainColor}} className="App-body">
         <div style={{ backgroundColor: mainColor, whiteSpace: 'break-spaces'}} className='App-body'>
-          <PageHeader iColor={iconHighlight} currentScreen={screenNum} darkModeCallback={switchDark} screenChangeCallback={changeScreen} hColor={mainColor} mColor={middleColor} bColor={backColor} tColor={textColor}></PageHeader>
+          <PageHeader iColor={iconHighlight} darkModeCallback={switchDark} hColor={mainColor} mColor={middleColor} bColor={backColor} tColor={textColor}></PageHeader>
           <RouterSwitch>
             <Route 
             exact path="/"

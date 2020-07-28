@@ -428,7 +428,7 @@ export default function TutorialPage(props) {
   return(
       <div className={classes.root}>
           <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: 4*window.innerHeight/5, width: window.innerWidth }}>
-              <HorizontalStepper screenChangeCallback={props.screenChangeCallback} pColor={props.pColor} tColor={props.tColor} bColor={props.bColor} mColor={props.mColor}></HorizontalStepper>
+              <HorizontalStepper pColor={props.pColor} tColor={props.tColor} bColor={props.bColor} mColor={props.mColor}></HorizontalStepper>
           </Paper>
       </div>
   );
