@@ -1,38 +1,27 @@
-import Paper from '@material-ui/core/Paper';
-import Collapse from '@material-ui/core/Collapse';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import GridList from '@material-ui/core/GridList';
-import Card from '@material-ui/core/Card';
-import Button from '@material-ui/core/Button';
 import React from 'react';
+import { Paper, Collapse, TextField, Typography, GridList, Card, Button, 
+    DialogContent, DialogTitle, Dialog, DialogActions, DialogContentText, FormControlLabel, 
+    Checkbox } from '@material-ui/core';
 import { makeStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import { borderedTextFieldStylesHook } from '@mui-treasury/styles/textField/bordered';
+import { bannerCheckboxStylesHook } from '@mui-treasury/styles/checkbox/banner';
+import { useNeonCheckboxStyles } from '@mui-treasury/styles/checkbox/neon';
+import makeAnimated from 'react-select/animated';
 import Select from 'react-select';
-import RmJavadocs from './RmJavadocs';
-import SingleLines from './SingleLines';
-import Javadocs from './Javadocs';
-import Whitespaces from './Whitespaces';
-import MultiLines from './MultiLines';
 import Dropzone from 'react-dropzone';
 import AceEditor from 'react-ace';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import { diff as DiffEditor } from "react-ace";
+import LongLines from './operations/LongLines';
+import LongMethods from './operations/LongMethods';
+import RmJavadocs from './operations/RmJavadocs';
+import SingleLines from './operations/SingleLines';
+import Javadocs from './operations/Javadocs';
+import Whitespaces from './operations/Whitespaces';
+import MultiLines from './operations/MultiLines';
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-katzenmilch";
 import "ace-builds/src-noconflict/theme-nord_dark";
-import makeAnimated from 'react-select/animated';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle'
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import { diff as DiffEditor } from "react-ace";
-import DialogContentText from '@material-ui/core/DialogContentText';
-import { borderedTextFieldStylesHook } from '@mui-treasury/styles/textField/bordered';
-import { bannerCheckboxStylesHook } from '@mui-treasury/styles/checkbox/banner';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import { useNeonCheckboxStyles } from '@mui-treasury/styles/checkbox/neon';
-import LongLines from './LongLines';
-import LongMethods from './LongMethods';
 
 /**
  * The EditorPage component.
@@ -50,34 +39,34 @@ export default function EditorPage(props) {
         dropCard: {
             backgroundColor: props.bColor,
             width: window.innerWidth/2.6,
-            height: window.innerHeight - (window.innerHeight/40),
+            height: window.innerHeight/1.24,
         },
         dropCardBorder: {
             border: 'dashed',
             borderColor: '#6493a1',
             borderWidth: '2px',
             width: (window.innerWidth/2.6) - 10,
-            height: window.innerHeight - (window.innerHeight/40),
+            height: window.innerHeight/1.24,
         },
         defaultCardBorder: {
             border: 'dashed',
             borderColor: props.bColor,
             borderWidth: '2px',
             width: (window.innerWidth/2.6) - 10,
-            height: window.innerHeight - (window.innerHeight/40),
+            height: window.innerHeight/1.24,
         },
         icon: {
             color: '#6493a1',
         },
         root: {
-          display: 'flex',
-          '& > *': {
-            margin: theme.spacing(2),
-            marginTop: theme.spacing(9),
-            width: theme.spacing(window.innerWidth),
-            height: theme.spacing(window.innerHeight),
+            display: 'flex',
+            '& > *': {
+              margin: theme.spacing(2),
+              marginTop: theme.spacing(9),
+              width: window.innerWidth,
+              height: window.innerHeight,
+            },
           },
-        },
         editorDiv: {
             display: 'flex',
             flexDirection: 'row',
@@ -177,7 +166,6 @@ export default function EditorPage(props) {
      * editor page.
      */
     const formControlLabelStyles = bannerCheckboxStylesHook.useFormControlLabel();
-    const checkboxStyles = bannerCheckboxStylesHook.useCheckbox();
     const neonStyles = useNeonCheckboxStyles();
     const animatedComponents = makeAnimated();
     const classes = mainStyles();
@@ -482,7 +470,7 @@ export default function EditorPage(props) {
             return <AceEditor
             mode="java"
             width={(window.innerWidth/2.6)}
-            height={window.innerHeight - (window.innerHeight/40)}
+            height={window.innerHeight/1.24}
             theme={props.eTheme}
             onChange={handleSecondTextChange}
             >
@@ -492,7 +480,7 @@ export default function EditorPage(props) {
             theme={props.eTheme}
             mode="java"
             width={(window.innerWidth/2.6)}
-            height={window.innerHeight - (window.innerHeight/40)}
+            height={window.innerHeight/1.24}
             onChange={handleSecondTextChange}
             value={secondDisplay}
             >
@@ -602,10 +590,10 @@ export default function EditorPage(props) {
 
     return(
         <div className={classes.root}>
-            <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: window.innerHeight, width: window.innerWidth}}>
+            <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: 5*window.innerHeight/6, width: window.innerWidth}}>
                 <div style={{ flex: 1, flexDirection: 'row', display: 'flex' }}>
-                    <Card className={classes.operationCard} elevation={0} style={{ backgroundColor: props.hColor, width: window.innerWidth/6, height: window.innerHeight - (window.innerHeight/28) }}>
-                        <GridList cellHeight={window.screen.innerHeight - (window.innerHeight/28)} cellWidth={window.innerWidth/4} cols={1}>
+                    <Card className={classes.operationCard} elevation={0} style={{ backgroundColor: props.hColor, width: window.innerWidth/6, height: window.innerHeight/1.26 }}>
+                        <GridList cellHeight={window.innerHeight/1.26} cellWidth={window.innerWidth/4} cols={1}>
                             <div style={{ whiteSpace: 'break-spaces' }}>
                                 <Typography className={itemClasses.smallHeading}>
                                     FILES
@@ -764,7 +752,7 @@ export default function EditorPage(props) {
                                     fullWidth
                                     PaperProps={{
                                         style: {
-                                            height: window.innerHeight/1.2,
+                                            height: window.innerHeight/1.24,
                                             backgroundColor: props.bColor,
                                         }
                                     }}
@@ -811,7 +799,7 @@ export default function EditorPage(props) {
                     <span>  </span>
                     <Dropzone className={classes.dropCard} onDrop={handleDrop} accept='.java'>
                         {({getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept, acceptedFiles, rejectedFiles}) => (
-                        <section style={{ width: window.innerWidth/2.6, height: window.innerHeight - (window.innerHeight/40)}}>
+                        <section style={{ width: window.innerWidth/2.6, height: window.innerHeight/1.24}}>
                             <div {...getRootProps({onClick: event => event.stopPropagation()})}>
                             <input {...getInputProps()} />
                             {!isDragActive ? 
@@ -823,13 +811,13 @@ export default function EditorPage(props) {
                                     onChange={handleTextChange}
                                     theme={props.eTheme}
                                     width={(window.innerWidth/2.6)}
-                                    height={window.innerHeight - (window.innerHeight/40)}
+                                    height={window.innerHeight/1.24}
                                     >
                                     </AceEditor>
                                 </div>
                                 </div>:
                                 <div className={classes.dropCardBorder}>
-                                <div className='Dropzone2' style={{ width: window.innerWidth/2.6, height: window.innerHeight - (window.innerHeight/40) }}>
+                                <div className='Dropzone2' style={{ width: window.innerWidth/2.6, height: window.innerHeight/1.24 }}>
                                     <p></p>
                                     <CloudUploadIcon className={classes.icon} fontSize='large'></CloudUploadIcon>
                                     <p style={{ color: '#6493a1', whiteSpace: 'break-spaces' }}>Drop it here!</p>

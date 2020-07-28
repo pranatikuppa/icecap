@@ -1,35 +1,18 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
-import './Component.css';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import MenuList from '@material-ui/core/MenuList';
-import Switch from '@material-ui/core/Switch';
-import Brightness2Icon from '@material-ui/icons/Brightness2';
-import { useN02SwitchStyles } from '@mui-treasury/styles/switch/n02';
+import { AppBar, Toolbar, Typography, Button, MenuItem, ClickAwayListener, Grow, Paper,
+    Popper, MenuList, Switch } from '@material-ui/core';
 import CodeIcon from '@material-ui/icons/Code';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+import Brightness2Icon from '@material-ui/icons/Brightness2';
+import { useN02SwitchStyles } from '@mui-treasury/styles/switch/n02';
+import { Link } from 'react-router-dom';
+import './Component.css';
   
 /**
  * The PageHeader component.
  */
 export default function PageHeader(props) {
-
-  /**
-   * Page navigation codes used to navigate between pages.
-   */
-  const HOME = 0;
-  const LIVE = 1;
-  const STATIC = 2;
-  const TUTORIAL = 3;
-  const RESOURCES = 4;
 
   /**
    * The state variables, anchors and styles used by the header 
@@ -59,7 +42,9 @@ export default function PageHeader(props) {
     },
     title: {
       flexGrow: 1,
-      color: props.mColor,
+      color: props.tColor,
+      fontFamily: 'Open-Sans',
+      fontWeight: 600,
     },
     button: {
       fontFamily: 'Open-Sans',
@@ -95,41 +80,6 @@ export default function PageHeader(props) {
     setDarkToggle(event.target.checked);
     props.darkModeCallback(event.target.checked);
   }
-
-  /**
-   * Nagivates to the home page.
-   */
-  const goToHome = () => {
-    props.screenChangeCallback(HOME);
-  };
-
-  /**
-   * Navigates to the tutorial page.
-   */
-  const goToTutorial = () => {
-    props.screenChangeCallback(TUTORIAL);
-  };
-
-  /**
-   * Navigates to the static page.
-   */
-  const goToStatic = () => {
-    props.screenChangeCallback(STATIC);
-  };
-  
-  /**
-   * Navigates to the live page.
-   */
-  const goToLive = () => {
-    props.screenChangeCallback(LIVE);
-  };
-
-  /**
-   * Navigates to the resources page.
-   */
-  const goToResources = () => {
-    props.screenChangeCallback(RESOURCES);
-  };
 
   /**
    * Handles the state changes and opens the 
@@ -203,10 +153,11 @@ export default function PageHeader(props) {
       <AppBar elevation={0} position="fixed" className={classes.bar}>
           <Toolbar>
           <Typography variant="App-header" className={classes.title}>
-              ICEcΔp v1.0
+            <Link to={"/"} style={{ textDecoration: 'none' }} className={classes.title}>
+                ICECΔP
+            </Link>
           </Typography>
-          <Button onClick={goToHome} className={classes.button} variant="App-header" color="inherit">ICEcΔp Home</Button>
-          <Button onClick={goToTutorial} className={classes.button} variant="App-header" color="inherit">Tutorial</Button>
+          <Button to="/tutorial" component={Link} className={classes.button} variant="App-header" color="inherit">Tutorial</Button>
           <Button ref={editorAnchorRef} onClick={handleEditorToggle} className={classes.button} variant="App-header" color="inherit">Editor</Button>
           <Popper open={editorOpen} aria-haspopup="true" aria-controls={editorOpen ? 'menu-list-grow' : undefined} anchorEl={editorAnchorRef.current} role={undefined} transition disablePortal>
             {({ TransitionProps, placement }) => (
@@ -217,14 +168,14 @@ export default function PageHeader(props) {
                 <Paper style={{backgroundColor: props.hColor}}>
                   <ClickAwayListener onClickAway={handleEditorClose}>
                     <MenuList autoFocusItem={editorOpen} id="menu-list-grow">
-                      <MenuItem style={{whiteSpace: 'break-spaces'}} onClick={goToLive}>
+                      <MenuItem style={{whiteSpace: 'break-spaces'}} to="/live" component={Link}>
                       <CodeIcon style={{ backgroundColor: props.iColor, color: props.tColor, borderRadius: 20, padding: 5}}></CodeIcon>
                       <span>     </span>
                       <Typography className={classes.menuText}>
                         Live Editor
                       </Typography>
                       </MenuItem>
-                      <MenuItem style={{whiteSpace: 'break-spaces'}} onClick={goToStatic}>
+                      <MenuItem style={{whiteSpace: 'break-spaces'}} to="/static" component={Link}>
                       <InsertDriveFileIcon style={{ backgroundColor: props.iColor, color: props.tColor, borderRadius: 20, padding: 5}}></InsertDriveFileIcon>
                       <span>     </span>
                       <Typography className={classes.menuText}>

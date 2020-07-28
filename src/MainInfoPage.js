@@ -1,18 +1,16 @@
 import React from 'react';
-import './Component.css';
-import Paper from '@material-ui/core/Paper';
+import { Paper, Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import { animateScroll as scroll } from "react-scroll";
+import { Link } from 'react-router-dom';
+import './components/Component.css';
   
 /**
  * The MainInfoPage component.
  */
 export default function MainInfoPage(props) {
 
-  const LIVE = 1;
-  const TUTORIAL = 3;
+  // const LIVE = 1;
+  // const TUTORIAL = 3;
 
   /**
    * Styles used to customize text and other components within the
@@ -24,8 +22,8 @@ export default function MainInfoPage(props) {
       '& > *': {
         margin: theme.spacing(2),
         marginTop: theme.spacing(9),
-        width: window.screen.width,
-        height: window.screen.height,
+        width: window.innerWidth,
+        height: window.innerHeight,
       },
     },
     mainText: {
@@ -91,20 +89,20 @@ export default function MainInfoPage(props) {
    */
   const classes = mainStyles();
 
-  const goToEditor = () => {
-    props.screenChangeCallback(LIVE);
-  }
+  // const goToEditor = () => {
+  //   props.screenChangeCallback(LIVE);
+  // }
 
-  const goToTutorial = () => {
-    props.screenChangeCallback(TUTORIAL);
-  }
+  // const goToTutorial = () => {
+  //   props.screenChangeCallback(TUTORIAL);
+  // }
 
   /**
    * The components that make up the MainInfoPage.
    */
   return (
     <div className={classes.root}>
-      <Paper elevation={0} className={props.logoStyle} style={{ height: 3*window.screen.height/4, width: window.screen.width }}>
+      <Paper elevation={0} className={props.logoStyle} style={{ height: 5*window.innerHeight/6, width: window.innerWidth }}>
         <div>  
           <Typography className={classes.mainText}>ICEcΔp</Typography>
           <Typography className={classes.subMainText}>
@@ -119,7 +117,8 @@ export default function MainInfoPage(props) {
                   className={classes.button}
                   disableElevation
                   variant='contained'
-                  onClick={goToEditor}
+                  to={"/live"}
+                  component={Link}
                 >
                   Start Editing
               </Button>
@@ -127,7 +126,8 @@ export default function MainInfoPage(props) {
                 className={classes.button2}
                 disableElevation
                 variant='contained'
-                onClick={goToTutorial}
+                to={"/tutorial"}
+                component={Link}
               >
                 Mini Tutorial
               </Button>

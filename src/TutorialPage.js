@@ -1,5 +1,5 @@
 import React from 'react';
-import './Component.css';
+import './components/Component.css';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import Check from '@material-ui/icons/Check';
@@ -14,11 +14,8 @@ import clsx from 'clsx';
 import StepConnector from '@material-ui/core/StepConnector';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
-
-/**
- * The variables used to nagivate to pages.
- */
-const LIVE = 1;
+import { Link } from 'react-router-dom';
+import './components/Component.css';
 
 /**
  * Returns the step titles of the tutorial stepper.
@@ -293,13 +290,6 @@ function HorizontalStepper(props) {
   };
 
   /**
-   * Navigates to the live editor.
-   */
-  const goToEditor = () => {
-    props.screenChangeCallback(LIVE);
-  }
-
-  /**
    * The styles for the QontoConnector used in
    * the stepper.
    */
@@ -402,7 +392,7 @@ function HorizontalStepper(props) {
               Back
             </Button>
             {activeStep === steps.length - 1 ? 
-            <Button disableElevation variant="contained" className={classes.button} onClick={goToEditor}>Start Editing</Button>:
+            <Button disableElevation variant="contained" className={classes.button} component={Link} to="/live">Start Editing</Button>:
             <Button disableElevation variant="contained" className={classes.button} onClick={handleNext}>Next</Button>}
           </div>
         </div>
@@ -422,8 +412,8 @@ export default function TutorialPage(props) {
       '& > *': {
         margin: theme.spacing(2),
         marginTop: theme.spacing(9),
-        width: theme.spacing(window.innerWidth),
-        height: theme.spacing(window.innerHeight),
+        width: window.innerWidth,
+        height: window.innerHeight,
       },
     },
     paper: {
@@ -437,7 +427,7 @@ export default function TutorialPage(props) {
 
   return(
       <div className={classes.root}>
-          <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: 5*window.innerHeight/6, width: window.innerWidth }}>
+          <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: 4*window.innerHeight/5, width: window.innerWidth }}>
               <HorizontalStepper screenChangeCallback={props.screenChangeCallback} pColor={props.pColor} tColor={props.tColor} bColor={props.bColor} mColor={props.mColor}></HorizontalStepper>
           </Paper>
       </div>

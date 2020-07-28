@@ -1,29 +1,21 @@
-import Paper from '@material-ui/core/Paper';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import React from 'react';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import StepContent from '@material-ui/core/StepContent';
-import UploadButtons from './UploadButtons';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { Paper, Stepper, Step, StepLabel, Button, Typography, StepContent, Collapse } from '@material-ui/core';
+import { ToggleButton, Alert } from '@material-ui/lab';
 import SpaceBarIcon from '@material-ui/icons/SpaceBar';
-import SubjectIcon from '@material-ui/icons/Subject';
 import FormatIndentIncreaseIcon from '@material-ui/icons/FormatIndentIncrease';
 import CodeIcon from '@material-ui/icons/Code';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import Alert from '@material-ui/lab/Alert';
-import Collapse from '@material-ui/core/Collapse';
-import './Component.css';
-import Javadocs from './Javadocs'; 
-import FileDownloadComponent from './FileDownloadComponent';
-import SingleLines from './SingleLines';
-import MultiLines from './MultiLines';
-import Whitespaces from './Whitespaces';
-import Indentations from './Indentations';
-import RmJavadocs from './RmJavadocs';
+import SubjectIcon from '@material-ui/icons/Subject';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import React from 'react';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import UploadButtons from './components/UploadButtons';
+import FileDownloadComponent from './components/FileDownloadComponent';
+import Javadocs from './operations/Javadocs'; 
+import SingleLines from './operations/SingleLines';
+import MultiLines from './operations/MultiLines';
+import Whitespaces from './operations/Whitespaces';
+import Indentations from './operations/Indentations';
+import RmJavadocs from './operations/RmJavadocs';
+import './components/Component.css';
   
 /**
  * Method that returns the step headers for the main stepper.
@@ -651,11 +643,12 @@ export default function StepperPage(props) {
     const mainStyles = makeStyles((theme) => ({
       root: {
         display: 'flex',
+        backgroundColor: props.hColor,
         '& > *': {
           margin: theme.spacing(2),
           marginTop: theme.spacing(9),
-          width: theme.spacing(window.innerWidth),
-          height: theme.spacing(window.innerHeight),
+          width: window.screen.width,
+          height: window.screen.height,
         },
       },
       paper: {
@@ -669,7 +662,7 @@ export default function StepperPage(props) {
   
     return(
       <div className={classes.root}>
-        <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: window.innerHeight, width: window.innerWidth}}>
+        <Paper className={classes.paper} elevation={0} style={{ backgroundColor: props.bColor, height: 5*window.innerHeight/6, width: window.innerWidth}}>
             <VerticalLinearStepper bColor={props.bColor} mColor={props.mColor} tColor={props.tColor}>
             </VerticalLinearStepper>
         </Paper>

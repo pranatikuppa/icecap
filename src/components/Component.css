@@ -5,61 +5,61 @@
 }
 
 .DarkLogo {
-    background-image: url(./assets/mountain_image.jpeg);
+    background-image: url(../assets/mountain_image.jpeg);
     background-size: cover;
     background-position: bottom;
 }
 
 .LightLogo {
-    background-image: url(./assets/light_mountain_image.jpg);
+    background-image: url(../assets/light_mountain_image.jpg);
     background-size: cover;
     background-position: top;
 }
 
 .OkGif {
-    background-image: url(./assets/ok.gif);
+    background-image: url(../assets/ok.gif);
     background-size: cover;
     background-position: center;
 }
 
 .staticUpload {
-    background-image: url(./assets/upload.gif);
+    background-image: url(../assets/upload.gif);
     background-size: cover;
     background-position: center;
 }
 
 .staticChooseOps {
-    background-image: url(./assets/chooseops.gif);
+    background-image: url(../assets/chooseops.gif);
     background-size: cover;
     background-position: center;
 }
 
 .staticDownload {
-    background-image: url(./assets/downloads.gif);
+    background-image: url(../assets/downloads.gif);
     background-size: cover; 
     background-position: center; 
 }
 
 .liveUpload {
-    background-image: url(./assets/live_upload.gif);
+    background-image: url(../assets/live_upload.gif);
     background-size: cover; 
     background-position: cover;
 }
 
 .liveChooseOps {
-    background-image: url(./assets/live_chooseops.gif);
+    background-image: url(../assets/live_chooseops.gif);
     background-size: cover; 
     background-position: cover;
 }
 
 .liveDownload {
-    background-image: url(./assets/live_download.gif);
+    background-image: url(../assets/live_download.gif);
     background-size: cover; 
     background-position: cover;
 }
 
 .seeDiff {
-    background-image: url(./assets/see_dif.gif);
+    background-image: url(../assets/see_dif.gif);
     background-size: cover; 
     background-position: cover;
 }
@@ -116,12 +116,12 @@ don't change any other css style block. just add new ones. and after you're done
 @font-face {
     font-family: 'Open-Sans';
     font-weight: 300;
-    src: local('Open-Sans-Light'), url(./fonts/OpenSans-Light.ttf) format('truetype');
+    src: local('Open-Sans-Light'), url(../fonts/OpenSans-Light.ttf) format('truetype');
 }
   
 @font-face {
     font-family: 'Open-Sans';
     font-weight: 600;
-    src: local('Open-Sans-Semi-Bold'), url(./fonts/OpenSans-SemiBold.ttf) format('truetype');
+    src: local('Open-Sans-Semi-Bold'), url(../fonts/OpenSans-SemiBold.ttf) format('truetype');
 }
   
