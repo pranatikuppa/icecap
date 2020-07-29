@@ -110,7 +110,6 @@ function MainApp() {
               hColor={mainColor}
             />}
             />
-            {/* <Route path="resources" component={ResourcesPage}/> */}
           </RouterSwitch>
         </div>
         <Typography className={classes.text}>created by two fellow 61b'ers: pranati and khushi</Typography>
