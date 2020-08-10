@@ -6,13 +6,13 @@
  ## preliminary interface:
  
  **Homepage**: 
-  ![](src/components/assets/homepage.png)
+  ![](src/assets/homepage.png)
  
  **Uploading files**: 
-   ![](src/components/assets/upload.gif)
+   ![](src/assets/upload.gif)
  
  **Choose which operations to apply**: 
-  ![](src/components/assets/chooseops.gif)
+  ![](src/assets/chooseops.gif)
  
  **Downloading a file**: 
- ![](src/components/assets/downloads.gif)
+ ![](src/assets/downloads.gif)
