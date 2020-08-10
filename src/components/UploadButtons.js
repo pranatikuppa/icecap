@@ -7,68 +7,68 @@ import './Component.css';
 import { Button } from '@material-ui/core';
 
 /**
- * Styles used to customize the upload button and 
- * the file dropzone for upload.
- */
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& > *': {
-      margin: theme.spacing(1),
-    },
-  },
-  input: {
-    display: 'none',
-  },
-  button: {
-    backgroundColor: '#6493a1',
-    color: 'white',
-    marginTop: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    '&:hover': {
-      backgroundColor: '#537b86',
-    },
-  },
-  dropCard: {
-    width: '790px',
-    height: '160px',
-    paddingTop: '20px',
-    paddingLeft: '20px',
-    paddingRight: '15px',
-    paddingBottom: '15px',
-  },
-  dropCardBorder: {
-    border: 'dashed',
-    borderColor: '#6493a1',
-    borderWidth: '2px',
-    width: '780px',
-    height: '150px',
-  },
-  defaultCardBorder: {
-    border: 'dashed',
-    borderColor: '#D3D3D3',
-    borderWidth: '2px',
-    width: '780px',
-    height: '150px',
-  },
-  listCard: {
-    color: '#154854',
-    width: '200px',
-    backgroundColor: '#6493a1',
-    padding: '10px',
-    alignContent: 'center',
-  },
-  icon: {
-    color: '#6493a1'
-  }
-}));
-
-/**
  * The upload button component that contains both the upload button
  * and the file dropzone. The component collects and returns back 
  * to the parent the accepted and rejected files.
  * @param {Object} props the props used to pull information from the parent.
  */
 export default function UploadButtons(props) {
+
+  /**
+   * Styles used to customize the upload button and 
+   * the file dropzone for upload.
+   */
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      '& > *': {
+        margin: theme.spacing(1),
+      },
+    },
+    input: {
+      display: 'none',
+    },
+    button: {
+      backgroundColor: props.mColor,
+      color: props.bColor,
+      marginTop: theme.spacing(1),
+      marginRight: theme.spacing(1),
+      '&:hover': {
+        backgroundColor: '#537b86',
+      },
+    },
+    dropCard: {
+      width: '790px',
+      height: '160px',
+      paddingTop: '20px',
+      paddingLeft: '20px',
+      paddingRight: '15px',
+      paddingBottom: '15px',
+    },
+    dropCardBorder: {
+      border: 'dashed',
+      borderColor: '#6493a1',
+      borderWidth: '2px',
+      width: '780px',
+      height: '150px',
+    },
+    defaultCardBorder: {
+      border: 'dashed',
+      borderColor: '#D3D3D3',
+      borderWidth: '2px',
+      width: '780px',
+      height: '150px',
+    },
+    listCard: {
+      color: '#154854',
+      width: '200px',
+      backgroundColor: '#6493a1',
+      padding: '10px',
+      alignContent: 'center',
+    },
+    icon: {
+      color: '#6493a1'
+    }
+  }));
   const classes = useStyles();
 
   /**
